@@ -58,17 +58,62 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .plan-pro{color:var(--teal)!important;font-weight:600}.plan-free{color:var(--amber)!important}
 .adm-loading{text-align:center;padding:32px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--tx3)}
 
-/* ═══ HERO (landing only) ═══ */
-#hero{max-width:1200px;margin:0 auto;text-align:center;padding:100px 32px 40px;position:relative;z-index:1}
-#hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(0,212,164,.14),transparent 60%);pointer-events:none;z-index:-1}
+/* ═══ HERO (landing only) — layout 2 colonne bilanciato ═══ */
+#hero{max-width:1200px;margin:0 auto;padding:56px 32px 36px;position:relative;z-index:1}
+#hero::before{content:'';position:absolute;top:-40px;left:0;right:0;height:500px;background:radial-gradient(ellipse at 30% 40%,rgba(0,212,164,.11),transparent 60%);pointer-events:none;z-index:-1}
 #hero.hidden{display:none}
-.htag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--teal);letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px;padding:6px 16px;border:1px solid rgba(0,212,164,.25);border-radius:30px;background:rgba(0,212,164,.06)}
-.hh1{font-size:clamp(2.8rem,6vw,4.8rem);font-weight:900;line-height:1.02;letter-spacing:-.05em;margin-bottom:22px}
-.hh1 span{color:var(--teal);position:relative}.hh1 span::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:3px;background:var(--teal);border-radius:2px;opacity:.5}
-.hsub{font-size:clamp(1.05rem,1.8vw,1.2rem);color:var(--tx2);max-width:620px;margin:0 auto 16px;font-weight:300;line-height:1.65}
-.harr{color:var(--teal);font-size:1.8rem;margin:32px 0 10px;animation:bounce 1.6s ease infinite}
+/* 2 colonne: testo sinistra, stats destra */
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.hero-left{display:flex;flex-direction:column;align-items:flex-start}
+.htag{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;padding:5px 12px;border:1px solid rgba(0,212,164,.25);border-radius:20px;background:rgba(0,212,164,.06)}
+.htag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.hh1{font-size:clamp(1.9rem,3.2vw,3rem);font-weight:800;line-height:1.08;letter-spacing:-.04em;margin-bottom:16px;text-align:left}
+.hh1 span{color:var(--teal)}
+.hsub{font-size:.96rem;color:var(--tx2);max-width:440px;margin:0 0 24px;font-weight:300;line-height:1.65;text-align:left}
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.h-btn-main{background:var(--teal);border:none;color:var(--bg);padding:11px 24px;border-radius:var(--r);font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:.18s}
+.h-btn-main:hover{background:var(--teal-h)}
+.h-btn-out{background:none;border:1px solid var(--border2);color:var(--tx2);padding:11px 20px;border-radius:var(--r);font-size:.82rem;font-weight:500;cursor:pointer;transition:.18s}
+.h-btn-out:hover{border-color:var(--teal);color:var(--teal)}
+.hlbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase}
+/* Stats card destra */
+.hero-right{}
+.hero-stats-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rx);overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.35)}
+.hsc-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:8px 14px;display:flex;align-items:center;gap:6px}
+.hsc-dots{display:flex;gap:5px}.hsc-dots i{width:8px;height:8px;border-radius:50%;display:block}.d1{background:#ff5170}.d2{background:#f0a030}.d3{background:#00d4a4}
+.hsc-label{font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--tx3);margin-left:4px}
+.hsc-body{padding:16px;display:flex;flex-direction:column;gap:10px}
+.hsc-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hsc-kpi{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px}
+.hsc-kl{font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.hsc-kv{font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
+.hsc-kv.t{color:var(--teal)}.hsc-kv.n{color:var(--tx)}
+.hsc-bar2{display:flex;flex-direction:column;gap:6px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px}
+.hsc-row{display:flex;align-items:center;gap:8px}
+.hsc-rl{font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--tx3);width:52px;flex-shrink:0}
+.hsc-track{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.hsc-fill{height:100%;border-radius:2px}
+.hsc-badge{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;background:var(--tg);border:1px solid rgba(0,212,164,.2);border-radius:6px}
+.hsc-cf{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
+.hsc-num{font-size:1.3rem;font-weight:800;color:var(--teal);letter-spacing:-.03em}
+/* freccia verso il calcolatore */
+.hero-arrow-row{max-width:1200px;margin:0 auto;padding:20px 32px 8px;text-align:center;position:relative;z-index:1}
+.hero-arrow-row.hidden{display:none}
+.harr{color:var(--teal);font-size:1.4rem;animation:bounce 1.6s ease infinite;display:inline-block}
+.hero-arrow-lbl{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
-.hlbl{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px}
+/* Stats strip sotto hero */
+.hero-strip{max-width:1200px;margin:0 auto;padding:0 32px 32px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:1}
+.hero-strip.hidden{display:none}
+.hs-item{background:var(--bg);padding:18px 16px;text-align:center}
+.hs-v{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--teal);margin-bottom:4px}
+.hs-l{font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
+@media(max-width:860px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .hero-right{display:none}
+  .hh1{text-align:center}.hsub{text-align:center;max-width:100%}.hero-left{align-items:center}.hero-ctas{justify-content:center}.hlbl{text-align:center}
+  .hero-strip{grid-template-columns:repeat(2,1fr)}
+}
 
 /* ═══ CALCULATOR (shared between landing demo + app) ═══ */
 #calc-wrap{max-width:1200px;margin:0 auto;padding:0 20px 40px;position:relative;z-index:1}
@@ -147,27 +192,28 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 /* ═══ LANDING EXTRAS (features, pricing, footer) ═══ */
 #landing-extra{position:relative;z-index:1}
 #landing-extra.hidden{display:none}
-.lsec{max-width:1100px;margin:0 auto;padding:60px 24px}
-.ltag{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:7px}.ltag::before{content:'';width:16px;height:1px;background:var(--teal)}
-.lh{font-size:clamp(1.4rem,2.8vw,2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:32px}
+.lsec{max-width:1200px;margin:0 auto;padding:64px 32px}
+.ltag{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}.ltag::before{content:'';width:16px;height:1px;background:var(--teal)}
+.lh{font-size:clamp(1.5rem,2.6vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
+.lsub{font-size:.88rem;color:var(--tx2);font-weight:300;margin-bottom:36px;max-width:500px}
 .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rx);overflow:hidden}
-.fc{background:var(--bg2);padding:22px 18px;transition:.2s}.fc:hover{background:var(--bg3)}
-.fci{font-size:1.1rem;margin-bottom:10px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--bg);border:1px solid var(--border);border-radius:9px}
-.fct{font-size:.88rem;font-weight:700;margin-bottom:5px}.fcd{font-size:.76rem;color:var(--tx2);line-height:1.5;font-weight:300}
-
-.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:700px;margin-top:32px}
+.fc{background:var(--bg2);padding:24px 20px;transition:.2s}.fc:hover{background:var(--bg3)}
+.fci{font-size:1.1rem;margin-bottom:12px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--bg);border:1px solid var(--border);border-radius:9px}
+.fct{font-size:.9rem;font-weight:700;margin-bottom:5px}.fcd{font-size:.78rem;color:var(--tx2);line-height:1.55;font-weight:300}
+/* Pricing */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;margin-top:32px}
 .pc{border:1px solid var(--border2);border-radius:var(--rx);padding:28px 24px;position:relative;overflow:hidden}
 .pc.hi{border-color:var(--teal);background:var(--tg)}
 .pc.hi::before{content:'CONSIGLIATO';position:absolute;top:0;right:20px;background:var(--teal);color:var(--bg);font-family:'JetBrains Mono',monospace;font-size:.5rem;font-weight:600;letter-spacing:.08em;padding:3px 7px;border-radius:0 0 5px 5px}
 .pcp{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-.pca{font-size:2.4rem;font-weight:900;letter-spacing:-.04em;margin-bottom:2px;display:flex;align-items:flex-start;gap:3px}.pca .cur{font-size:1.1rem;margin-top:7px;color:var(--tx2)}
-.pcper{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--tx3);margin-bottom:18px}
-.pcf{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:20px}.pcf li{font-size:.76rem;color:var(--tx2);display:flex;gap:5px;font-weight:300}.pcf li::before{content:'→';color:var(--teal);flex-shrink:0}
-.pcb{width:100%;border:none;border-radius:var(--r);padding:10px;font-size:.76rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:.18s}
+.pca{font-size:2.2rem;font-weight:900;letter-spacing:-.04em;margin-bottom:2px;display:flex;align-items:flex-start;gap:3px}.pca .cur{font-size:1rem;margin-top:6px;color:var(--tx2)}
+.pcper{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--tx3);margin-bottom:18px}
+.pcf{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:20px}.pcf li{font-size:.78rem;color:var(--tx2);display:flex;gap:5px;font-weight:300}.pcf li::before{content:'→';color:var(--teal);flex-shrink:0}
+.pcb{width:100%;border:none;border-radius:var(--r);padding:11px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:.18s;cursor:pointer}
 .pcb-f{background:var(--teal);color:var(--bg)}.pcb-f:hover{background:var(--teal-h)}
 .pcb-o{background:none;border:1px solid var(--border2);color:var(--tx2)}.pcb-o:hover{border-color:var(--teal);color:var(--teal)}
-
 .foot{border-top:1px solid var(--border);padding:24px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--tx3)}.foot strong{color:var(--teal)}
+@media(max-width:700px){.fgrid{grid-template-columns:1fr 1fr}.pgrid{grid-template-columns:1fr}}
 
 /* ═══ AUTH ═══ */
 #auth{position:fixed;inset:0;background:rgba(5,10,20,.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;z-index:9000;padding:20px;opacity:0;pointer-events:none;transition:.22s}
@@ -273,14 +319,63 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
   </div>
 </nav>
 
-<!-- ═══ HERO (landing only) ═══ -->
+<!-- ═══ HERO (landing only) — 2 colonne ═══ -->
 <section id="hero">
-  <div class="htag">Analisi in tempo reale · Prova subito</div>
-  <h1 class="hh1">Analizza investimenti immobiliari <span>in tempo reale</span></h1>
-  <p class="hsub">Modifica i parametri qui sotto, i risultati si aggiornano istantaneamente. Nessun account richiesto per provare.</p>
-  <div class="harr">↓</div>
-  <div class="hlbl">// prova gratis — 20 analisi al giorno</div>
+  <div class="hero-inner">
+    <!-- Colonna sinistra: testo + CTA -->
+    <div class="hero-left">
+      <div class="htag">Analisi in tempo reale · Prova subito</div>
+      <h1 class="hh1">Analizza investimenti immobiliari <span>in tempo reale</span></h1>
+      <p class="hsub">Modifica i parametri e guarda i risultati aggiornarsi istantaneamente. ROI, cashflow, break-even calcolati sul momento. Nessun account richiesto.</p>
+      <div class="hero-ctas">
+        <button class="h-btn-main" onclick="openAuth('reg')">Inizia gratis →</button>
+        <button class="h-btn-out" onclick="openAuth('login')">Accedi</button>
+      </div>
+      <div class="hlbl">// 20 analisi/giorno · nessuna carta richiesta</div>
+    </div>
+    <!-- Colonna destra: mini dashboard preview -->
+    <div class="hero-right">
+      <div class="hero-stats-card">
+        <div class="hsc-bar">
+          <div class="hsc-dots"><i class="d1"></i><i class="d2"></i><i class="d3"></i></div>
+          <span class="hsc-label">investpro · analisi live</span>
+        </div>
+        <div class="hsc-body">
+          <div class="hsc-kpis">
+            <div class="hsc-kpi"><div class="hsc-kl">ROI Annuo</div><div class="hsc-kv t">8.42%</div></div>
+            <div class="hsc-kpi"><div class="hsc-kl">Investimento</div><div class="hsc-kv n">€ 83.000</div></div>
+            <div class="hsc-kpi"><div class="hsc-kl">Break-even</div><div class="hsc-kv n">11.2 anni</div></div>
+            <div class="hsc-kpi"><div class="hsc-kl">Notti/anno</div><div class="hsc-kv n">256</div></div>
+          </div>
+          <div class="hsc-bar2">
+            <div class="hsc-row"><div class="hsc-rl">Ricavi</div><div class="hsc-track"><div class="hsc-fill" style="width:82%;background:var(--teal)"></div></div></div>
+            <div class="hsc-row"><div class="hsc-rl">OTA</div><div class="hsc-track"><div class="hsc-fill" style="width:15%;background:var(--red)"></div></div></div>
+            <div class="hsc-row"><div class="hsc-rl">Costi</div><div class="hsc-track"><div class="hsc-fill" style="width:24%;background:var(--amber)"></div></div></div>
+            <div class="hsc-row"><div class="hsc-rl">Netto</div><div class="hsc-track"><div class="hsc-fill" style="width:43%;background:var(--teal)"></div></div></div>
+          </div>
+          <div class="hsc-badge">
+            <div class="hsc-cf">Cashflow / mese</div>
+            <div class="hsc-num">+ €584</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<!-- Strip statistiche -->
+<div class="hero-strip" id="hero-strip">
+  <div class="hs-item"><div class="hs-v">&lt; 10s</div><div class="hs-l">Per analisi completa</div></div>
+  <div class="hs-item"><div class="hs-v">100%</div><div class="hs-l">Formule verificate</div></div>
+  <div class="hs-item"><div class="hs-v">Free</div><div class="hs-l">Per iniziare</div></div>
+  <div class="hs-item"><div class="hs-v">0</div><div class="hs-l">Setup richiesto</div></div>
+</div>
+
+<!-- Freccia verso il calcolatore -->
+<div class="hero-arrow-row" id="hero-arrow">
+  <div class="harr">↓</div>
+  <div class="hero-arrow-lbl">// prova gratis — 20 analisi al giorno</div>
+</div>
 
 <!-- ═══ MODE TOGGLE (app only) ═══ -->
 <div style="max-width:1200px;margin:0 auto;padding:0 20px">
@@ -374,15 +469,54 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 
 <!-- ═══ LANDING EXTRAS ═══ -->
 <div id="landing-extra">
-  <div style="max-width:1200px;margin:40px auto 0;padding:0 24px;text-align:center">
-    <div style="font-size:1.2rem;font-weight:700;margin-bottom:6px">Ti è piaciuto?</div>
-    <div style="color:var(--tx2);font-size:.84rem;font-weight:300;margin-bottom:18px">Registrati per salvare, esportare e sbloccare Trading/Flip.</div>
-    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="nb nb-f" onclick="openAuth('reg')">Registrati Gratis</button><button class="nb nb-o" onclick="openPW()">Scopri Pro</button></div>
+  <!-- CTA intermezzo -->
+  <div style="max-width:1200px;margin:40px auto 0;padding:32px;text-align:center;border-top:1px solid var(--border)">
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px;letter-spacing:-.01em">Ti è piaciuto il calcolatore?</div>
+    <div style="color:var(--tx2);font-size:.84rem;font-weight:300;margin-bottom:18px">Registrati per salvare analisi, esportare risultati e sbloccare Trading/Flip.</div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="h-btn-main" onclick="openAuth('reg')">Registrati Gratis</button>
+      <button class="h-btn-out" onclick="openPW()">Scopri il piano Pro</button>
+    </div>
   </div>
 
-  <section class="lsec"><div class="ltag">Funzionalità</div><h2 class="lh">Tutto ciò che conta, calcolato dal vivo</h2>
+  <section class="lsec" style="border-top:1px solid var(--border)">
+    <div class="ltag">Funzionalità</div>
+    <h2 class="lh">Tutto ciò che conta, calcolato dal vivo</h2>
+    <div class="lsub">Formule finanziarie professionali, aggiornate ad ogni modifica dei parametri.</div>
     <div class="fgrid">
-      <div class="fc"><div class="fci">📊</div><div class="fct">ROI Cash on Cash</div><div class="fcd">Sull'equity reale investita, inclusi tutti i costi.</div></div>
+      <div class="fc"><div class="fci">📊</div><div class="fct">ROI Cash on Cash</div><div class="fcd">Sull'equity reale investita, inclusi tutti i costi di acquisizione e ristrutturazione.</div></div>
+      <div class="fc"><div class="fci">💶</div><div class="fct">Cashflow Netto</div><div class="fcd">Ricavi − OTA − costi − tasse − mutuo. Il numero che conta, aggiornato ad ogni keystroke.</div></div>
+      <div class="fc"><div class="fci">🏠</div><div class="fct">Messa a Reddito</div><div class="fcd">ADR, occupazione, 4 regimi fiscali, commissioni OTA, tassa di soggiorno, vacancy.</div></div>
+      <div class="fc"><div class="fci">🔄</div><div class="fct">Trading / Flip</div><div class="fcd">Acquisto → ristrutturazione → vendita con plus-valenza. Disponibile nel piano Pro.</div></div>
+      <div class="fc"><div class="fci">🎯</div><div class="fct">3 Scenari</div><div class="fcd">Pessimistico 50%, moderato 65%, ottimistico 85% calcolati in simultanea.</div></div>
+      <div class="fc"><div class="fci">🏦</div><div class="fct">Mutuo & Equity</div><div class="fcd">LTV, rata PMT esatta, equity necessaria, rivalutazione annua del patrimonio.</div></div>
+    </div>
+  </section>
+
+  <section class="lsec" style="border-top:1px solid var(--border);padding-top:60px">
+    <div class="ltag">Pricing</div>
+    <h2 class="lh">Inizia gratis. Scala quando serve.</h2>
+    <div class="lsub">20 analisi al giorno con il piano Free. Pro sblocca tutto senza limiti.</div>
+    <div class="pgrid">
+      <div class="pc">
+        <div class="pcp">Free</div>
+        <div class="pca"><span class="cur">€</span>0</div>
+        <div class="pcper">per sempre</div>
+        <ul class="pcf"><li>20 analisi/giorno</li><li>Messa a Reddito</li><li>4 regimi fiscali</li><li>Scenari</li></ul>
+        <button class="pcb pcb-o" onclick="openAuth('reg')">Inizia Gratis</button>
+      </div>
+      <div class="pc hi">
+        <div class="pcp">Pro</div>
+        <div class="pca"><span class="cur">€</span>19<span style="font-size:1rem;margin-top:8px">,99</span></div>
+        <div class="pcper">/mese · o €199/anno (−17%)</div>
+        <ul class="pcf"><li>Analisi illimitate</li><li>Trading / Flip</li><li>Salvataggio progetti</li><li>Export Excel</li><li>Supporto prioritario</li></ul>
+        <button class="pcb pcb-f" onclick="openPW()">Passa a Pro</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot"><strong>InvestPro</strong> · Analisi finanziaria immobiliare · © 2026</footer>
+</div>
       <div class="fc"><div class="fci">💶</div><div class="fct">Cashflow Netto</div><div class="fcd">Ricavi − OTA − costi − tasse − mutuo. In tempo reale.</div></div>
       <div class="fc"><div class="fci">🏠</div><div class="fct">Messa a Reddito</div><div class="fcd">ADR, occupazione, 4 regimi fiscali, vacancy.</div></div>
       <div class="fc"><div class="fci">🔄</div><div class="fct">Trading / Flip</div><div class="fcd">Acquisto → ristrutturazione → vendita. Piano Pro.</div></div>
@@ -390,16 +524,6 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
       <div class="fc"><div class="fci">🏦</div><div class="fct">Struttura Finanziaria</div><div class="fcd">LTV, rata PMT, equity, rivalutazione.</div></div>
     </div>
   </section>
-
-  <section class="lsec" style="border-top:1px solid var(--border);padding-top:50px"><div class="ltag">Pricing</div><h2 class="lh">Inizia gratis. Scala quando serve.</h2>
-    <div class="pgrid">
-      <div class="pc"><div class="pcp">Free</div><div class="pca"><span class="cur">€</span>0</div><div class="pcper">per sempre</div><ul class="pcf"><li>20 analisi/giorno</li><li>Messa a Reddito</li><li>4 regimi fiscali</li><li>Scenari</li></ul><button class="pcb pcb-o" onclick="openAuth('reg')">Inizia Gratis</button></div>
-      <div class="pc hi"><div class="pcp">Pro</div><div class="pca"><span class="cur">€</span>19<span style="font-size:1rem;margin-top:10px">,99</span></div><div class="pcper">/mese · o €199/anno (−17%)</div><ul class="pcf"><li>Illimitate</li><li>Trading / Flip</li><li>Salvataggio</li><li>Export Excel</li><li>Supporto</li></ul><button class="pcb pcb-f" onclick="openPW()">Passa a Pro</button></div>
-    </div>
-  </section>
-
-  <footer class="foot"><strong>InvestPro</strong> · Analisi immobiliare · © 2026</footer>
-</div>
 
 <!-- ═══ AUTH ═══ -->
 <div id="auth">
@@ -571,6 +695,8 @@ sb.auth.onAuthStateChange(async(_,session)=>{
     // Mostra app, nascondi landing
     document.getElementById('hero').classList.add('hidden');
     document.getElementById('landing-extra').classList.add('hidden');
+    document.getElementById('hero-strip')?.classList.add('hidden');
+    document.getElementById('hero-arrow')?.classList.add('hidden');
     document.getElementById('mode-bar').classList.remove('hidden');
     closeAuth();
 
@@ -616,6 +742,8 @@ sb.auth.onAuthStateChange(async(_,session)=>{
     isPro=false; isSuperAdmin=false; profile=null;
     document.getElementById('hero').classList.remove('hidden');
     document.getElementById('landing-extra').classList.remove('hidden');
+    document.getElementById('hero-strip')?.classList.remove('hidden');
+    document.getElementById('hero-arrow')?.classList.remove('hidden');
     document.getElementById('mode-bar').classList.add('hidden');
     document.getElementById('nav-login').classList.remove('hidden');
     document.getElementById('nav-reg').classList.remove('hidden');
