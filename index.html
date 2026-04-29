@@ -26,19 +26,47 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .pill{padding:3px 9px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;letter-spacing:.04em}
 .pill-free{background:var(--ag);color:var(--amber);border:1px solid rgba(240,160,48,.3)}
 .pill-pro{background:var(--tg);color:var(--teal);border:1px solid rgba(0,212,164,.3)}
+.pill-sa{background:var(--gg);color:var(--gold);border:1px solid rgba(212,169,64,.4)}
 .pill-use{background:var(--bg3);border:1px solid var(--border);color:var(--tx3);font-family:'JetBrains Mono',monospace;font-size:.58rem;transition:.3s}
 .pill-use.warn{color:var(--amber);border-color:rgba(240,160,48,.4)}.pill-use.danger{color:var(--red);border-color:rgba(255,81,112,.4)}
 .pinput{background:none;border:none;border-bottom:1px dashed var(--border2);color:var(--tx);font-size:.78rem;font-weight:500;padding:3px 6px;width:140px;outline:none}.pinput:focus{border-color:var(--teal)}
+.nb-admin{background:rgba(212,169,64,.10);border:1px solid rgba(212,169,64,.35)!important;color:var(--gold)!important}.nb-admin:hover{background:rgba(212,169,64,.2)!important}
+
+/* ═══ ADMIN PANEL ═══ */
+#admin-panel{position:fixed;inset:0;background:rgba(5,10,20,.92);backdrop-filter:blur(16px);z-index:8500;overflow-y:auto;opacity:0;pointer-events:none;transition:.25s;padding:20px}
+#admin-panel.on{opacity:1;pointer-events:all}
+.adm-wrap{max-width:920px;margin:20px auto;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rx);padding:32px;transform:translateY(10px);transition:.25s}
+#admin-panel.on .adm-wrap{transform:none}
+.adm-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.adm-title{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.adm-close{background:var(--bg3);border:1px solid var(--border);color:var(--tx3);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:.15s;flex-shrink:0}.adm-close:hover{color:var(--tx);border-color:var(--border2)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px}
+.stat-c{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl);padding:18px 14px;text-align:center;transition:.2s}.stat-c:hover{border-color:var(--border2)}
+.stat-v{font-family:'JetBrains Mono',monospace;font-size:1.9rem;font-weight:700;color:var(--teal);line-height:1}
+.stat-l{font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
+.adm-section-lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:7px}.adm-section-lbl::before{content:'';width:14px;height:1px;background:var(--teal)}
+.users-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rl)}
+.users-tbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.users-tbl th{font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);background:var(--bg3);white-space:nowrap}
+.users-tbl td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--tx2);vertical-align:middle}
+.users-tbl tr:last-child td{border-bottom:none}
+.users-tbl tr:hover td{background:rgba(0,212,164,.03)}
+.users-tbl .em{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--tx)}
+.users-tbl select{background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--tx);padding:4px 8px;font-size:.72rem;outline:none;cursor:pointer}
+.u-save{background:var(--teal);border:none;color:var(--bg);padding:4px 10px;border-radius:4px;font-size:.68rem;font-weight:700;cursor:pointer;transition:.15s}.u-save:hover{background:var(--teal-h)}
+.role-sa{color:var(--gold)!important;font-weight:700}.role-admin{color:var(--teal)!important;font-weight:600}
+.plan-pro{color:var(--teal)!important;font-weight:600}.plan-free{color:var(--amber)!important}
+.adm-loading{text-align:center;padding:32px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--tx3)}
 
 /* ═══ HERO (landing only) ═══ */
-#hero{text-align:center;padding:60px 24px 20px;position:relative;z-index:1}
-#hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(0,212,164,.12),transparent 65%);pointer-events:none;z-index:-1}
+#hero{max-width:1200px;margin:0 auto;text-align:center;padding:100px 32px 40px;position:relative;z-index:1}
+#hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(0,212,164,.14),transparent 60%);pointer-events:none;z-index:-1}
 #hero.hidden{display:none}
-.htag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;padding:4px 12px;border:1px solid rgba(0,212,164,.25);border-radius:30px;background:rgba(0,212,164,.06)}
-.hh1{font-size:clamp(2rem,5vw,3.6rem);font-weight:900;line-height:1.02;letter-spacing:-.05em;margin-bottom:14px}
-.hh1 span{color:var(--teal)}
-.hsub{font-size:clamp(.9rem,1.5vw,1.05rem);color:var(--tx2);max-width:540px;margin:0 auto 10px;font-weight:300;line-height:1.6}
-.harr{color:var(--teal);font-size:1.4rem;margin:20px 0 6px;animation:bounce 1.6s ease infinite}
+.htag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--teal);letter-spacing:.14em;text-transform:uppercase;margin-bottom:28px;padding:6px 16px;border:1px solid rgba(0,212,164,.25);border-radius:30px;background:rgba(0,212,164,.06)}
+.hh1{font-size:clamp(2.8rem,6vw,4.8rem);font-weight:900;line-height:1.02;letter-spacing:-.05em;margin-bottom:22px}
+.hh1 span{color:var(--teal);position:relative}.hh1 span::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:3px;background:var(--teal);border-radius:2px;opacity:.5}
+.hsub{font-size:clamp(1.05rem,1.8vw,1.2rem);color:var(--tx2);max-width:620px;margin:0 auto 16px;font-weight:300;line-height:1.65}
+.harr{color:var(--teal);font-size:1.8rem;margin:32px 0 10px;animation:bounce 1.6s ease infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 .hlbl{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px}
 
@@ -159,17 +187,39 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .aerr{background:var(--rg);border:1px solid rgba(255,81,112,.3);border-radius:var(--r);padding:8px 10px;font-size:.72rem;color:#ff8fa3;display:none}.aerr.on{display:block}
 .aok{background:var(--tg);border:1px solid rgba(0,212,164,.3);border-radius:var(--r);padding:8px 10px;font-size:.72rem;color:var(--teal);display:none}.aok.on{display:block}
 
-/* ═══ ADMIN PANEL ═══ */
-#admin{position:fixed;inset:0;background:rgba(5,10,20,.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;z-index:8500;padding:20px;opacity:0;pointer-events:none;transition:.22s}
-#admin.on{opacity:1;pointer-events:all}
-.adbox{width:100%;max-width:400px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rx);padding:32px;transform:translateY(10px);transition:.22s}
-#admin.on .adbox{transform:none}
-.adh{font-size:1.1rem;font-weight:800;margin-bottom:4px}.adsub{font-size:.76rem;color:var(--tx3);margin-bottom:20px;font-family:'JetBrains Mono',monospace}
-.adrow{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:.82rem}
-.adrow:last-child{border:none}
-.adk{color:var(--tx2)}.adv{font-weight:600}
-.adv.teal{color:var(--teal)}.adv.amber{color:var(--amber)}
-.adbtn{width:100%;margin-top:16px;background:none;border:1px solid var(--border);border-radius:var(--r);padding:10px;font-size:.78rem;color:var(--tx3);transition:.18s}.adbtn:hover{color:var(--tx);border-color:var(--border2)}
+/* ═══ ADMIN PANEL (super_admin) ═══ */
+#admin-panel{position:fixed;inset:0;background:rgba(5,10,20,.92);backdrop-filter:blur(16px);z-index:8500;overflow-y:auto;opacity:0;pointer-events:none;transition:.25s;padding:20px}
+#admin-panel.on{opacity:1;pointer-events:all}
+.adm-wrap{max-width:920px;margin:20px auto;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rx);padding:30px;transform:translateY(10px);transition:.25s}
+#admin-panel.on .adm-wrap{transform:none}
+.adm-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:12px}
+.adm-title{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.adm-close{background:var(--bg3);border:1px solid var(--border);color:var(--tx3);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:.15s;flex-shrink:0}.adm-close:hover{color:var(--tx)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:26px}
+.stat-c{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl);padding:16px 12px;text-align:center;transition:.2s}.stat-c:hover{border-color:var(--border2)}
+.stat-v{font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--teal);line-height:1}
+.stat-l{font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-top:5px}
+.adm-section-lbl{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:7px}.adm-section-lbl::before{content:'';width:14px;height:1px;background:var(--teal)}
+.users-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rl)}
+.users-tbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.users-tbl th{font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);background:var(--bg3);white-space:nowrap}
+.users-tbl td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--tx2);vertical-align:middle}
+.users-tbl tr:last-child td{border-bottom:none}
+.users-tbl tr:hover td{background:rgba(0,212,164,.03)}
+.users-tbl .em{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--tx)}
+.users-tbl select{background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--tx);padding:4px 8px;font-size:.72rem;outline:none;cursor:pointer}
+.u-save{background:var(--teal);border:none;color:var(--bg);padding:4px 10px;border-radius:4px;font-size:.68rem;font-weight:700;cursor:pointer;transition:.15s}.u-save:hover{background:var(--teal-h)}
+.role-sa{color:var(--gold)!important;font-weight:700}.role-admin{color:var(--teal)!important;font-weight:600}
+.plan-pro{color:var(--teal)!important;font-weight:600}.plan-free{color:var(--amber)!important}
+.adm-loading{text-align:center;padding:28px;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--tx3)}
+/* Account modal (tutti gli utenti) */
+#acct-modal{position:fixed;inset:0;background:rgba(5,10,20,.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;z-index:8200;padding:20px;opacity:0;pointer-events:none;transition:.22s}#acct-modal.on{opacity:1;pointer-events:all}
+.adbox{width:100%;max-width:380px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rx);padding:28px}
+.adh{font-size:1rem;font-weight:700;margin-bottom:6px}
+.adrow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:.82rem}.adrow:last-of-type{border:none}
+.adk{color:var(--tx3)}.adv{font-weight:600}
+.adv.teal{color:var(--teal)}.adv.amber{color:var(--amber)}.adv.gold{color:var(--gold)}
+.adbtn{width:100%;margin-top:12px;background:none;border:1px solid var(--border);border-radius:var(--r);padding:9px;font-size:.76rem;color:var(--tx3);transition:.18s;cursor:pointer}.adbtn:hover{color:var(--tx);border-color:var(--border2)}
 
 /* ═══ PAYWALL ═══ */
 #pw{position:fixed;inset:0;background:rgba(5,10,20,.88);backdrop-filter:blur(14px);z-index:8000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:.22s}
@@ -206,16 +256,18 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 <nav class="nav">
   <div class="nbrand"><div class="ndot"></div>InvestPro</div>
   <div class="nr" id="nav-r">
-    <!-- Landing buttons (replaced after login) -->
     <button class="nb nb-o" id="nav-login" onclick="openAuth('login')">Accedi</button>
     <button class="nb nb-f" id="nav-reg" onclick="openAuth('reg')">Registrati</button>
-    <!-- App buttons (hidden initially) -->
+    <!-- Visibili solo dopo login -->
     <span class="pill pill-free hidden" id="nav-badge">FREE</span>
     <span class="pill-use hidden" id="nav-use">0/20</span>
     <input class="pinput hidden" id="proj-name" type="text" value="Nuova Analisi" placeholder="Nome analisi…">
     <button class="nb nb-o hidden" id="nav-export" onclick="doExport()">↗ Export</button>
     <button class="nb nb-f hidden" id="nav-save" onclick="saveProject()">💾 Salva</button>
-    <button class="nb nb-o hidden" id="nav-admin" onclick="openAdmin()">👤</button>
+    <!-- Bottone Admin Panel: visibile SOLO a super_admin -->
+    <button class="nb nb-admin hidden" id="nav-admin-panel" onclick="openAdminPanel()">⚙ Admin</button>
+    <!-- Bottone account info: visibile a tutti gli utenti loggati -->
+    <button class="nb nb-o hidden" id="nav-acct" onclick="openAcct()">👤</button>
     <button class="nb nb-o hidden" id="nav-up" style="border-color:rgba(240,160,48,.4);color:var(--amber)" onclick="openPW()">⬆ Pro</button>
     <button class="nb nb-o hidden" id="nav-out" style="border-color:rgba(255,81,112,.3);color:var(--red)" onclick="doLogout()">Esci</button>
   </div>
@@ -367,22 +419,70 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
       <div class="afg"><label class="afl">Nome</label><input class="afi" type="text" id="i-nm" placeholder="Mario Rossi"></div>
       <div class="afg"><label class="afl">Email</label><input class="afi" type="email" id="i-rem" placeholder="tu@email.it" autocomplete="email"></div>
       <div class="afg"><label class="afl">Password</label><input class="afi" type="password" id="i-rpw" placeholder="Min. 8 caratteri" minlength="8" autocomplete="new-password"></div>
+      <!-- PIANO OBBLIGATORIO — richiesto ad ogni registrazione -->
+      <div class="afg">
+        <label class="afl">Piano di abbonamento <span style="color:var(--red)">*</span></label>
+        <select class="afi" id="i-plan" style="cursor:pointer;-webkit-appearance:auto">
+          <option value="free">Free — 20 analisi al giorno (gratis)</option>
+          <option value="pro">Pro — Illimitato (€19,99/mese)</option>
+        </select>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--tx3);padding:6px 0">// Il piano è obbligatorio. Pro richiede pagamento.</div>
       <button class="abtn" id="b-re" onclick="doReg()">Crea Account →</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ ADMIN ═══ -->
-<div id="admin">
-  <div class="adbox">
-    <div class="adh">👤 Il tuo account</div>
-    <div class="adsub" id="ad-email">—</div>
-    <div class="adrow"><span class="adk">Piano</span><span class="adv" id="ad-plan">—</span></div>
-    <div class="adrow"><span class="adk">Analisi oggi</span><span class="adv" id="ad-usage">—</span></div>
-    <div class="adrow"><span class="adk">Scadenza Pro</span><span class="adv" id="ad-exp">—</span></div>
-    <div class="adrow"><span class="adk">Stripe Customer</span><span class="adv" id="ad-stripe" style="font-size:.7rem;word-break:break-all">—</span></div>
-    <button class="adbtn" id="ad-upgrade" onclick="closeAdmin();openPW()">⬆ Passa a Pro</button>
-    <button class="adbtn" onclick="closeAdmin()">Chiudi</button>
+<!-- ═══ ADMIN PANEL (super_admin only) ═══ -->
+<div id="admin-panel">
+  <div class="adm-wrap">
+    <div class="adm-header">
+      <div class="adm-title">⚙ Admin Panel <span class="pill pill-sa">SUPER ADMIN</span></div>
+      <button class="adm-close" onclick="closeAdminPanel()">×</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="adm-stats">
+      <div class="stat-c"><div class="stat-v" id="as-tot">—</div><div class="stat-l">Utenti Totali</div></div>
+      <div class="stat-c"><div class="stat-v" id="as-pro" style="color:var(--teal)">—</div><div class="stat-l">Utenti Pro</div></div>
+      <div class="stat-c"><div class="stat-v" id="as-free" style="color:var(--amber)">—</div><div class="stat-l">Utenti Free</div></div>
+      <div class="stat-c"><div class="stat-v" id="as-proj">—</div><div class="stat-l">Progetti Salvati</div></div>
+      <div class="stat-c"><div class="stat-v" id="as-today" style="color:var(--gold)">—</div><div class="stat-l">Nuovi Oggi</div></div>
+      <div class="stat-c"><div class="stat-v" id="as-stripe">—</div><div class="stat-l">Con Stripe</div></div>
+    </div>
+
+    <!-- Users table -->
+    <div class="adm-section-lbl">Gestione Utenti</div>
+    <div id="adm-loading" class="adm-loading">Caricamento...</div>
+    <div class="users-wrap" id="adm-table-wrap" style="display:none">
+      <table class="users-tbl">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Nome</th>
+            <th>Piano</th>
+            <th>Ruolo</th>
+            <th>Registrato</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="adm-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ACCOUNT INFO (tutti gli utenti) ═══ -->
+<div id="acct-modal">
+  <div class="adbox" style="max-width:360px">
+    <div class="adh" id="acct-email-h">👤 Il tuo account</div>
+    <div class="adrow"><span class="adk">Email</span><span class="adv" id="acct-email" style="font-size:.76rem">—</span></div>
+    <div class="adrow"><span class="adk">Piano</span><span class="adv" id="acct-plan">—</span></div>
+    <div class="adrow"><span class="adk">Ruolo</span><span class="adv" id="acct-role">—</span></div>
+    <div class="adrow"><span class="adk">Analisi oggi</span><span class="adv" id="acct-usage">—</span></div>
+    <div class="adrow"><span class="adk">Scadenza Pro</span><span class="adv" id="acct-exp">—</span></div>
+    <button class="adbtn" id="acct-up-btn" onclick="closeAcct();openPW()">⬆ Passa a Pro</button>
+    <button class="adbtn" onclick="closeAcct()">Chiudi</button>
   </div>
 </div>
 
@@ -404,134 +504,329 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+// ════════════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════════════
 const SB_URL='https://amzjefyegfxkpzjifynj.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtemplZnllZ2Z4a3B6amlmeW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1Mjk4NTcsImV4cCI6MjA5MjEwNTg1N30.RDnpaTFtSkx2wmI5vWScef2x9CFgyGxPoAvXy-1lNrE';
-const PRM='price_1TQmhcCP1ytB9mXWU1hcGdMD';
-const PRY='price_1TQmhkCP1ytB9mXWHDVnQiKU';
+const PRM='price_1TQmhcCP1ytB9mXWU1hcGdMD'; // €19,99/mese
+const PRY='price_1TQmhkCP1ytB9mXWHDVnQiKU'; // €199/anno
+const SUPER_ADMIN_EMAIL='lucaiolienrico@gmail.com';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
-// ── USAGE LIMIT ──
+// ════════════════════════════════════════════════
+// USAGE LIMIT — 20 calcoli/giorno per utenti Free
+// Reset automatico a mezzanotte via localStorage
+// ════════════════════════════════════════════════
 const LIM=20;
 const td=()=>new Date().toISOString().split('T')[0];
-function gCnt(){if(localStorage.getItem('ip_d')!==td()){localStorage.setItem('ip_d',td());localStorage.setItem('ip_c','0');return 0}return parseInt(localStorage.getItem('ip_c')||'0')}
+function gCnt(){
+  if(localStorage.getItem('ip_d')!==td()){
+    localStorage.setItem('ip_d',td());
+    localStorage.setItem('ip_c','0');
+    return 0;
+  }
+  return parseInt(localStorage.getItem('ip_c')||'0');
+}
 function iCnt(){const c=gCnt()+1;localStorage.setItem('ip_c',String(c));return c}
 function uPill(){
   const c=gCnt();
   document.querySelectorAll('#frame-pill,#nav-use').forEach(el=>{
-    if(isPro){el.classList.add('hidden');return}
+    // Super admin e Pro: nessun limite visualizzato
+    if(isSuperAdmin||isPro){el.classList.add('hidden');return}
     el.classList.remove('hidden','warn','danger');
     el.textContent=`${c}/${LIM}`;
-    if(c>=LIM)el.classList.add('danger');else if(c>=LIM-5)el.classList.add('warn');
+    if(c>=LIM)el.classList.add('danger');
+    else if(c>=LIM-5)el.classList.add('warn');
   });
 }
 
-// ── STATE ──
-let user=null,isPro=false,profile=null,mode='rent',limShown=false;
+// ════════════════════════════════════════════════
+// STATO GLOBALE + RBAC
+// ════════════════════════════════════════════════
+let user=null, isPro=false, isSuperAdmin=false, profile=null, mode='rent', limShown=false;
 
-// ── AUTH LIFECYCLE ──
+// Helper RBAC — il super_admin bypassa tutto
+const hasFullAccess = ()=> isSuperAdmin || isPro;
+const canFlip       = ()=> isSuperAdmin || isPro;
+const canSave       = ()=> isSuperAdmin || isPro;
+const canExport     = ()=> isSuperAdmin || isPro;
+const isLimited     = ()=> !isSuperAdmin && !isPro;
+
+// ════════════════════════════════════════════════
+// AUTH LIFECYCLE
+// ════════════════════════════════════════════════
 sb.auth.onAuthStateChange(async(_,session)=>{
   user=session?.user??null;
   if(user){
     const{data:p}=await sb.from('profiles').select('*').eq('id',user.id).single();
-    profile=p;isPro=p?.plan==='pro';
-    // Switch to app mode
+    profile=p;
+    isPro=p?.plan==='pro';
+    // Super admin: chi ha role='super_admin' O email corrispondente
+    isSuperAdmin=p?.role==='super_admin'||user.email===SUPER_ADMIN_EMAIL;
+
+    // Se super_admin: forza isPro=true (accesso incondizionato)
+    if(isSuperAdmin) isPro=true;
+
+    // Mostra app, nascondi landing
     document.getElementById('hero').classList.add('hidden');
     document.getElementById('landing-extra').classList.add('hidden');
     document.getElementById('mode-bar').classList.remove('hidden');
     closeAuth();
-    // Nav: hide landing btns, show app btns
+
+    // Nav: nascondi bottoni landing, mostra bottoni app
     document.getElementById('nav-login').classList.add('hidden');
     document.getElementById('nav-reg').classList.add('hidden');
-    ['nav-badge','nav-use','proj-name','nav-export','nav-save','nav-admin','nav-out'].forEach(id=>document.getElementById(id).classList.remove('hidden'));
-    if(!isPro)document.getElementById('nav-up').classList.remove('hidden');
-    else document.getElementById('nav-up').classList.add('hidden');
-    // Badge
+    ['nav-badge','nav-use','proj-name','nav-export','nav-save','nav-acct','nav-out']
+      .forEach(id=>document.getElementById(id)?.classList.remove('hidden'));
+
+    // Bottone Admin Panel: SOLO super_admin
+    const adminBtn=document.getElementById('nav-admin-panel');
+    if(isSuperAdmin) adminBtn?.classList.remove('hidden');
+    else adminBtn?.classList.add('hidden');
+
+    // Bottone upgrade: nascosto se pro o super_admin
+    const upBtn=document.getElementById('nav-up');
+    if(hasFullAccess()) upBtn?.classList.add('hidden');
+    else upBtn?.classList.remove('hidden');
+
+    // Flip lock: nascosto se accesso completo
+    const flipLock=document.getElementById('flip-lock');
+    if(hasFullAccess()) flipLock?.classList.add('hidden');
+    else flipLock?.classList.remove('hidden');
+
+    // Badge ruolo
     const badge=document.getElementById('nav-badge');
-    badge.textContent=isPro?'✦ PRO':'FREE';badge.className=isPro?'pill pill-pro':'pill pill-free';
-    if(isPro)document.getElementById('flip-lock').classList.add('hidden');
+    if(badge){
+      if(isSuperAdmin){badge.textContent='★ ADMIN';badge.className='pill pill-sa'}
+      else if(isPro)  {badge.textContent='✦ PRO';  badge.className='pill pill-pro'}
+      else            {badge.textContent='FREE';    badge.className='pill pill-free'}
+    }
+
     uPill();
-    // Stripe return
+
+    // Gestione ritorno da Stripe
     const u=new URLSearchParams(location.search);
     if(u.get('success')){toast('Piano Pro attivato!','ok');history.replaceState({},'',location.pathname)}
     if(u.get('canceled')){toast('Pagamento annullato.','warn');history.replaceState({},'',location.pathname)}
+
     calc();
-  }else{
-    isPro=false;profile=null;
+  } else {
+    // Logout: reset stato e torna a landing
+    isPro=false; isSuperAdmin=false; profile=null;
     document.getElementById('hero').classList.remove('hidden');
     document.getElementById('landing-extra').classList.remove('hidden');
     document.getElementById('mode-bar').classList.add('hidden');
     document.getElementById('nav-login').classList.remove('hidden');
     document.getElementById('nav-reg').classList.remove('hidden');
-    ['nav-badge','nav-use','proj-name','nav-export','nav-save','nav-admin','nav-up','nav-out'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+    ['nav-badge','nav-use','proj-name','nav-export','nav-save',
+     'nav-admin-panel','nav-acct','nav-up','nav-out']
+      .forEach(id=>document.getElementById(id)?.classList.add('hidden'));
     calc();
   }
 });
 
-// ── AUTH UI ──
-function openAuth(tab='li'){document.getElementById('auth').classList.add('on');sTab(tab);setTimeout(()=>document.getElementById(tab==='li'?'i-em':'i-nm')?.focus(),150)}
+// ════════════════════════════════════════════════
+// AUTH UI
+// ════════════════════════════════════════════════
+function openAuth(tab='login'){
+  document.getElementById('auth').classList.add('on');
+  sTab(tab==='login'?'li':'re');
+  setTimeout(()=>document.getElementById(tab==='login'?'i-em':'i-nm')?.focus(),150);
+}
 function closeAuth(){document.getElementById('auth').classList.remove('on')}
-function sTab(t){['li','re'].forEach(x=>{document.getElementById(`t-${x}`).classList.toggle('on',x===t);document.getElementById(`f-${x}`).classList.toggle('hidden',x!==t)})}
+function sTab(t){
+  ['li','re'].forEach(x=>{
+    document.getElementById(`t-${x}`).classList.toggle('on',x===t);
+    document.getElementById(`f-${x}`).classList.toggle('hidden',x!==t);
+  });
+}
+
 async function doLogin(){
   const b=document.getElementById('b-li'),e=document.getElementById('e-li');
   b.disabled=true;b.textContent='...';e.classList.remove('on');
-  const{error}=await sb.auth.signInWithPassword({email:document.getElementById('i-em').value.trim(),password:document.getElementById('i-pw').value});
+  const{error}=await sb.auth.signInWithPassword({
+    email:document.getElementById('i-em').value.trim(),
+    password:document.getElementById('i-pw').value
+  });
   if(error){e.textContent='Credenziali non valide.';e.classList.add('on')}
   b.disabled=false;b.textContent='Accedi →';
 }
+
 async function doReg(){
   const b=document.getElementById('b-re'),e=document.getElementById('e-re'),ok=document.getElementById('o-re');
   b.disabled=true;b.textContent='...';e.classList.remove('on');ok.classList.remove('on');
-  const{error}=await sb.auth.signUp({email:document.getElementById('i-rem').value.trim(),password:document.getElementById('i-rpw').value,options:{data:{display_name:document.getElementById('i-nm').value.trim()}}});
-  if(error){e.textContent=error.message.includes('already')?'Email già registrata.':'Errore.';e.classList.add('on')}
-  else{ok.textContent='✓ Controlla email per confermare.';ok.classList.add('on')}
+
+  // Piano è obbligatorio — letto dal select
+  const selectedPlan=document.getElementById('i-plan').value;
+  const name=document.getElementById('i-nm').value.trim();
+  const email=document.getElementById('i-rem').value.trim();
+  const pass=document.getElementById('i-rpw').value;
+
+  if(!name){e.textContent='Inserisci il nome.';e.classList.add('on');b.disabled=false;b.textContent='Crea Account →';return}
+
+  const{error}=await sb.auth.signUp({
+    email, password:pass,
+    options:{data:{display_name:name, plan:selectedPlan}}
+  });
+
+  if(error){
+    e.textContent=error.message.includes('already')?'Email già registrata.':'Errore. Riprova.';
+    e.classList.add('on');
+  } else {
+    ok.textContent='✓ Account creato. Controlla la tua email per confermare.';
+    ok.classList.add('on');
+    // Se ha scelto Pro, notifica che servirà il pagamento dopo la conferma
+    if(selectedPlan==='pro'){
+      ok.textContent='✓ Account creato. Dopo aver confermato l\'email, torna qui e acquista il piano Pro.';
+    }
+  }
   b.disabled=false;b.textContent='Crea Account →';
 }
+
 async function doLogout(){await sb.auth.signOut()}
 
-// ── ADMIN ──
-function openAdmin(){
-  document.getElementById('ad-email').textContent=user?.email||'—';
-  document.getElementById('ad-plan').textContent=isPro?'✦ PRO':'Free';
-  document.getElementById('ad-plan').className='adv '+(isPro?'teal':'amber');
-  document.getElementById('ad-usage').textContent=isPro?'Illimitate':`${gCnt()}/${LIM}`;
-  document.getElementById('ad-exp').textContent=profile?.plan_expires_at?new Date(profile.plan_expires_at).toLocaleDateString('it-IT'):'—';
-  document.getElementById('ad-stripe').textContent=profile?.stripe_customer_id||'Non collegato';
-  document.getElementById('ad-upgrade').style.display=isPro?'none':'block';
-  document.getElementById('admin').classList.add('on');
-}
-function closeAdmin(){document.getElementById('admin').classList.remove('on')}
+// ════════════════════════════════════════════════
+// ADMIN PANEL — solo super_admin
+// Usa le RPC PostgreSQL protette lato DB
+// ════════════════════════════════════════════════
+async function openAdminPanel(){
+  if(!isSuperAdmin){toast('Accesso negato. Solo Super Admin.','err');return}
+  document.getElementById('admin-panel').classList.add('on');
+  document.getElementById('adm-loading').style.display='block';
+  document.getElementById('adm-table-wrap').style.display='none';
 
-// ── PAYWALL ──
+  try {
+    // Statistiche via RPC protetta
+    const{data:stats,error:se}=await sb.rpc('admin_get_stats');
+    if(!se&&stats){
+      document.getElementById('as-tot').textContent=stats.total_users;
+      document.getElementById('as-pro').textContent=stats.pro_users;
+      document.getElementById('as-free').textContent=stats.free_users;
+      document.getElementById('as-proj').textContent=stats.total_projects;
+      document.getElementById('as-today').textContent=stats.users_today;
+      document.getElementById('as-stripe').textContent=stats.stripe_customers;
+    }
+
+    // Lista utenti via RPC protetta
+    const{data:users,error:ue}=await sb.rpc('admin_list_users');
+    if(ue){toast('Errore caricamento utenti: '+ue.message,'err');return}
+
+    const tbody=document.getElementById('adm-tbody');
+    tbody.innerHTML='';
+    (users||[]).forEach(u=>{
+      const isSA=u.role==='super_admin';
+      const date=new Date(u.created_at).toLocaleDateString('it-IT');
+      tbody.innerHTML+=`<tr>
+        <td class="em">${u.email}</td>
+        <td>${u.display_name||'—'}</td>
+        <td>
+          <select onchange="adminChangePlan('${u.id}',this.value)" ${isSA?'disabled':''}>
+            <option value="free" ${u.plan==='free'?'selected':''}>Free</option>
+            <option value="pro"  ${u.plan==='pro' ?'selected':''}>Pro</option>
+          </select>
+        </td>
+        <td class="${isSA?'role-sa':u.role==='admin'?'role-admin':''}">${u.role}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:.66rem">${date}</td>
+        <td>${!isSA?`<select onchange="adminChangeRole('${u.id}',this.value)">
+          <option value="user"  ${u.role==='user' ?'selected':''}>User</option>
+          <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
+        </select>`:'<span style="color:var(--gold);font-size:.7rem">Root</span>'}</td>
+      </tr>`;
+    });
+
+    document.getElementById('adm-loading').style.display='none';
+    document.getElementById('adm-table-wrap').style.display='block';
+  } catch(err){
+    toast('Errore admin panel: '+err.message,'err');
+  }
+}
+
+function closeAdminPanel(){document.getElementById('admin-panel').classList.remove('on')}
+
+async function adminChangePlan(uid,plan){
+  const{error}=await sb.rpc('admin_update_user_plan',{target_user_id:uid,new_plan:plan});
+  if(error)toast('Errore: '+error.message,'err');
+  else toast(`Piano → ${plan.toUpperCase()}`, 'ok');
+}
+
+async function adminChangeRole(uid,role){
+  const{error}=await sb.rpc('admin_update_user_role',{target_user_id:uid,new_role:role});
+  if(error)toast('Errore: '+error.message,'err');
+  else toast(`Ruolo → ${role}`, 'ok');
+}
+
+// ════════════════════════════════════════════════
+// ACCOUNT MODAL — info personali per ogni utente
+// ════════════════════════════════════════════════
+function openAcct(){
+  const modal=document.getElementById('acct-modal');
+  document.getElementById('acct-email').textContent=user?.email||'—';
+  const planEl=document.getElementById('acct-plan');
+  if(isSuperAdmin){planEl.textContent='★ SUPER ADMIN';planEl.className='adv gold'}
+  else if(isPro)  {planEl.textContent='✦ PRO';         planEl.className='adv teal'}
+  else            {planEl.textContent='Free';           planEl.className='adv amber'}
+  document.getElementById('acct-role').textContent=profile?.role||'user';
+  document.getElementById('acct-usage').textContent=isLimited()?`${gCnt()}/${LIM} oggi`:'Illimitate';
+  document.getElementById('acct-exp').textContent=profile?.plan_expires_at
+    ?new Date(profile.plan_expires_at).toLocaleDateString('it-IT'):'—';
+  const upBtn=document.getElementById('acct-up-btn');
+  if(hasFullAccess()){upBtn.style.display='none'}else{upBtn.style.display='block'}
+  modal.classList.add('on');
+}
+function closeAcct(){document.getElementById('acct-modal').classList.remove('on')}
+
+// ════════════════════════════════════════════════
+// PAYWALL
+// ════════════════════════════════════════════════
 function openPW(reason){
   const h=document.getElementById('pw-h'),p=document.getElementById('pw-p');
-  const m={limit:['Limite raggiunto','20 analisi esaurite oggi. Pro = illimitate.'],flip:['Flip — Pro','La simulazione flip è riservata al piano Pro.'],save:['Salvataggio — Pro','Salva progetti con Pro.'],export:['Export — Pro','Esporta in Excel con Pro.']};
-  const[t,s]=m[reason]||['Sblocca tutto','Pro = calcoli illimitati + tutte le funzionalità.'];
+  const msgs={
+    limit:  ['Limite giornaliero raggiunto','20 analisi esaurite per oggi. Pro offre calcoli illimitati.'],
+    flip:   ['Trading/Flip — Piano Pro','La simulazione flip è riservata al piano Pro.'],
+    save:   ['Salvataggio — Piano Pro','Salva e recupera i tuoi progetti con il piano Pro.'],
+    export: ['Export — Piano Pro','Esporta i risultati in Excel con il piano Pro.'],
+  };
+  const[t,s]=msgs[reason]||['Sblocca tutto','Pro = calcoli illimitati + funzionalità avanzate.'];
   h.textContent=t;p.textContent=s;
   document.getElementById('pw').classList.add('on');
 }
 function closePW(){document.getElementById('pw').classList.remove('on')}
+
 async function checkout(period){
-  if(!user){openAuth('re');closePW();toast('Registrati prima di acquistare.','warn');return}
+  if(!user){openAuth('reg');closePW();toast('Registrati prima di acquistare.','warn');return}
   const pid=period==='monthly'?PRM:PRY;
   const btn=document.getElementById(period==='monthly'?'co-m':'co-y');
-  const orig=btn.innerHTML;btn.disabled=true;btn.textContent='...';
+  const orig=btn.innerHTML;
+  btn.disabled=true;btn.textContent='...';
   try{
-    // Get current session token
     const{data:{session}}=await sb.auth.getSession();
-    if(!session)throw new Error('Sessione scaduta');
+    if(!session)throw new Error('Sessione scaduta. Fai login di nuovo.');
     const res=await fetch(SB_URL+'/functions/v1/create-checkout',{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY},
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+session.access_token,
+        'apikey':SB_KEY
+      },
       body:JSON.stringify({priceId:pid})
     });
     const data=await res.json();
-    if(!res.ok||!data.url)throw new Error(data.error||'Errore');
+    if(!res.ok||!data.url)throw new Error(data.error||'URL non ricevuto');
     location.href=data.url;
-  }catch(e){toast('Errore: '+e.message,'err');btn.disabled=false;btn.innerHTML=orig}
+  }catch(e){
+    toast('Errore pagamento: '+e.message,'err');
+    btn.disabled=false;btn.innerHTML=orig;
+  }
 }
 
-// ── MODE ──
-function clickFlip(){if(!isPro){openPW('flip');return}setMode('flip')}
+// ════════════════════════════════════════════════
+// MODE TOGGLE
+// ════════════════════════════════════════════════
+function clickFlip(){
+  if(!canFlip()){openPW('flip');return}
+  setMode('flip');
+}
 function setMode(m){
   mode=m;
   document.getElementById('pill-rent').classList.toggle('on',m==='rent');
@@ -540,112 +835,201 @@ function setMode(m){
   document.getElementById('sec-flip').classList.toggle('on',m==='flip');
   document.getElementById('rent-res').classList.toggle('off',m!=='rent');
   document.getElementById('flip-res').classList.toggle('on',m==='flip');
-  document.getElementById('k-cfl').textContent=m==='rent'?'Cashflow/Mese':'Profitto/Mese';
+  document.getElementById('k-cfl').textContent=m==='rent'?'CF/Mese':'Profit/Mese';
   calc();
 }
 
-// ── CALC ──
+// ════════════════════════════════════════════════
+// CALCULATOR — formule finanziarie
+// ════════════════════════════════════════════════
 const eur=v=>new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
 const pct=v=>v.toFixed(2)+'%';
 const n=id=>parseFloat(document.getElementById(id)?.value)||0;
 function sv(id,v){const el=document.getElementById(id);if(el)el.textContent=v}
-
-function setTax(r,btn){document.getElementById('tax-rate').value=r;document.querySelectorAll('.dtb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');calc()}
+function setTax(r,btn){
+  document.getElementById('tax-rate').value=r;
+  document.querySelectorAll('.dtb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  calc();
+}
 
 function calc(){
-  if(!isPro){
+  // LIMITE GIORNALIERO — bypass per super_admin e Pro
+  if(isLimited()){
     const c=gCnt();
-    if(c>=LIM){if(!limShown){limShown=true;document.getElementById('lock-overlay').classList.add('on')}uPill();return}
-    iCnt();uPill();limShown=false;
+    if(c>=LIM){
+      if(!limShown){
+        limShown=true;
+        document.getElementById('lock-overlay').classList.add('on');
+        openPW('limit');
+      }
+      uPill();
+      return; // blocca calcolo
+    }
+    iCnt(); uPill(); limShown=false;
     document.getElementById('lock-overlay').classList.remove('on');
     const nc=gCnt();
-    if(nc===LIM-5)toast('5 analisi rimaste oggi.','warn');
-    if(nc===LIM)toast('Ultima analisi.','warn');
+    if(nc===LIM-5) toast('⚠️ 5 analisi rimaste oggi.','warn');
+    if(nc===LIM)   toast('⚠️ Ultima analisi del giorno.','warn');
   }
 
-  const price=n('price'),reno=n('reno'),closing=n('closing'),ltv=n('ltv'),rate=n('rate'),years=n('years');
-  const loan=price*(ltv/100),equity=price-loan+reno+closing;
-  const mr=(rate/100)/12,np=years*12;
+  // FINANZIAMENTO
+  const price=n('price'),reno=n('reno'),closing=n('closing');
+  const ltv=n('ltv'),rate=n('rate'),years=n('years');
+  const loan=price*(ltv/100), equity=price-loan+reno+closing;
+  const mr=(rate/100)/12, np=years*12;
   const mp=mr>0?loan*(mr*Math.pow(1+mr,np))/(Math.pow(1+mr,np)-1):(np>0?loan/np:0);
   document.getElementById('mort-pay').value=Math.round(mp).toLocaleString('it-IT');
   document.getElementById('equity-req').value=Math.round(equity).toLocaleString('it-IT');
 
-  if(mode==='flip'&&isPro){calcFlip(equity,mp);return}
+  if(mode==='flip'&&canFlip()){calcFlip(equity,mp);return}
 
-  // RENT
+  // AFFITTO
   const adr=n('adr'),occ=n('occ'),taxR=n('tax-rate'),otaP=n('ota');
-  const fc=n('fixed'),vc=n('varco'),maint=n('maint'),vac=n('vac'),guests=n('guests'),ct=n('city-tax');
-  const nights=365*(occ/100),gross=adr*nights,otaC=gross*(otaP/100),ctC=guests*nights*ct;
+  const fc=n('fixed'),vc=n('varco'),maint=n('maint'),vac=n('vac');
+  const guests=n('guests'),ct=n('city-tax');
+  const nights=365*(occ/100), gross=adr*nights;
+  const otaC=gross*(otaP/100), ctC=guests*nights*ct;
   const ops=fc*12+vc*nights+maint*12+gross*(vac/100);
   const taxes=Math.max(0,(gross-otaC-ops)*(taxR/100));
-  const mortY=mp*12,net=gross-otaC-ctC-ops-taxes-mortY,mcf=net/12;
-  const coc=equity>0?(net/equity)*100:0,be=net>0?equity/net:null;
+  const mortY=mp*12, net=gross-otaC-ctC-ops-taxes-mortY;
+  const mcf=net/12, mol=(gross-otaC-ops)/12;
+  const coc=equity>0?(net/equity)*100:0;
+  const be=net>0?equity/net:null;
 
-  sv('k-inv',eur(equity));sv('k-roi',pct(coc));
-  const cfEl=document.getElementById('k-cf');cfEl.textContent=eur(mcf);cfEl.className='kv '+(mcf>=0?'pos':'neg');
+  sv('k-inv',eur(equity));
+  sv('k-roi',pct(coc));
+  const cfEl=document.getElementById('k-cf');
+  cfEl.textContent=eur(mcf);cfEl.className='kv '+(mcf>=0?'pos':'neg');
   sv('k-be',be?be.toFixed(1)+'a':'Mai');
+  sv('r-g',eur(gross)); sv('r-ota',eur(otaC)); sv('r-ct',eur(ctC));
+  sv('r-op',eur(ops));  sv('r-tax',eur(taxes)); sv('r-mort',eur(mortY));
+  sv('r-n',Math.round(nights)+' notti'); sv('r-mol',eur(mol));
 
-  sv('r-g',eur(gross));sv('r-ota',eur(otaC));sv('r-ct',eur(ctC));sv('r-op',eur(ops));
-  sv('r-tax',eur(taxes));sv('r-mort',eur(mortY));sv('r-n',Math.round(nights)+' notti');sv('r-mol',eur((gross-otaC-ops)/12));
-
-  const bv=document.getElementById('br-cf'),bd=document.getElementById('big-cf');
-  bv.textContent=eur(mcf);bv.className='bv '+(mcf>=0?'':'neg');
+  const bv=document.getElementById('br-cf'), bd=document.getElementById('big-cf');
+  bv.textContent=eur(mcf); bv.className='bv '+(mcf>=0?'':'neg');
   bd.className='big '+(mcf<0?'neg':'');
   sv('br-cfs',`ROI ${pct(coc)} · BE ${be?be.toFixed(1)+'a':'Mai'}`);
 
+  // Scenari
   [{o:50,k:'p'},{o:65,k:'m'},{o:85,k:'o'}].forEach(s=>{
-    const nb=365*(s.o/100),gr=adr*nb,op=fc*12+vc*nb+maint*12+gr*(vac/100),tx=Math.max(0,(gr-gr*(otaP/100)-op)*(taxR/100)),cf=(gr-gr*(otaP/100)-op-tx-mp*12)/12;
-    sv(`s${s.k}-o`,s.o+'%');const el=document.getElementById(`s${s.k}-v`);el.textContent=eur(cf);el.className='scv '+(cf>=0?'pos':'neg');
+    const nb=365*(s.o/100), gr=adr*nb;
+    const op=fc*12+vc*nb+maint*12+gr*(vac/100);
+    const tx=Math.max(0,(gr-gr*(otaP/100)-op)*(taxR/100));
+    const cf=(gr-gr*(otaP/100)-op-tx-mp*12)/12;
+    sv(`s${s.k}-o`,s.o+'%');
+    const el=document.getElementById(`s${s.k}-v`);
+    el.textContent=eur(cf);el.className='scv '+(cf>=0?'pos':'neg');
   });
 }
 
 function calcFlip(equity,mp){
-  const price=n('price'),reno=n('reno'),closing=n('closing'),sell=n('flip-price'),months=n('flip-months'),ag=n('flip-ag'),hold=n('flip-hold'),ftax=n('flip-tax');
-  const agC=sell*(ag/100),holdC=(mp+hold)*months,gross=sell-price-reno-closing-agC-holdC;
-  const taxes=Math.max(0,gross*(ftax/100)),net=gross-taxes;
-  const roi=equity>0?(net/equity)*100:0,mP=months>0?net/months:0;
+  const price=n('price'),reno=n('reno'),closing=n('closing');
+  const sell=n('flip-price'),months=n('flip-months'),ag=n('flip-ag');
+  const hold=n('flip-hold'),ftax=n('flip-tax');
+  const agC=sell*(ag/100), holdC=(mp+hold)*months;
+  const gross=sell-price-reno-closing-agC-holdC;
+  const taxes=Math.max(0,gross*(ftax/100)), net=gross-taxes;
+  const roi=equity>0?(net/equity)*100:0, mP=months>0?net/months:0;
 
-  sv('k-inv',eur(equity));sv('k-roi',pct(roi));
-  const cfEl=document.getElementById('k-cf');cfEl.textContent=eur(mP);cfEl.className='kv '+(mP>=0?'pos':'neg');
+  sv('k-inv',eur(equity)); sv('k-roi',pct(roi));
+  const cfEl=document.getElementById('k-cf');
+  cfEl.textContent=eur(mP);cfEl.className='kv '+(mP>=0?'pos':'neg');
   sv('k-be',months+'m');
-  sv('f-sell',eur(sell));sv('f-acq',eur(price+reno+closing));sv('f-ag',eur(agC));sv('f-hold',eur(holdC));sv('f-gross',eur(gross));sv('f-tax',eur(taxes));
-  const bv=document.getElementById('br-fl'),bd=document.getElementById('big-fl');
-  bv.textContent=eur(net);bv.className='bv '+(net>=0?'':'neg');bd.className='big '+(net<0?'neg':'');
+  sv('f-sell',eur(sell)); sv('f-acq',eur(price+reno+closing));
+  sv('f-ag',eur(agC));    sv('f-hold',eur(holdC));
+  sv('f-gross',eur(gross)); sv('f-tax',eur(taxes));
+  const bv=document.getElementById('br-fl'), bd=document.getElementById('big-fl');
+  bv.textContent=eur(net);bv.className='bv '+(net>=0?'':'neg');
+  bd.className='big '+(net<0?'neg':'');
   sv('br-fls',`ROI ${pct(roi)} · ${months} mesi`);
 }
 
-// ── SAVE/EXPORT ──
+// ════════════════════════════════════════════════
+// SALVATAGGIO & EXPORT
+// ════════════════════════════════════════════════
 async function saveProject(){
-  if(!isPro){openPW('save');return}if(!user)return;
-  const ids=['price','reno','closing','city-tax','ltv','rate','years','apprec','adr','occ','ota','guests','fixed','varco','maint','vac','tax-rate','flip-price','flip-months','flip-ag','flip-hold','flip-tax'];
-  const data={mode,name:document.getElementById('proj-name').value};
+  if(!canSave()){openPW('save');return}
+  if(!user)return;
+  const ids=['price','reno','closing','city-tax','ltv','rate','years','apprec',
+    'adr','occ','ota','guests','fixed','varco','maint','vac','tax-rate',
+    'flip-price','flip-months','flip-ag','flip-hold','flip-tax'];
+  const name=document.getElementById('proj-name').value||'Nuova Analisi';
+  const data={mode,name};
   ids.forEach(id=>{const el=document.getElementById(id);if(el)data[id]=el.value});
-  const{error}=await sb.from('projects').upsert({user_id:user.id,name:data.name,data,updated_at:new Date().toISOString()},{onConflict:'user_id,name'});
-  error?toast('Errore.','err'):toast('Salvato.','ok');
+  const{error}=await sb.from('projects').upsert(
+    {user_id:user.id,name,data,updated_at:new Date().toISOString()},
+    {onConflict:'user_id,name'}
+  );
+  error?toast('Errore salvataggio: '+error.message,'err'):toast('✓ Progetto salvato.','ok');
 }
+
 function doExport(){
-  if(!isPro){openPW('export');return}
-  const name=document.getElementById('proj-name').value;
-  const rows=[['InvestPro — '+name],[],['Ricavi',document.getElementById('r-g')?.textContent],['Cashflow/mese',document.getElementById('br-cf')?.textContent],['ROI',document.getElementById('k-roi')?.textContent]];
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join('\t')).join('\n')],{type:'text/tab-separated-values'}));
-  a.download=name+'.tsv';a.click();toast('Export OK.','ok');
+  if(!canExport()){openPW('export');return}
+  const name=document.getElementById('proj-name').value||'analisi';
+  const rows=mode==='rent'?[
+    ['InvestPro — Analisi Affitto: '+name],[],
+    ['Ricavi lordi/anno',   document.getElementById('r-g')?.textContent],
+    ['Commissioni OTA',     document.getElementById('r-ota')?.textContent],
+    ['Tassa soggiorno',     document.getElementById('r-ct')?.textContent],
+    ['Costi operativi',     document.getElementById('r-op')?.textContent],
+    ['Imposte',             document.getElementById('r-tax')?.textContent],
+    ['Mutuo/anno',          document.getElementById('r-mort')?.textContent],
+    ['Notti occupate',      document.getElementById('r-n')?.textContent],
+    ['MOL mensile',         document.getElementById('r-mol')?.textContent],
+    ['Cashflow netto/mese', document.getElementById('br-cf')?.textContent],
+    ['ROI',                 document.getElementById('k-roi')?.textContent],
+    ['Break-even',          document.getElementById('k-be')?.textContent],
+  ]:[
+    ['InvestPro — Analisi Flip: '+name],[],
+    ['Prezzo vendita',      document.getElementById('f-sell')?.textContent],
+    ['Costi acquisizione',  document.getElementById('f-acq')?.textContent],
+    ['Comm. agenzia',       document.getElementById('f-ag')?.textContent],
+    ['Costi holding',       document.getElementById('f-hold')?.textContent],
+    ['Profitto lordo',      document.getElementById('f-gross')?.textContent],
+    ['Imposte plus-val.',   document.getElementById('f-tax')?.textContent],
+    ['Profitto netto',      document.getElementById('br-fl')?.textContent],
+    ['ROI',                 document.getElementById('k-roi')?.textContent],
+  ];
+  const csv=rows.map(r=>r.join('\t')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/tab-separated-values'}));
+  a.download=name+'.tsv';a.click();
+  toast('✓ Export scaricato.','ok');
 }
 
-// ── TOAST ──
-function toast(msg,type='ok'){const c=document.getElementById('toasts'),t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;c.appendChild(t);requestAnimationFrame(()=>t.classList.add('on'));setTimeout(()=>{t.classList.remove('on');setTimeout(()=>t.remove(),300)},3500)}
+// ════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════
+function toast(msg,type='ok'){
+  const c=document.getElementById('toasts');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;t.textContent=msg;c.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('on'));
+  setTimeout(()=>{t.classList.remove('on');setTimeout(()=>t.remove(),300)},3800);
+}
 
-// ── INIT ──
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
-  calc();
+  calc(); // calcolo iniziale con valori default
+
+  // Enter → submit nei form
   document.getElementById('i-pw')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
   document.getElementById('i-rpw')?.addEventListener('keydown',e=>{if(e.key==='Enter')doReg()});
+
+  // ESC → chiudi modali; Ctrl+S → salva
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){closeAuth();closePW();closeAdmin()}
+    if(e.key==='Escape'){closeAuth();closePW();closeAdminPanel();closeAcct()}
     if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();if(user)saveProject()}
   });
+
+  // Click fuori dai modali → chiudi
   document.getElementById('auth').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuth()});
   document.getElementById('pw').addEventListener('click',e=>{if(e.target===e.currentTarget)closePW()});
-  document.getElementById('admin').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdmin()});
+  document.getElementById('admin-panel').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdminPanel()});
+  document.getElementById('acct-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAcct()});
 });
 </script>
 </body>
