@@ -6,7 +6,64 @@
 <title>InvestPro — Analisi Finanziaria Immobiliare</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050a14;--bg2:#0a1628;--bg3:#0f1d35;--border:#1a2e4a;--border2:#264060;--tx:#eaf0fa;--tx2:#7e95b8;--tx3:#3d5678;--teal:#00d4a4;--teal-h:#00b88e;--tg:rgba(0,212,164,.12);--red:#ff5170;--rg:rgba(255,81,112,.08);--gold:#d4a940;--gg:rgba(212,169,64,.10);--amber:#f0a030;--ag:rgba(240,160,48,.10);--r:8px;--rl:14px;--rx:20px}
+/* ═══ DARK MODE (default) ═══ */
+:root,[data-theme="dark"]{
+  --bg:#050a14;--bg2:#0a1628;--bg3:#0f1d35;--bg4:#162540;
+  --border:#1a2e4a;--border2:#2a4060;
+  --tx:#f0f5ff;       /* testo primario: bianco caldo, alto contrasto */
+  --tx2:#b0c4de;      /* testo secondario: più chiaro del vecchio #7e95b8 */
+  --tx3:#5a7a9a;      /* testo terziario */
+  --tx-input:#e8f0ff; /* testo dentro input: BIANCO PURO per massimo contrasto */
+  --tx-label:#8ab0cc; /* etichette form */
+  --teal:#00d4a4;--teal-h:#00b88e;--tg:rgba(0,212,164,.12);
+  --red:#ff5170;--rg:rgba(255,81,112,.08);
+  --gold:#d4a940;--gg:rgba(212,169,64,.10);
+  --amber:#f0a030;--ag:rgba(240,160,48,.10);
+  --r:8px;--rl:14px;--rx:20px;
+  /* Input specifici */
+  --input-bg:#040810;        /* sfondo input più scuro per contrasto */
+  --input-border:#2a4060;
+  --input-border-focus:#00d4a4;
+  --result-pos:#00e8b4;      /* numeri positivi: verde brillante */
+  --result-neg:#ff6b87;      /* numeri negativi: rosso chiaro */
+  --kv-color:#ffffff;        /* KPI values: bianco puro */
+  --bv-color:#00e8b4;        /* big value teal brillante */
+  /* Readonly */
+  --input-readonly-bg:rgba(0,212,164,.12);
+  --input-readonly-tx:#00e8b4;
+  --input-readonly-blue-bg:rgba(74,144,226,.12);
+  --input-readonly-blue-tx:#7ab8ff;
+  /* Switcher */
+  --theme-icon:"🌙";
+}
+
+/* ═══ LIGHT MODE ═══ */
+[data-theme="light"]{
+  --bg:#f0f4f8;--bg2:#ffffff;--bg3:#e8eef5;--bg4:#dde5ef;
+  --border:#c8d5e5;--border2:#a8bdd0;
+  --tx:#0d1f35;       /* testo primario: quasi nero */
+  --tx2:#2e4a6a;      /* testo secondario */
+  --tx3:#5a7a9a;      /* testo terziario */
+  --tx-input:#0d1f35; /* testo input: dark */
+  --tx-label:#3a5a7a;
+  --teal:#007a5e;--teal-h:#006048;--tg:rgba(0,122,94,.10);
+  --red:#c0283f;--rg:rgba(192,40,63,.08);
+  --gold:#8a6800;--gg:rgba(138,104,0,.10);
+  --amber:#c06000;--ag:rgba(192,96,0,.10);
+  --r:8px;--rl:14px;--rx:20px;
+  --input-bg:#ffffff;
+  --input-border:#b0c8e0;
+  --input-border-focus:#007a5e;
+  --result-pos:#006645;
+  --result-neg:#c0283f;
+  --kv-color:#0d1f35;
+  --bv-color:#007a5e;
+  --input-readonly-bg:rgba(0,122,94,.10);
+  --input-readonly-tx:#005a40;
+  --input-readonly-blue-bg:rgba(0,80,180,.10);
+  --input-readonly-blue-tx:#0050b4;
+  --theme-icon:"☀️";
+}
 *,*::before,*::after{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth;font-size:16px}
 body{font-family:'Outfit','Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.55;overflow-x:hidden}
@@ -159,7 +216,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .lock-skip{background:none;border:none;color:var(--tx3);font-size:.7rem;margin-top:8px;text-decoration:underline}
 
 /* Sections */
-.sec{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.sec{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);overflow:hidden}
 .sh{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
 .st{font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--teal);text-transform:uppercase;letter-spacing:.08em}
 .sb{padding:12px}
@@ -168,11 +225,11 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .dl{font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
 .dw{position:relative;display:flex;align-items:center}
 .dp,.ds{position:absolute;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--tx3);pointer-events:none}.dp{left:9px}.ds{right:9px}
-.di{width:100%;padding:8px 9px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;color:var(--tx);font-size:.8rem;font-weight:500;outline:none;transition:.18s;-webkit-appearance:none}
+.di{width:100%;padding:9px 10px;background:var(--input-bg);border:1px solid var(--input-border);border-radius:5px;color:var(--tx-input);font-size:.84rem;font-weight:600;outline:none;-webkit-transition:border-color .18s,box-shadow .18s;transition:border-color .18s,box-shadow .18s;-webkit-appearance:none}
 .di:focus{border-color:var(--teal)}.di.hp{padding-left:22px}.di.hs{padding-right:22px}
 .di[readonly]{background:rgba(0,212,164,.06);color:var(--teal);font-weight:600;font-family:'JetBrains Mono',monospace;font-size:.74rem}
-.di[readonly].blue{background:rgba(74,144,226,.06);color:#4a90e2}
-.ddiv{height:1px;background:var(--border);margin:10px 0}
+.di[readonly].blue{background:var(--input-readonly-blue-bg);color:var(--input-readonly-blue-tx)}
+.ddiv{height:1px;background:var(--border2);margin:12px 0}
 .dtax{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
 .dtb{flex:1;min-width:56px;padding:5px 7px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;color:var(--tx3);font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;transition:.15s}
 .dtb:hover{border-color:var(--teal);color:var(--teal)}.dtb.on{background:var(--tg);border-color:var(--teal);color:var(--teal);font-weight:700}
@@ -250,7 +307,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .af{display:flex;flex-direction:column;gap:11px}.af.hidden{display:none}
 .afg{display:flex;flex-direction:column;gap:4px}
 .afl{font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
-.afi{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:10px 12px;color:var(--tx);font-size:.84rem;outline:none;transition:.18s}.afi:focus{border-color:var(--teal)}
+.afi{background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--r);padding:11px 13px;color:var(--tx-input);font-size:.88rem;font-weight:500;outline:none;-webkit-transition:border-color .18s;transition:border-color .18s}.afi:focus{border-color:var(--input-border-focus);-webkit-box-shadow:0 0 0 2px rgba(0,212,164,.12);box-shadow:0 0 0 2px rgba(0,212,164,.12)}
 .abtn{background:var(--teal);border:none;border-radius:var(--r);padding:11px;color:var(--bg);font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:.18s;margin-top:4px}.abtn:hover{background:var(--teal-h)}.abtn:disabled{opacity:.4;cursor:not-allowed}
 .aerr{background:var(--rg);border:1px solid rgba(255,81,112,.3);border-radius:var(--r);padding:8px 10px;font-size:.72rem;color:#ff8fa3;display:none}.aerr.on{display:block}
 .aok{background:var(--tg);border:1px solid rgba(0,212,164,.3);border-radius:var(--r);padding:8px 10px;font-size:.72rem;color:var(--teal);display:none}.aok.on{display:block}
@@ -329,6 +386,44 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
   .lsec{padding:48px 20px}
   .fbody{grid-template-columns:1fr}
 }
+
+/* ═══ LIGHT MODE — component overrides ═══ */
+[data-theme="light"] body{background:var(--bg)}
+[data-theme="light"] body::after{background:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(0,80,160,.03) 59px,rgba(0,80,160,.03) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(0,80,160,.03) 59px,rgba(0,80,160,.03) 60px)}
+[data-theme="light"] .nav{background:rgba(240,244,248,.95);border-bottom-color:var(--border)}
+[data-theme="light"] .frame,.sec,.kc{background:var(--bg2);border-color:var(--border)}
+[data-theme="light"] .fbar,.sh{background:var(--bg3);border-color:var(--border)}
+[data-theme="light"] .di{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.06);box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}
+[data-theme="light"] .big{background:linear-gradient(135deg,rgba(0,122,94,.09),rgba(0,122,94,.03));border-color:rgba(0,122,94,.25)}
+[data-theme="light"] .big.neg{background:linear-gradient(135deg,rgba(192,40,63,.08),rgba(192,40,63,.02));border-color:rgba(192,40,63,.2)}
+[data-theme="light"] .lock{background:rgba(240,244,248,.95)}
+[data-theme="light"] #auth .abox,[data-theme="light"] #admin-panel .adm-wrap,[data-theme="light"] #pw .pwbox,[data-theme="light"] #acct-modal .adbox{background:var(--bg2);border-color:var(--border)}
+[data-theme="light"] .nb-f{color:#ffffff}
+[data-theme="light"] .rr{border-bottom-color:var(--border)}
+[data-theme="light"] .adrow{border-bottom-color:var(--border)}
+[data-theme="light"] .users-tbl th{background:var(--bg3);color:var(--teal)}
+[data-theme="light"] .users-tbl td{border-bottom-color:var(--border)}
+[data-theme="light"] .users-tbl tr:hover td{background:rgba(0,122,94,.05)}
+
+/* ═══ THEME TOGGLE BUTTON ═══ */
+.theme-toggle{
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  color:var(--tx);
+  width:36px;height:36px;
+  border-radius:50%;
+  display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  -webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;
+  font-size:1rem;
+  cursor:pointer;
+  -webkit-transition:background .2s,border-color .2s;
+  transition:background .2s,border-color .2s;
+  -ms-flex-negative:0;flex-shrink:0;
+  line-height:1;
+}
+.theme-toggle:hover{background:var(--bg4,var(--bg3));border-color:var(--teal)}
+
 </style>
 </head>
 <body>
@@ -337,6 +432,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 <!-- ═══ NAV ═══ -->
 <nav class="nav">
   <div class="nbrand"><div class="ndot"></div>InvestPro</div>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Cambia tema" aria-label="Cambia tema chiaro/scuro">🌙</button>
   <div class="nr" id="nav-r">
     <button class="nb nb-o" id="nav-login" onclick="openAuth('login')">Accedi</button>
     <button class="nb nb-f" id="nav-reg" onclick="openAuth('reg')">Registrati</button>
@@ -532,13 +628,13 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
   <section class="lsec" style="border-top:1px solid var(--border);padding-top:60px">
     <div class="ltag">Pricing</div>
     <h2 class="lh">Inizia gratis. Scala quando serve.</h2>
-    <div class="lsub">20 analisi al giorno con il piano Free. Pro sblocca tutto senza limiti.</div>
+    <div class="lsub">50 analisi al giorno con il piano Free. Pro sblocca tutto senza limiti.</div>
     <div class="pgrid">
       <div class="pc">
         <div class="pcp">Free</div>
         <div class="pca"><span class="cur">€</span>0</div>
         <div class="pcper">per sempre</div>
-        <ul class="pcf"><li>20 analisi/giorno</li><li>Messa a Reddito</li><li>4 regimi fiscali</li><li>Scenari</li></ul>
+        <ul class="pcf"><li>50 analisi/giorno</li><li>Messa a Reddito</li><li>4 regimi fiscali</li><li>Scenari</li></ul>
         <button class="pcb pcb-o" onclick="openAuth('reg')">Inizia Gratis</button>
       </div>
       <div class="pc hi">
@@ -674,10 +770,10 @@ const SUPER_ADMIN_EMAIL='lucaiolienrico@gmail.com';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
 // ════════════════════════════════════════════════
-// USAGE LIMIT — 60 calcoli/giorno per utenti Free
+// USAGE LIMIT — 50 calcoli/giorno per utenti Free
 // Reset automatico a mezzanotte via localStorage
 // ════════════════════════════════════════════════
-const LIM=60;
+const LIM=50;
 const td=()=>new Date().toISOString().split('T')[0];
 function gCnt(){
   if(localStorage.getItem('ip_d')!==td()){
@@ -1173,9 +1269,32 @@ function toast(msg,type='ok'){
 }
 
 // ════════════════════════════════════════════════
+// THEME SWITCHER — Light / Dark
+// ════════════════════════════════════════════════
+function toggleTheme(){
+  const root=document.documentElement;
+  const btn=document.getElementById('theme-toggle');
+  const current=root.getAttribute('data-theme')||'dark';
+  const next=current==='dark'?'light':'dark';
+  root.setAttribute('data-theme',next);
+  btn.textContent=next==='dark'?'🌙':'☀️';
+  btn.title=next==='dark'?'Passa al tema chiaro':'Passa al tema scuro';
+  try{localStorage.setItem('ip_theme',next)}catch(e){}
+}
+
+function initTheme(){
+  let saved='dark';
+  try{saved=localStorage.getItem('ip_theme')||'dark'}catch(e){}
+  document.documentElement.setAttribute('data-theme',saved);
+  const btn=document.getElementById('theme-toggle');
+  if(btn)btn.textContent=saved==='dark'?'🌙':'☀️';
+}
+
+// ════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
+  initTheme();
   calc(); // calcolo iniziale con valori default
 
   // Enter → submit nei form
