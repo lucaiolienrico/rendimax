@@ -674,10 +674,10 @@ const SUPER_ADMIN_EMAIL='lucaiolienrico@gmail.com';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
 // ════════════════════════════════════════════════
-// USAGE LIMIT — 20 calcoli/giorno per utenti Free
+// USAGE LIMIT — 60 calcoli/giorno per utenti Free
 // Reset automatico a mezzanotte via localStorage
 // ════════════════════════════════════════════════
-const LIM=20;
+const LIM=60;
 const td=()=>new Date().toISOString().split('T')[0];
 function gCnt(){
   if(localStorage.getItem('ip_d')!==td()){
