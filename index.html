@@ -472,7 +472,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
         <button class="h-btn-main" onclick="openAuth('reg')">Inizia gratis →</button>
         <button class="h-btn-out" onclick="openAuth('login')">Accedi</button>
       </div>
-      <div class="hlbl">// 20 analisi/giorno · nessuna carta richiesta</div>
+      <div class="hlbl">// 50 analisi/giorno · nessuna carta richiesta</div>
     </div>
     <!-- Colonna destra: mini dashboard preview -->
     <div class="hero-right">
@@ -515,7 +515,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 <!-- Freccia verso il calcolatore -->
 <div class="hero-arrow-row" id="hero-arrow">
   <div class="harr">↓</div>
-  <div class="hero-arrow-lbl">// prova gratis — 20 analisi al giorno</div>
+  <div class="hero-arrow-lbl">// prova gratis — 50 analisi al giorno</div>
 </div>
 
 <!-- ═══ MODE TOGGLE (app only) ═══ -->
@@ -637,7 +637,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
   <section class="lsec" style="border-top:1px solid var(--border);padding-top:60px">
     <div class="ltag">Pricing</div>
     <h2 class="lh">Inizia gratis. Scala quando serve.</h2>
-    <div class="lsub">20 analisi al giorno con il piano Free. Pro sblocca tutto senza limiti.</div>
+    <div class="lsub">50 analisi al giorno con il piano Free. Pro sblocca tutto senza limiti.</div>
     <div class="pgrid">
       <div class="pc">
         <div class="pcp">Free</div>
@@ -680,7 +680,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
       <div style="background:rgba(0,212,164,.07);border:1px solid rgba(0,212,164,.2);border-radius:8px;padding:10px 12px">
         <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">// Piano di partenza</div>
         <div style="font-size:.82rem;color:var(--tx2);font-weight:400;line-height:1.5">
-          Tutti gli account iniziano con il piano <strong style="color:var(--tx)">Free</strong> (20 analisi/giorno).<br>
+          Tutti gli account iniziano con il piano <strong style="color:var(--tx)">Free</strong> (50 analisi/giorno).<br>
           Puoi passare a <strong style="color:var(--teal)">Pro</strong> in qualsiasi momento dopo il login.
         </div>
       </div>
@@ -771,10 +771,10 @@ const SUPER_ADMIN_EMAIL='lucaiolienrico@gmail.com';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
 // ════════════════════════════════════════════════
-// USAGE LIMIT — 20 calcoli/giorno per utenti Free
+// USAGE LIMIT — 50 calcoli/giorno per utenti Free
 // Reset automatico a mezzanotte via localStorage
 // ════════════════════════════════════════════════
-const LIM=20;
+const LIM=60;
 const td=()=>new Date().toISOString().split('T')[0];
 function gCnt(){
   if(localStorage.getItem('ip_d')!==td()){
