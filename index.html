@@ -802,6 +802,7 @@ function uPill(){
 // STATO GLOBALE + RBAC
 // ════════════════════════════════════════════════
 let user=null, isPro=false, isSuperAdmin=false, profile=null, mode='rent', limShown=false;
+let _authBusy=false; // Guard: previene race condition su onAuthStateChange multipli
 
 // Helper RBAC — il super_admin bypassa tutto
 const hasFullAccess = ()=> isSuperAdmin || isPro;
@@ -813,7 +814,10 @@ const isLimited     = ()=> !isSuperAdmin && !isPro;
 // ════════════════════════════════════════════════
 // AUTH LIFECYCLE
 // ════════════════════════════════════════════════
-sb.auth.onAuthStateChange(async(_,session)=>{
+sb.auth.onAuthStateChange(async(event,session)=>{
+  if(_authBusy){console.log('[auth] skip evento sovrapposto:',event);return;}
+  _authBusy=true;
+  try{
   user=session?.user??null;
   if(user){
     // Fetch profilo con gestione errore e retry
@@ -895,8 +899,8 @@ sb.auth.onAuthStateChange(async(_,session)=>{
 
     calc();
   } else {
-    // Logout: reset stato e torna a landing
-    isPro=false; isSuperAdmin=false; profile=null;
+    // Logout: reset COMPLETO dello stato — user=null è critico
+    user=null; isPro=false; isSuperAdmin=false; profile=null; limShown=false;
     document.getElementById('hero').classList.remove('hidden');
     document.getElementById('landing-extra').classList.remove('hidden');
     document.getElementById('hero-strip')?.classList.remove('hidden');
@@ -907,7 +911,14 @@ sb.auth.onAuthStateChange(async(_,session)=>{
     ['nav-badge','nav-use','proj-name','nav-export','nav-save',
      'nav-admin-panel','nav-acct','nav-up','nav-out']
       .forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+    document.getElementById('lock-overlay')?.classList.remove('on');
+    try{closePW()}catch(e){}
     calc();
+  }
+  }catch(err){
+    console.error('[auth] errore lifecycle:',err);
+  }finally{
+    _authBusy=false;
   }
 });
 
@@ -978,7 +989,26 @@ async function doReg(){
   b.disabled=false;b.textContent='Crea Account →';
 }
 
-async function doLogout(){await sb.auth.signOut()}
+async function doLogout(){
+  const btn=document.getElementById('nav-out');
+  if(btn){btn.disabled=true;btn.textContent='Uscita...';}
+  // Resetta subito lo stato locale PRIMA della chiamata di rete,
+  // così eventuali fetch in volo non innescano un auto-refresh su token già morto.
+  user=null; profile=null; isPro=false; isSuperAdmin=false;
+  limShown=false;
+  // Chiude qualsiasi modale aperta
+  try{closeAuth()}catch(e){}
+  try{closePW()}catch(e){}
+  try{closeAdminPanel()}catch(e){}
+  try{closeAcct()}catch(e){}
+  try{
+    await sb.auth.signOut();
+  }catch(err){
+    console.warn('signOut error (ignorato):', err.message);
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Esci';}
+  }
+}
 
 // ════════════════════════════════════════════════
 // ADMIN PANEL — solo super_admin
