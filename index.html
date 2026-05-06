@@ -803,6 +803,7 @@ function uPill(){
 // ════════════════════════════════════════════════
 let user=null, isPro=false, isSuperAdmin=false, profile=null, mode='rent', limShown=false;
 let _authBusy=false; // Guard: previene race condition su onAuthStateChange multipli
+let _logoutDone=false; // Guard: doLogout ha già resettato UI → onAuthStateChange SIGNED_OUT può saltare il re-render
 
 // Helper RBAC — il super_admin bypassa tutto
 const hasFullAccess = ()=> isSuperAdmin || isPro;
@@ -899,20 +900,14 @@ sb.auth.onAuthStateChange(async(event,session)=>{
 
     calc();
   } else {
-    // Logout: reset COMPLETO dello stato — user=null è critico
+    // Se doLogout ha già resettato stato + UI, salta il re-render ridondante.
+    // Previene doppio DOM flush / flicker su animazioni.
+    if(_logoutDone) return;
+
+    // Logout innescato da evento esterno (es. token scaduto, signOut da altro tab):
+    // reset completo necessario perché nessuno ha già pulito.
     user=null; isPro=false; isSuperAdmin=false; profile=null; limShown=false;
-    document.getElementById('hero').classList.remove('hidden');
-    document.getElementById('landing-extra').classList.remove('hidden');
-    document.getElementById('hero-strip')?.classList.remove('hidden');
-    document.getElementById('hero-arrow')?.classList.remove('hidden');
-    document.getElementById('mode-bar').classList.add('hidden');
-    document.getElementById('nav-login').classList.remove('hidden');
-    document.getElementById('nav-reg').classList.remove('hidden');
-    ['nav-badge','nav-use','proj-name','nav-export','nav-save',
-     'nav-admin-panel','nav-acct','nav-up','nav-out']
-      .forEach(id=>document.getElementById(id)?.classList.add('hidden'));
-    document.getElementById('lock-overlay')?.classList.remove('on');
-    try{closePW()}catch(e){}
+    resetUIToLanding();
     calc();
   }
   }catch(err){
@@ -989,23 +984,65 @@ async function doReg(){
   b.disabled=false;b.textContent='Crea Account →';
 }
 
+// ════════════════════════════════════════════════
+// RESET UI → Landing (usata da doLogout e onAuthStateChange)
+// Estratta per single-source-of-truth: evita duplicazione e garantisce
+// che doLogout e il listener eseguano lo stesso identico DOM reset.
+// ════════════════════════════════════════════════
+function resetUIToLanding(){
+  document.getElementById('hero').classList.remove('hidden');
+  document.getElementById('landing-extra').classList.remove('hidden');
+  document.getElementById('hero-strip')?.classList.remove('hidden');
+  document.getElementById('hero-arrow')?.classList.remove('hidden');
+  document.getElementById('mode-bar').classList.add('hidden');
+  document.getElementById('nav-login').classList.remove('hidden');
+  document.getElementById('nav-reg').classList.remove('hidden');
+  ['nav-badge','nav-use','proj-name','nav-export','nav-save',
+   'nav-admin-panel','nav-acct','nav-up','nav-out']
+    .forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('lock-overlay')?.classList.remove('on');
+  try{closePW()}catch(e){}
+}
+
 async function doLogout(){
   const btn=document.getElementById('nav-out');
   if(btn){btn.disabled=true;btn.textContent='Uscita...';}
-  // Resetta subito lo stato locale PRIMA della chiamata di rete,
-  // così eventuali fetch in volo non innescano un auto-refresh su token già morto.
+
+  // ── 1. Reset stato locale PRIMA della rete ──
+  // Impedisce auto-refresh su token morto da fetch in volo.
   user=null; profile=null; isPro=false; isSuperAdmin=false;
   limShown=false;
-  // Chiude qualsiasi modale aperta
+
+  // ── 2. Reset UI immediato (single render) ──
+  // Segnala che il DOM è già stato resettato → onAuthStateChange SIGNED_OUT
+  // può saltare il re-render evitando doppio DOM flush / flicker.
+  _logoutDone=true;
+  resetUIToLanding();
+  calc();
+
+  // ── 3. Chiude modali aperte ──
   try{closeAuth()}catch(e){}
   try{closePW()}catch(e){}
   try{closeAdminPanel()}catch(e){}
   try{closeAcct()}catch(e){}
+
+  // ── 4. signOut con fallback locale ──
+  // Strategia: tenta global signOut (invalida token server-side).
+  // Se la rete fallisce, forza scope:'local' per eliminare la sessione
+  // da localStorage garantendo logout UI anche offline.
   try{
     await sb.auth.signOut();
   }catch(err){
-    console.warn('signOut error (ignorato):', err.message);
+    console.warn('[logout] signOut globale fallito, forzo locale:', err.message);
+    try{
+      await sb.auth.signOut({scope:'local'});
+    }catch(localErr){
+      // Ultima risorsa: se anche il locale fallisce (edge case teorico),
+      // il localStorage è comunque inaccessibile → sessione già persa.
+      console.error('[logout] anche signOut locale fallito:', localErr.message);
+    }
   }finally{
+    _logoutDone=false;
     if(btn){btn.disabled=false;btn.textContent='Esci';}
   }
 }
