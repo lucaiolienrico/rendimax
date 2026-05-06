@@ -355,6 +355,17 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .adv.teal{color:var(--teal)}.adv.amber{color:var(--amber)}.adv.gold{color:var(--gold)}
 .adbtn{width:100%;margin-top:12px;background:none;border:1px solid var(--border);border-radius:var(--r);padding:9px;font-size:.76rem;color:var(--tx3);transition:.18s;cursor:pointer}.adbtn:hover{color:var(--tx);border-color:var(--border2)}
 
+/* ═══ PROJECTS LIST MODAL ═══ */
+#proj-modal{position:fixed;inset:0;background:rgba(5,10,20,.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;z-index:8300;padding:20px;opacity:0;pointer-events:none;transition:.22s}#proj-modal.on{opacity:1;pointer-events:all}
+.proj-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);transition:.15s;gap:10px}
+.proj-item:hover{border-color:var(--border2)}
+.proj-item-info{flex:1;min-width:0}
+.proj-item-name{font-size:.82rem;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-item-date{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--tx3);margin-top:2px}
+.proj-item-btns{display:flex;gap:5px;flex-shrink:0}
+.proj-load-btn{background:var(--teal);border:none;color:var(--bg);padding:5px 12px;border-radius:4px;font-size:.68rem;font-weight:700;cursor:pointer;transition:.15s}.proj-load-btn:hover{background:var(--teal-h)}
+.proj-del-btn{background:none;border:1px solid rgba(255,81,112,.3);color:var(--red);padding:5px 8px;border-radius:4px;font-size:.68rem;cursor:pointer;transition:.15s}.proj-del-btn:hover{background:rgba(255,81,112,.08)}
+
 /* ═══ PAYWALL ═══ */
 #pw{position:fixed;inset:0;background:rgba(5,10,20,.88);backdrop-filter:blur(14px);z-index:8000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:.22s}
 #pw.on{opacity:1;pointer-events:all}
@@ -406,7 +417,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 [data-theme="light"] .big{background:linear-gradient(135deg,rgba(0,122,94,.09),rgba(0,122,94,.03));border-color:rgba(0,122,94,.25)}
 [data-theme="light"] .big.neg{background:linear-gradient(135deg,rgba(192,40,63,.08),rgba(192,40,63,.02));border-color:rgba(192,40,63,.2)}
 [data-theme="light"] .lock{background:rgba(240,244,248,.95)}
-[data-theme="light"] #auth .abox,[data-theme="light"] #admin-panel .adm-wrap,[data-theme="light"] #pw .pwbox,[data-theme="light"] #acct-modal .adbox{background:var(--bg2);border-color:var(--border)}
+[data-theme="light"] #auth .abox,[data-theme="light"] #admin-panel .adm-wrap,[data-theme="light"] #pw .pwbox,[data-theme="light"] #acct-modal .adbox,[data-theme="light"] #proj-modal .adbox{background:var(--bg2);border-color:var(--border)}
 [data-theme="light"] .nb-f{color:#ffffff}
 [data-theme="light"] .rr{border-bottom-color:var(--border)}
 [data-theme="light"] .adrow{border-bottom-color:var(--border)}
@@ -450,6 +461,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
     <span class="pill-use hidden" id="nav-use">0/20</span>
     <input class="pinput hidden" id="proj-name" type="text" value="Nuova Analisi" placeholder="Nome analisi…">
     <button class="nb nb-o hidden" id="nav-export" onclick="doExport()">↗ Export</button>
+    <button class="nb nb-o hidden" id="nav-load" onclick="openProjectsList()">📂 Carica</button>
     <button class="nb nb-f hidden" id="nav-save" onclick="saveProject()">💾 Salva</button>
     <!-- Bottone Admin Panel: visibile SOLO a super_admin -->
     <button class="nb nb-admin hidden" id="nav-admin-panel" onclick="openAdminPanel()">⚙ Admin</button>
@@ -648,8 +660,8 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
       </div>
       <div class="pc hi">
         <div class="pcp">Pro</div>
-        <div class="pca"><span class="cur">€</span>19<span style="font-size:1rem;margin-top:8px">,99</span></div>
-        <div class="pcper">/mese · o €199/anno (−17%)</div>
+        <div class="pca"><span class="cur">€</span>29<span style="font-size:1rem;margin-top:8px">,90</span></div>
+        <div class="pcper">/mese · o €199/anno (−45%)</div>
         <ul class="pcf"><li>Analisi illimitate</li><li>Trading / Flip</li><li>Salvataggio progetti</li><li>Export Excel</li><li>Supporto prioritario</li></ul>
         <button class="pcb pcb-f" onclick="openPW()">Passa a Pro</button>
       </div>
@@ -750,11 +762,25 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
     <div class="pwp" id="pw-p">Piano Free: 50 analisi/giorno. Pro sblocca tutto senza limiti.</div>
     <ul class="pwf"><li>Analisi illimitate</li><li>Trading / Flip</li><li>Salvataggio progetti</li><li>Export Excel</li><li>Supporto prioritario</li></ul>
     <div class="pwbtns">
-      <button class="pwb pwm" id="co-m" onclick="checkout('monthly')">€19,99 / mese</button>
-      <button class="pwb pwy" id="co-y" onclick="checkout('yearly')"><span>€199 / anno</span><span class="pwsave">−17%</span></button>
+      <button class="pwb pwm" id="co-m" onclick="checkout('monthly')">€29,90 / mese</button>
+      <button class="pwb pwy" id="co-y" onclick="checkout('yearly')"><span>€199 / anno</span><span class="pwsave">−45%</span></button>
     </div>
     <div class="pwnote">// Stripe · Cancella quando vuoi</div>
     <button class="pwskip" onclick="closePW()">Continua con Free</button>
+  </div>
+</div>
+
+<!-- ═══ PROJECTS LIST MODAL ═══ -->
+<div id="proj-modal">
+  <div class="adbox" style="max-width:440px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div class="adh" style="margin:0">📂 I tuoi progetti</div>
+      <button class="adm-close" onclick="closeProjectsList()">×</button>
+    </div>
+    <div id="proj-list-loading" style="text-align:center;padding:20px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--tx3)">Caricamento...</div>
+    <div id="proj-list-empty" class="hidden" style="text-align:center;padding:20px;color:var(--tx3);font-size:.84rem">Nessun progetto salvato.</div>
+    <div id="proj-list-items" style="display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto"></div>
+    <button class="adbtn" onclick="closeProjectsList()" style="margin-top:14px">Chiudi</button>
   </div>
 </div>
 
@@ -766,13 +792,14 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 // ════════════════════════════════════════════════
 const SB_URL='https://amzjefyegfxkpzjifynj.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtemplZnllZ2Z4a3B6amlmeW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1Mjk4NTcsImV4cCI6MjA5MjEwNTg1N30.RDnpaTFtSkx2wmI5vWScef2x9CFgyGxPoAvXy-1lNrE';
-const PRM='price_1TQmhcCP1ytB9mXWU1hcGdMD'; // €19,99/mese
+const PRM='price_1T0KhVCP1ytB9mXWR6roA7uB'; // €29,90/mese
 const PRY='price_1TQmhkCP1ytB9mXWHDVnQiKU'; // €199/anno
-const SUPER_ADMIN_EMAIL='lucaiolienrico@gmail.com';
+// SICUREZZA: super_admin determinato ESCLUSIVAMENTE da profiles.role nel DB.
+// Nessuna email hardcoded nel sorgente pubblico.
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
 // ════════════════════════════════════════════════
-// USAGE LIMIT — 20 calcoli/giorno per utenti Free
+// USAGE LIMIT — 50 calcoli/giorno per utenti Free
 // Reset automatico a mezzanotte via localStorage
 // ════════════════════════════════════════════════
 const LIM=50;
@@ -836,8 +863,9 @@ sb.auth.onAuthStateChange(async(event,session)=>{
     }
     profile=p;
     isPro=p?.plan==='pro';
-    // Super admin: chi ha role='super_admin' O email corrispondente
-    isSuperAdmin=p?.role==='super_admin'||user.email===SUPER_ADMIN_EMAIL;
+    // Super admin: determinato SOLO dal campo role nel DB.
+    // Nessun fallback su email hardcoded → zero information disclosure nel sorgente.
+    isSuperAdmin=p?.role==='super_admin';
 
     // Se super_admin: forza isPro=true (accesso incondizionato)
     if(isSuperAdmin) isPro=true;
@@ -865,7 +893,7 @@ sb.auth.onAuthStateChange(async(event,session)=>{
     // Nav: nascondi bottoni landing, mostra bottoni app
     document.getElementById('nav-login').classList.add('hidden');
     document.getElementById('nav-reg').classList.add('hidden');
-    ['nav-badge','nav-use','proj-name','nav-export','nav-save','nav-acct','nav-out']
+    ['nav-badge','nav-use','proj-name','nav-export','nav-load','nav-save','nav-acct','nav-out']
       .forEach(id=>document.getElementById(id)?.classList.remove('hidden'));
 
     // Bottone Admin Panel: SOLO super_admin
@@ -997,7 +1025,7 @@ function resetUIToLanding(){
   document.getElementById('mode-bar').classList.add('hidden');
   document.getElementById('nav-login').classList.remove('hidden');
   document.getElementById('nav-reg').classList.remove('hidden');
-  ['nav-badge','nav-use','proj-name','nav-export','nav-save',
+  ['nav-badge','nav-use','proj-name','nav-export','nav-load','nav-save',
    'nav-admin-panel','nav-acct','nav-up','nav-out']
     .forEach(id=>document.getElementById(id)?.classList.add('hidden'));
   document.getElementById('lock-overlay')?.classList.remove('on');
@@ -1008,38 +1036,34 @@ async function doLogout(){
   const btn=document.getElementById('nav-out');
   if(btn){btn.disabled=true;btn.textContent='Uscita...';}
 
-  // ── 1. Reset stato locale PRIMA della rete ──
-  // Impedisce auto-refresh su token morto da fetch in volo.
-  user=null; profile=null; isPro=false; isSuperAdmin=false;
-  limShown=false;
-
-  // ── 2. Reset UI immediato (single render) ──
-  // Segnala che il DOM è già stato resettato → onAuthStateChange SIGNED_OUT
-  // può saltare il re-render evitando doppio DOM flush / flicker.
+  // Flag settato PRIMA di qualsiasi operazione; il finally esterno
+  // garantisce il reset anche se resetUIToLanding() o calc() lanciano.
   _logoutDone=true;
-  resetUIToLanding();
-  calc();
-
-  // ── 3. Chiude modali aperte ──
-  try{closeAuth()}catch(e){}
-  try{closePW()}catch(e){}
-  try{closeAdminPanel()}catch(e){}
-  try{closeAcct()}catch(e){}
-
-  // ── 4. signOut con fallback locale ──
-  // Strategia: tenta global signOut (invalida token server-side).
-  // Se la rete fallisce, forza scope:'local' per eliminare la sessione
-  // da localStorage garantendo logout UI anche offline.
   try{
-    await sb.auth.signOut();
-  }catch(err){
-    console.warn('[logout] signOut globale fallito, forzo locale:', err.message);
+    // ── 1. Reset stato locale PRIMA della rete ──
+    user=null; profile=null; isPro=false; isSuperAdmin=false;
+    limShown=false;
+
+    // ── 2. Reset UI immediato (single render) ──
+    resetUIToLanding();
+    calc();
+
+    // ── 3. Chiude modali aperte ──
+    try{closeAuth()}catch(e){}
+    try{closePW()}catch(e){}
+    try{closeAdminPanel()}catch(e){}
+    try{closeAcct()}catch(e){}
+
+    // ── 4. signOut con fallback locale ──
     try{
-      await sb.auth.signOut({scope:'local'});
-    }catch(localErr){
-      // Ultima risorsa: se anche il locale fallisce (edge case teorico),
-      // il localStorage è comunque inaccessibile → sessione già persa.
-      console.error('[logout] anche signOut locale fallito:', localErr.message);
+      await sb.auth.signOut();
+    }catch(err){
+      console.warn('[logout] signOut globale fallito, forzo locale:', err.message);
+      try{
+        await sb.auth.signOut({scope:'local'});
+      }catch(localErr){
+        console.error('[logout] anche signOut locale fallito:', localErr.message);
+      }
     }
   }finally{
     _logoutDone=false;
@@ -1079,7 +1103,7 @@ async function openAdminPanel(){
       ['as-tot','as-pro','as-free','as-proj','as-today','as-stripe'].forEach(id=>document.getElementById(id).textContent='—');
     }
 
-    // Users
+    // Users — costruzione DOM sicura (no innerHTML con dati utente)
     if(uR.status==='fulfilled'&&!uR.value.error){
       const users=uR.value.data||[];
       const tbody=document.getElementById('adm-tbody');
@@ -1087,14 +1111,53 @@ async function openAdminPanel(){
       users.forEach(u=>{
         const isSA=u.role==='super_admin';
         const date=new Date(u.created_at).toLocaleDateString('it-IT');
-        tbody.innerHTML+=`<tr>
-          <td class="em">${u.email||'—'}</td>
-          <td>${u.display_name||'—'}</td>
-          <td><select onchange="adminChangePlan('${u.id}',this.value)" ${isSA?'disabled':''}><option value="free" ${u.plan==='free'?'selected':''}>Free</option><option value="pro" ${u.plan==='pro'?'selected':''}>Pro</option></select></td>
-          <td class="${isSA?'role-sa':u.role==='admin'?'role-admin':''}">${u.role}</td>
-          <td style="font-family:monospace;font-size:.66rem">${date}</td>
-          <td>${!isSA?`<select onchange="adminChangeRole('${u.id}',this.value)"><option value="user" ${u.role==='user'?'selected':''}>User</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option></select>`:'<span style="color:var(--gold)">Root</span>'}</td>
-        </tr>`;
+        // Whitelist: u.id è UUID Supabase, u.role è enum controllato dal DB.
+        // u.email e u.display_name sono user-controlled → mai interpolati in innerHTML.
+        const uid=String(u.id).replace(/[^a-f0-9\-]/gi,''); // sanitize UUID extra-safety
+        const roleClass=isSA?'role-sa':u.role==='admin'?'role-admin':'';
+        const planVal=u.plan==='pro'?'pro':'free';
+        const roleVal=u.role==='admin'?'admin':'user';
+
+        const tr=document.createElement('tr');
+
+        // Email (textContent = auto-escaped)
+        const tdEm=document.createElement('td');
+        tdEm.className='em';tdEm.textContent=u.email||'—';tr.appendChild(tdEm);
+
+        // Display name (textContent = auto-escaped)
+        const tdNm=document.createElement('td');
+        tdNm.textContent=u.display_name||'—';tr.appendChild(tdNm);
+
+        // Piano select
+        const tdPlan=document.createElement('td');
+        const selPlan=document.createElement('select');
+        selPlan.disabled=isSA;
+        ['free','pro'].forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v.charAt(0).toUpperCase()+v.slice(1);if(v===planVal)o.selected=true;selPlan.appendChild(o)});
+        selPlan.addEventListener('change',()=>adminChangePlan(uid,selPlan.value));
+        tdPlan.appendChild(selPlan);tr.appendChild(tdPlan);
+
+        // Ruolo
+        const tdRole=document.createElement('td');
+        if(roleClass)tdRole.className=roleClass;
+        tdRole.textContent=u.role||'user';tr.appendChild(tdRole);
+
+        // Data
+        const tdDate=document.createElement('td');
+        tdDate.style.cssText='font-family:monospace;font-size:.66rem';
+        tdDate.textContent=date;tr.appendChild(tdDate);
+
+        // Azioni (ruolo select o label Root)
+        const tdAct=document.createElement('td');
+        if(!isSA){
+          const selRole=document.createElement('select');
+          ['user','admin'].forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v.charAt(0).toUpperCase()+v.slice(1);if(v===roleVal)o.selected=true;selRole.appendChild(o)});
+          selRole.addEventListener('change',()=>adminChangeRole(uid,selRole.value));
+          tdAct.appendChild(selRole);
+        }else{
+          const sp=document.createElement('span');sp.style.color='var(--gold)';sp.textContent='Root';tdAct.appendChild(sp);
+        }
+        tr.appendChild(tdAct);
+        tbody.appendChild(tr);
       });
       tableEl.style.display='block';
     }else{
@@ -1152,7 +1215,7 @@ function closeAcct(){document.getElementById('acct-modal').classList.remove('on'
 function openPW(reason){
   const h=document.getElementById('pw-h'),p=document.getElementById('pw-p');
   const msgs={
-    limit:  ['Limite giornaliero raggiunto','20 analisi esaurite per oggi. Pro offre calcoli illimitati.'],
+    limit:  ['Limite giornaliero raggiunto',`${LIM} analisi esaurite per oggi. Pro offre calcoli illimitati.`],
     flip:   ['Trading/Flip — Piano Pro','La simulazione flip è riservata al piano Pro.'],
     save:   ['Salvataggio — Piano Pro','Salva e recupera i tuoi progetti con il piano Pro.'],
     export: ['Export — Piano Pro','Esporta i risultati in Excel con il piano Pro.'],
@@ -1170,13 +1233,15 @@ async function checkout(period){
   const orig=btn.innerHTML;
   btn.disabled=true;btn.textContent='Collegamento a Stripe...';
   try{
-    const{data:{session},error:sErr}=await sb.auth.getSession();
-    if(sErr||!session){
-      // Sessione scaduta: prova refresh
+    // Ottieni sessione con singola catena: getSession → refresh se necessario → token.
+    // Elimina la tripla chiamata getSession che causava null access intermittente.
+    let ses=(await sb.auth.getSession()).data.session;
+    if(!ses){
       const{data:ref,error:rErr}=await sb.auth.refreshSession();
       if(rErr||!ref?.session)throw new Error('Sessione scaduta. Esci e accedi di nuovo.');
+      ses=ref.session;
     }
-    const tkn=(await sb.auth.getSession()).data.session.access_token;
+    const tkn=ses.access_token;
     // Fetch con timeout di 15s
     const controller=new AbortController();
     const timeout=setTimeout(()=>controller.abort(),15000);
@@ -1253,8 +1318,8 @@ function calc(){
     iCnt(); uPill(); limShown=false;
     document.getElementById('lock-overlay').classList.remove('on');
     const nc=gCnt();
-    if(nc===LIM-5) toast('⚠️ 5 analisi rimaste oggi.','warn');
-    if(nc===LIM)   toast('⚠️ Ultima analisi del giorno.','warn');
+    if(nc===LIM-1) toast('⚠️ Ultima analisi disponibile oggi.','warn');
+    if(nc===LIM)   toast('⚠️ Analisi giornaliere esaurite.','warn');
   } else {
     // Utente con accesso completo: garantisce che overlay e pill
     // non siano mai visibili, indipendentemente dallo stato precedente.
@@ -1359,6 +1424,110 @@ async function saveProject(){
   }
 }
 
+// ════════════════════════════════════════════════
+// CARICAMENTO PROGETTI
+// ════════════════════════════════════════════════
+function openProjectsList(){
+  if(!canSave()){openPW('save');return}
+  if(!user)return;
+  document.getElementById('proj-modal').classList.add('on');
+  fetchProjectsList();
+}
+function closeProjectsList(){document.getElementById('proj-modal').classList.remove('on')}
+
+async function fetchProjectsList(){
+  const loadEl=document.getElementById('proj-list-loading');
+  const emptyEl=document.getElementById('proj-list-empty');
+  const listEl=document.getElementById('proj-list-items');
+  loadEl.classList.remove('hidden');emptyEl.classList.add('hidden');listEl.innerHTML='';
+
+  try{
+    const{data:projects,error}=await sb.from('projects')
+      .select('name,data,updated_at')
+      .eq('user_id',user.id)
+      .order('updated_at',{ascending:false});
+    if(error)throw error;
+    loadEl.classList.add('hidden');
+
+    if(!projects||projects.length===0){
+      emptyEl.classList.remove('hidden');
+      return;
+    }
+
+    // Costruzione DOM sicura — name è user-controlled
+    projects.forEach(p=>{
+      const item=document.createElement('div');
+      item.className='proj-item';
+
+      const info=document.createElement('div');
+      info.className='proj-item-info';
+      const nameEl=document.createElement('div');
+      nameEl.className='proj-item-name';
+      nameEl.textContent=p.name||'Senza nome';
+      const dateEl=document.createElement('div');
+      dateEl.className='proj-item-date';
+      dateEl.textContent=p.updated_at?new Date(p.updated_at).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+      info.appendChild(nameEl);info.appendChild(dateEl);
+
+      const btns=document.createElement('div');
+      btns.className='proj-item-btns';
+      const loadBtn=document.createElement('button');
+      loadBtn.className='proj-load-btn';loadBtn.textContent='Carica';
+      loadBtn.addEventListener('click',()=>{applyProject(p);closeProjectsList()});
+      const delBtn=document.createElement('button');
+      delBtn.className='proj-del-btn';delBtn.textContent='✕';
+      delBtn.addEventListener('click',async()=>{
+        if(!confirm('Eliminare "'+p.name+'"?'))return;
+        await deleteProject(p.name);
+        fetchProjectsList();
+      });
+      btns.appendChild(loadBtn);btns.appendChild(delBtn);
+
+      item.appendChild(info);item.appendChild(btns);
+      listEl.appendChild(item);
+    });
+  }catch(e){
+    loadEl.textContent='Errore: '+(e.message||'sconosciuto');
+  }
+}
+
+function applyProject(p){
+  const d=p.data||{};
+  // Ripristina modalità
+  if(d.mode==='flip'&&canFlip()) setMode('flip');
+  else setMode('rent');
+
+  // Ripristina nome progetto
+  const nameInput=document.getElementById('proj-name');
+  if(nameInput) nameInput.value=p.name||d.name||'';
+
+  // Ripristina tutti i campi input
+  const ids=['price','reno','closing','city-tax','ltv','rate','years','apprec',
+    'adr','occ','ota','guests','fixed','varco','maint','vac','tax-rate',
+    'flip-price','flip-months','flip-ag','flip-hold','flip-tax'];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&d[id]!==undefined) el.value=d[id];
+  });
+
+  calc();
+  toast('✓ Progetto caricato.','ok');
+}
+
+async function deleteProject(name){
+  if(!user)return;
+  try{
+    const{error}=await sb.from('projects')
+      .delete()
+      .eq('user_id',user.id)
+      .eq('name',name);
+    if(error)throw error;
+    toast('Progetto eliminato.','ok');
+  }catch(e){
+    toast('Errore eliminazione: '+(e.message||'sconosciuto'),'err');
+  }
+}
+
 function doExport(){
   if(!canExport()){openPW('export');return}
   try{
@@ -1457,7 +1626,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // ESC → chiudi modali; Ctrl+S → salva
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){closeAuth();closePW();closeAdminPanel();closeAcct()}
+    if(e.key==='Escape'){closeAuth();closePW();closeAdminPanel();closeAcct();closeProjectsList()}
     if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();if(user)saveProject()}
   });
 
@@ -1466,6 +1635,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('pw').addEventListener('click',e=>{if(e.target===e.currentTarget)closePW()});
   document.getElementById('admin-panel').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAdminPanel()});
   document.getElementById('acct-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAcct()});
+  document.getElementById('proj-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeProjectsList()});
 });
 </script>
 </body>
