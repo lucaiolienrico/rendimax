@@ -1233,31 +1233,11 @@ async function checkout(period){
   const orig=btn.innerHTML;
   btn.disabled=true;btn.textContent='Collegamento a Stripe...';
   try{
-    // Ottieni sessione con singola catena: getSession → refresh se necessario → token.
-    // Elimina la tripla chiamata getSession che causava null access intermittente.
-    let ses=(await sb.auth.getSession()).data.session;
-    if(!ses){
-      const{data:ref,error:rErr}=await sb.auth.refreshSession();
-      if(rErr||!ref?.session)throw new Error('Sessione scaduta. Esci e accedi di nuovo.');
-      ses=ref.session;
-    }
-    const tkn=ses.access_token;
-    // Fetch con timeout di 15s
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),15000);
-    const res=await fetch(SB_URL+'/functions/v1/create-checkout',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+tkn,'apikey':SB_KEY},
-      body:JSON.stringify({priceId:pid,successUrl:location.origin+'/index.html?success=1',cancelUrl:location.origin+'/index.html?canceled=1'}),
-      signal:controller.signal
+    const{data,error:fnErr}=await sb.functions.invoke('create-checkout',{
+      body:{priceId:pid,successUrl:location.origin+'/index.html?success=1',cancelUrl:location.origin+'/index.html?canceled=1'}
     });
-    clearTimeout(timeout);
-    if(!res.ok){
-      const errData=await res.json().catch(()=>({}));
-      throw new Error(errData.error||'Errore server ('+res.status+')');
-    }
-    const data=await res.json();
-    if(!data.url)throw new Error('URL checkout non ricevuto dal server.');
+    if(fnErr)throw new Error(fnErr.message||'Errore Edge Function');
+    if(!data?.url)throw new Error('URL checkout non ricevuto dal server.');
     btn.textContent='Reindirizzamento...';
     // Marcatore persistente: se la sessione scade durante il checkout Stripe,
     // onAuthStateChange può rilevare il rientro e guidare il re-login.
