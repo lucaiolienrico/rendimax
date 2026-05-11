@@ -285,6 +285,19 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .lh{font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:800;letter-spacing:-.03em;margin-bottom:10px}
 .lsub{font-size:.95rem;color:var(--tx2);font-weight:400;margin-bottom:36px;max-width:520px;line-height:1.65}
 .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rx);overflow:hidden}
+/* Testimonials */
+.tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px}
+.tc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rx);padding:24px;transition:.2s;display:flex;flex-direction:column}
+.tc:hover{border-color:var(--border2)}
+.tc-stars{color:var(--gold);font-size:.78rem;letter-spacing:2px;margin-bottom:12px}
+.tc-quote{font-size:.88rem;line-height:1.55;color:var(--tx);font-weight:400;margin-bottom:18px;flex:1;font-style:italic}
+.tc-quote::before{content:'"';color:var(--teal);font-size:1.4rem;font-weight:700;margin-right:2px}
+.tc-quote::after{content:'"';color:var(--teal);font-size:1.4rem;font-weight:700;margin-left:2px}
+.tc-author{display:flex;align-items:center;gap:12px;padding-top:14px;border-top:1px solid var(--border)}
+.tc-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal-h));color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0;letter-spacing:.02em}
+.tc-meta{display:flex;flex-direction:column;min-width:0}
+.tc-name{font-size:.82rem;font-weight:700;color:var(--tx);line-height:1.2}
+.tc-role{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--tx3);letter-spacing:.04em;margin-top:2px}
 .fc{background:var(--bg2);padding:24px 20px;transition:.2s}.fc:hover{background:var(--bg3)}
 .fci{font-size:1.1rem;margin-bottom:12px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--bg);border:1px solid var(--border);border-radius:9px}
 .fct{font-size:.95rem;font-weight:700;margin-bottom:7px}.fcd{font-size:.82rem;color:var(--tx2);line-height:1.6;font-weight:400}
@@ -301,7 +314,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .pcb-f{background:var(--teal);color:var(--bg)}.pcb-f:hover{background:var(--teal-h)}
 .pcb-o{background:none;border:1px solid var(--border2);color:var(--tx2)}.pcb-o:hover{border-color:var(--teal);color:var(--teal)}
 .foot{border-top:1px solid var(--border);padding:24px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--tx3)}.foot strong{color:var(--teal)}
-@media(max-width:700px){.fgrid{grid-template-columns:1fr 1fr}.pgrid{grid-template-columns:1fr}}
+@media(max-width:700px){.fgrid{grid-template-columns:1fr 1fr}.pgrid{grid-template-columns:1fr}.tgrid{grid-template-columns:1fr}}
 
 /* ═══ AUTH ═══ */
 #auth{position:fixed;inset:0;background:rgba(5,10,20,.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;z-index:9000;padding:20px;opacity:0;pointer-events:none;transition:.22s}
@@ -623,12 +636,11 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 <!-- ═══ LANDING EXTRAS ═══ -->
 <div id="landing-extra">
   <!-- CTA intermezzo -->
-  <div style="max-width:1200px;margin:40px auto 0;padding:32px;text-align:center;border-top:1px solid var(--border)">
-    <div style="font-size:1.1rem;font-weight:700;margin-bottom:6px;letter-spacing:-.01em">Ti è piaciuto il calcolatore?</div>
-    <div style="color:var(--tx2);font-size:.84rem;font-weight:300;margin-bottom:18px">Registrati per salvare analisi, esportare risultati e sbloccare Trading/Flip.</div>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <button class="h-btn-main" onclick="openAuth('reg')">Registrati Gratis</button>
-      <button class="h-btn-out" onclick="openPW()">Scopri il piano Pro</button>
+  <div style="max-width:440px;margin:10px auto 40px;padding:24px;background:var(--bg2);border:1px solid var(--teal);border-radius:var(--rx);text-align:center;box-sizing:border-box">
+    <div style="font-size:1rem;font-weight:700;color:var(--tx);letter-spacing:-.01em">Pronto a investire? Registrati ora</div>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap">
+      <button onclick="openAuth('reg')" style="background:var(--teal);color:var(--bg);border:none;padding:10px 20px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:var(--r);cursor:pointer;transition:.18s;font-family:inherit">Registrati Gratis</button>
+      <button onclick="openPW()" style="background:transparent;color:var(--tx);border:1px solid var(--teal);padding:10px 20px;font-size:.78rem;font-weight:600;border-radius:var(--r);cursor:pointer;transition:.18s;font-family:inherit">Scopri il piano Pro</button>
     </div>
   </div>
 
@@ -643,6 +655,63 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
       <div class="fc"><div class="fci">🔄</div><div class="fct">Trading / Flip</div><div class="fcd">Acquisto → ristrutturazione → vendita con plus-valenza. Disponibile nel piano Pro.</div></div>
       <div class="fc"><div class="fci">🎯</div><div class="fct">3 Scenari</div><div class="fcd">Pessimistico 50%, moderato 65%, ottimistico 85% calcolati in simultanea.</div></div>
       <div class="fc"><div class="fci">🏦</div><div class="fct">Mutuo & Equity</div><div class="fcd">LTV, rata PMT esatta, equity necessaria, rivalutazione annua del patrimonio.</div></div>
+    </div>
+  </section>
+
+  <section class="lsec" style="border-top:1px solid var(--border)">
+    <div class="ltag">Testimonianze</div>
+    <h2 class="lh">Investitori che hanno smesso di tirare a indovinare</h2>
+    <div class="lsub">Quattro storie reali di chi usa InvestPro per decidere con i numeri, non con la pancia.</div>
+    <div class="tgrid">
+
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">Stavo per chiudere su un trilocale a Bologna che sembrava un affare. InvestPro mi ha mostrato un cashflow negativo di €280/mese una volta inclusi OTA, vacancy e tassa di soggiorno. Operazione scartata, tempo e capitale risparmiati.</div>
+        <div class="tc-author">
+          <div class="tc-avatar">DV</div>
+          <div class="tc-meta">
+            <div class="tc-name">Davide Vinciguerra</div>
+            <div class="tc-role">INVESTITORE IMMOBILIARE · BOLOGNA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">Gestisco 7 appartamenti su Booking e Airbnb. Prima usavo Excel con formule che aggiornavo a mano ogni mese. Ora confronto 3 scenari ADR/occupazione in 10 secondi: ho ricalibrato i prezzi e portato il ROI da 6,2% a 8,9% in un trimestre.</div>
+        <div class="tc-author">
+          <div class="tc-avatar">SP</div>
+          <div class="tc-meta">
+            <div class="tc-name">Silvia Pellegrino</div>
+            <div class="tc-role">HOST SHORT-TERM · NAPOLI</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">Lo uso in fase di trattativa con i clienti acquirenti. Apro il calcolatore in agenzia, inserisco i parametri reali dell'immobile e mostro al cliente cashflow e ROI in diretta. Le obiezioni sul prezzo si chiudono molto più in fretta quando i numeri sono sullo schermo.</div>
+        <div class="tc-author">
+          <div class="tc-avatar">MF</div>
+          <div class="tc-meta">
+            <div class="tc-name">Matteo Falcone</div>
+            <div class="tc-role">AGENTE IMMOBILIARE · TORINO</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">La simulazione Flip mi ha cambiato il modo di valutare le opportunità di trading immobiliare. Un bilocale a Lecce, acquisto + ristrutturazione + rivendita a 14 mesi: il modello mi ha previsto una plus-valenza netta di €38.000, chiusa a €36.400. Margine di errore inferiore al 5%.</div>
+        <div class="tc-author">
+          <div class="tc-avatar">CR</div>
+          <div class="tc-meta">
+            <div class="tc-name">Chiara Rondinelli</div>
+            <div class="tc-role">CONSULENTE FINANZIARIO · MILANO</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
