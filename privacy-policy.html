@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — InvestPro</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="dark"]{
+  --bg:#050a14;--bg2:#0a1628;--bg3:#0f1d35;--bg4:#162540;
+  --border:#1a2e4a;--border2:#2a4060;
+  --tx:#f0f5ff;--tx2:#b0c4de;--tx3:#5a7a9a;
+  --teal:#00d4a4;--teal-h:#00b88e;--tg:rgba(0,212,164,.12);
+  --gold:#d4a940;--r:8px;--rl:14px;--rx:20px;
+}
+[data-theme="light"]{
+  --bg:#f0f4f8;--bg2:#ffffff;--bg3:#e8eef5;--bg4:#dde5ef;
+  --border:#c8d5e5;--border2:#a8bdd0;
+  --tx:#0d1f35;--tx2:#2e4a6a;--tx3:#5a7a9a;
+  --teal:#007a5e;--teal-h:#006048;--tg:rgba(0,122,94,.10);
+  --gold:#8a6800;--r:8px;--rl:14px;--rx:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Outfit','Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.65}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(5,10,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:60px;padding:0 28px;display:flex;align-items:center;justify-content:space-between}
+[data-theme="light"] .nav{background:rgba(240,244,248,.92)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.ndot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:blink 2.4s ease infinite;display:inline-block}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.nav-logo{font-weight:800;font-size:1.05rem;color:var(--tx);letter-spacing:-.02em}
+.nav-logo span{color:var(--teal)}
+.nav-back{background:transparent;border:1px solid var(--border2);color:var(--tx2);padding:7px 16px;border-radius:var(--r);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.nav-back:hover{border-color:var(--teal);color:var(--teal)}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--tx3);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:.15s;margin-left:8px}
+.theme-btn:hover{border-color:var(--teal);color:var(--teal)}
+
+/* LAYOUT */
+.page{max-width:780px;margin:0 auto;padding:48px 28px 80px}
+.page-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+.page-title{font-size:2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
+.page-sub{color:var(--tx3);font-size:.84rem;font-family:'JetBrains Mono',monospace;margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section{margin-bottom:36px}
+h2{font-size:1.05rem;font-weight:700;color:var(--teal);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+h2::before{content:'';width:3px;height:16px;background:var(--teal);border-radius:2px;flex-shrink:0}
+p{color:var(--tx2);font-size:.88rem;line-height:1.7;margin-bottom:10px}
+ul{padding-left:20px;margin-bottom:10px}
+ul li{color:var(--tx2);font-size:.88rem;line-height:1.7;margin-bottom:4px}
+ul li::marker{color:var(--teal)}
+.info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:var(--r);padding:16px 20px;margin-bottom:10px}
+.info-box p{margin:0;font-size:.84rem}
+.tag{display:inline-block;background:var(--tg);color:var(--teal);border:1px solid rgba(0,212,164,.2);border-radius:4px;padding:1px 8px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;margin-right:4px}
+.footer-note{margin-top:48px;padding-top:24px;border-top:1px solid var(--border);color:var(--tx3);font-family:'JetBrains Mono',monospace;font-size:.62rem;text-align:center;line-height:1.8}
+.footer-note a{color:var(--teal);text-decoration:none}
+.footer-note a:hover{text-decoration:underline}
+table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:.84rem}
+th{background:var(--bg3);color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:10px 14px;color:var(--tx2);border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <span class="ndot"></span>
+    <span class="nav-logo">Invest<span>Pro</span></span>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a href="index.html" class="nav-back">← Torna all'app</a>
+    <button class="theme-btn" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='light'?'dark':'light'" title="Cambia tema">🌙</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-tag">Legale</div>
+  <h1 class="page-title">Privacy Policy</h1>
+  <div class="page-sub">Ultimo aggiornamento: 12 maggio 2026 &nbsp;·&nbsp; AppNetto S.r.l. &nbsp;·&nbsp; Versione 1.0</div>
+
+  <div class="section">
+    <h2>1. Titolare del trattamento</h2>
+    <div class="info-box">
+      <p><strong>AppNetto S.r.l.</strong><br>
+      Via Roma 14, 70121 Bari (BA) — Italia<br>
+      P.IVA: IT12345678901<br>
+      Email: <a href="mailto:privacy@appnetto.it" style="color:var(--teal)">privacy@appnetto.it</a></p>
+    </div>
+    <p>Il Titolare è responsabile delle decisioni relative alle finalità e alle modalità del trattamento dei dati personali degli utenti della piattaforma InvestPro, accessibile tramite <strong>lucaiolienrico.github.io/appnetto</strong>.</p>
+  </div>
+
+  <div class="section">
+    <h2>2. Dati raccolti</h2>
+    <p>InvestPro raccoglie esclusivamente i dati necessari al funzionamento del servizio:</p>
+    <table>
+      <thead><tr><th>Categoria</th><th>Dato</th><th>Modalità</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag">Account</span></td><td>Indirizzo email, nome visualizzato</td><td>Inserito dall'utente in fase di registrazione</td></tr>
+        <tr><td><span class="tag">Pagamenti</span></td><td>Dati di fatturazione, carta di credito</td><td>Gestiti direttamente da Stripe Inc. — non accessibili da AppNetto</td></tr>
+        <tr><td><span class="tag">Utilizzo</span></td><td>Contatore analisi giornaliere</td><td>Memorizzato in localStorage del browser</td></tr>
+        <tr><td><span class="tag">Progetti</span></td><td>Parametri delle analisi salvate</td><td>Inseriti volontariamente dall'utente e salvati su Supabase</td></tr>
+        <tr><td><span class="tag">Contatto</span></td><td>Nome e testo del messaggio</td><td>Inseriti nel widget di contatto e inviati via Resend</td></tr>
+        <tr><td><span class="tag">Tecnici</span></td><td>Log di accesso, indirizzi IP</td><td>Raccolti automaticamente da Supabase e GitHub Pages</td></tr>
+      </tbody>
+    </table>
+    <p>InvestPro <strong>non raccoglie</strong> dati sensibili, non effettua profilazione automatizzata con effetti giuridici significativi e non vende dati a terzi.</p>
+  </div>
+
+  <div class="section">
+    <h2>3. Finalità e base giuridica del trattamento</h2>
+    <table>
+      <thead><tr><th>Finalità</th><th>Base giuridica (GDPR)</th></tr></thead>
+      <tbody>
+        <tr><td>Creazione e gestione dell'account utente</td><td>Art. 6(1)(b) — Esecuzione contratto</td></tr>
+        <tr><td>Erogazione del servizio (calcoli, salvataggio progetti)</td><td>Art. 6(1)(b) — Esecuzione contratto</td></tr>
+        <tr><td>Gestione dei pagamenti tramite Stripe</td><td>Art. 6(1)(b) — Esecuzione contratto</td></tr>
+        <tr><td>Risposta ai messaggi di contatto</td><td>Art. 6(1)(f) — Legittimo interesse</td></tr>
+        <tr><td>Adempimenti fiscali e contabili</td><td>Art. 6(1)(c) — Obbligo legale</td></tr>
+        <tr><td>Prevenzione frodi e sicurezza della piattaforma</td><td>Art. 6(1)(f) — Legittimo interesse</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>4. Responsabili del trattamento (Sub-processor)</h2>
+    <table>
+      <thead><tr><th>Fornitore</th><th>Servizio</th><th>Sede</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Supabase Inc.</strong></td><td>Database, autenticazione, Edge Functions</td><td>USA — Standard Contractual Clauses</td></tr>
+        <tr><td><strong>Stripe Inc.</strong></td><td>Pagamenti online, gestione abbonamenti</td><td>USA — Standard Contractual Clauses</td></tr>
+        <tr><td><strong>Resend Inc.</strong></td><td>Invio email transazionali</td><td>USA — Standard Contractual Clauses</td></tr>
+        <tr><td><strong>GitHub Inc.</strong></td><td>Hosting statico (GitHub Pages)</td><td>USA — Standard Contractual Clauses</td></tr>
+        <tr><td><strong>Google LLC</strong></td><td>Font (Google Fonts)</td><td>USA — Standard Contractual Clauses</td></tr>
+      </tbody>
+    </table>
+    <p>Tutti i trasferimenti verso paesi terzi avvengono nel rispetto dell'art. 46 GDPR, tramite le Standard Contractual Clauses approvate dalla Commissione Europea.</p>
+  </div>
+
+  <div class="section">
+    <h2>5. Conservazione dei dati</h2>
+    <table>
+      <thead><tr><th>Tipologia</th><th>Periodo di conservazione</th></tr></thead>
+      <tbody>
+        <tr><td>Dati account (email, nome, piano)</td><td>Per tutta la durata dell'account + 12 mesi</td></tr>
+        <tr><td>Progetti salvati</td><td>Per tutta la durata dell'account</td></tr>
+        <tr><td>Dati di pagamento</td><td>10 anni (obbligo fiscale — gestiti da Stripe)</td></tr>
+        <tr><td>Log di accesso e sicurezza</td><td>90 giorni</td></tr>
+        <tr><td>Messaggi di contatto</td><td>24 mesi</td></tr>
+      </tbody>
+    </table>
+    <p>Alla cancellazione dell'account, i dati personali vengono eliminati entro 30 giorni, fatti salvi gli obblighi di legge.</p>
+  </div>
+
+  <div class="section">
+    <h2>6. Diritti dell'interessato</h2>
+    <p>In base al Regolamento UE 2016/679 (GDPR), hai il diritto di:</p>
+    <ul>
+      <li><strong>Accesso</strong> — ottenere conferma del trattamento e copia dei dati (art. 15)</li>
+      <li><strong>Rettifica</strong> — correggere dati inesatti o incompleti (art. 16)</li>
+      <li><strong>Cancellazione</strong> — richiedere la rimozione dei dati ("diritto all'oblio", art. 17)</li>
+      <li><strong>Limitazione</strong> — richiedere la sospensione del trattamento (art. 18)</li>
+      <li><strong>Portabilità</strong> — ricevere i dati in formato strutturato (art. 20)</li>
+      <li><strong>Opposizione</strong> — opporti al trattamento basato su legittimo interesse (art. 21)</li>
+      <li><strong>Revoca del consenso</strong> — ove il trattamento si basi sul consenso (art. 7)</li>
+    </ul>
+    <p>Per esercitare questi diritti, scrivi a <a href="mailto:privacy@appnetto.it" style="color:var(--teal)">privacy@appnetto.it</a>. Risponderemo entro 30 giorni. Hai inoltre il diritto di proporre reclamo al Garante per la Protezione dei Dati Personali (<a href="https://www.garanteprivacy.it" target="_blank" style="color:var(--teal)">garanteprivacy.it</a>).</p>
+  </div>
+
+  <div class="section">
+    <h2>7. Cookie e archiviazione locale</h2>
+    <p>InvestPro utilizza il <strong>localStorage</strong> del browser per memorizzare il contatore giornaliero delle analisi e le preferenze di tema. Non viene utilizzato alcun cookie di profilazione. Per maggiori dettagli consulta la nostra <a href="cookie-policy.html" style="color:var(--teal)">Cookie Policy</a>.</p>
+  </div>
+
+  <div class="section">
+    <h2>8. Sicurezza</h2>
+    <p>Adottiamo misure tecniche e organizzative adeguate a proteggere i dati personali, tra cui:</p>
+    <ul>
+      <li>Comunicazioni cifrate via HTTPS/TLS</li>
+      <li>Autenticazione sicura tramite Supabase Auth con JWT</li>
+      <li>Row Level Security (RLS) su tutte le tabelle del database</li>
+      <li>Nessuna memorizzazione di dati di pagamento — gestiti interamente da Stripe</li>
+      <li>Accesso ai dati limitato al personale strettamente necessario</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>9. Modifiche alla Privacy Policy</h2>
+    <p>AppNetto S.r.l. si riserva il diritto di aggiornare questa informativa. Le modifiche sostanziali saranno comunicate agli utenti registrati via email con almeno 15 giorni di preavviso. La versione aggiornata sarà sempre disponibile a questo indirizzo.</p>
+  </div>
+
+  <div class="footer-note">
+    <strong style="color:var(--teal)">AppNetto S.r.l.</strong> &nbsp;·&nbsp; P.IVA IT12345678901 &nbsp;·&nbsp; Via Roma 14, 70121 Bari (BA)<br>
+    <a href="termini-e-condizioni.html">Termini e Condizioni</a> &nbsp;·&nbsp;
+    <a href="cookie-policy.html">Cookie Policy</a> &nbsp;·&nbsp;
+    <a href="index.html">Torna all'app</a>
+  </div>
+</div>
+</body>
+</html>
