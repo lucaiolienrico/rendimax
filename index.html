@@ -89,33 +89,6 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .pill-use{padding:4px 10px;border-radius:20px;font-family:'JetBrains Mono','Courier New',monospace;font-size:.62rem;background:var(--bg3);border:1px solid var(--border);color:var(--tx3);-webkit-transition:.3s;transition:.3s}
 .pill-use.warn{color:var(--amber);border-color:rgba(240,160,48,.4)}.pill-use.danger{color:var(--red);border-color:rgba(255,81,112,.4)}
 .pinput{background:transparent;border:none;border-bottom:1px dashed var(--border2);color:var(--tx);font-size:.82rem;font-weight:500;padding:4px 8px;width:150px;outline:none}.pinput:focus{border-color:var(--teal)}
-.nb-admin{background:rgba(212,169,64,.10);border:1px solid rgba(212,169,64,.35)!important;color:var(--gold)!important}.nb-admin:hover{background:rgba(212,169,64,.2)!important}
-
-/* ═══ ADMIN PANEL ═══ */
-#admin-panel{position:fixed;inset:0;background:rgba(5,10,20,.92);backdrop-filter:blur(16px);z-index:8500;overflow-y:auto;opacity:0;pointer-events:none;transition:.25s;padding:20px}
-#admin-panel.on{opacity:1;pointer-events:all}
-.adm-wrap{max-width:920px;margin:20px auto;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rx);padding:32px;transform:translateY(10px);transition:.25s}
-#admin-panel.on .adm-wrap{transform:none}
-.adm-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
-.adm-title{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
-.adm-close{background:var(--bg3);border:1px solid var(--border);color:var(--tx3);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:.15s;flex-shrink:0}.adm-close:hover{color:var(--tx);border-color:var(--border2)}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px}
-.stat-c{background:var(--bg);border:1px solid var(--border);border-radius:var(--rl);padding:18px 14px;text-align:center;transition:.2s}.stat-c:hover{border-color:var(--border2)}
-.stat-v{font-family:'JetBrains Mono',monospace;font-size:1.9rem;font-weight:700;color:var(--teal);line-height:1}
-.stat-l{font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
-.adm-section-lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:7px}.adm-section-lbl::before{content:'';width:14px;height:1px;background:var(--teal)}
-.users-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rl)}
-.users-tbl{width:100%;border-collapse:collapse;font-size:.78rem}
-.users-tbl th{font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);background:var(--bg3);white-space:nowrap}
-.users-tbl td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--tx2);vertical-align:middle}
-.users-tbl tr:last-child td{border-bottom:none}
-.users-tbl tr:hover td{background:rgba(0,212,164,.03)}
-.users-tbl .em{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--tx)}
-.users-tbl select{background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--tx);padding:4px 8px;font-size:.72rem;outline:none;cursor:pointer}
-.u-save{background:var(--teal);border:none;color:var(--bg);padding:4px 10px;border-radius:4px;font-size:.68rem;font-weight:700;cursor:pointer;transition:.15s}.u-save:hover{background:var(--teal-h)}
-.role-sa{color:var(--gold)!important;font-weight:700}.role-admin{color:var(--teal)!important;font-weight:600}
-.plan-pro{color:var(--teal)!important;font-weight:600}.plan-free{color:var(--amber)!important}
-.adm-loading{text-align:center;padding:32px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--tx3)}
 
 /* ═══ HERO ═══ */
 #hero{max-width:1240px;margin:0 auto;padding:64px 40px 40px;position:relative;z-index:1}
@@ -224,7 +197,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .df{display:flex;flex-direction:column;gap:4px}.df.full{grid-column:1/-1}
 .dl{font-family:'JetBrains Mono','Courier New',Courier,monospace;font-size:.58rem;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.06em;font-weight:500}
 .dw{position:relative;display:flex;align-items:center}
-.dp,.ds{position:absolute;font-family:'JetBrains Mono','Courier New',Courier,monospace;font-size:.78rem;color:rgba(255,255,255,.65);pointer-events:none;font-weight:600}.dp{left:10px}.ds{right:10px}.dp{left:9px}.ds{right:9px}
+.dp,.ds{position:absolute;font-family:'JetBrains Mono','Courier New',Courier,monospace;font-size:.78rem;color:rgba(255,255,255,.65);pointer-events:none;font-weight:600}.dp{left:9px}.ds{right:9px}
 .di{width:100%;padding:9px 10px;background:var(--input-bg);border:1px solid var(--input-border);border-radius:5px;color:#ffffff;font-size:.84rem;font-weight:500;outline:none;-webkit-transition:border-color .2s,box-shadow .2s;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
 .di:focus{border-color:#00d4a4;-webkit-box-shadow:0 0 0 3px rgba(0,212,164,.22);box-shadow:0 0 0 3px rgba(0,212,164,.22);color:#ffffff}.di.hp{padding-left:22px}.di.hs{padding-right:22px}
 .di[readonly]{background:rgba(0,212,164,.06);color:var(--teal);font-weight:600;font-family:'JetBrains Mono',monospace;font-size:.74rem}
@@ -302,7 +275,7 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .fci{font-size:1.1rem;margin-bottom:12px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--bg);border:1px solid var(--border);border-radius:9px}
 .fct{font-size:.95rem;font-weight:700;margin-bottom:7px}.fcd{font-size:.82rem;color:var(--tx2);line-height:1.6;font-weight:400}
 /* Pricing */
-.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;margin-top:32px}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:960px;margin-top:32px}
 .pc{border:1px solid var(--border2);border-radius:var(--rx);padding:28px 24px;position:relative;overflow:hidden}
 .pc.hi{border-color:var(--teal);background:var(--tg)}
 .pc.hi::before{content:'CONSIGLIATO';position:absolute;top:0;right:20px;background:var(--teal);color:var(--bg);font-family:'JetBrains Mono',monospace;font-size:.5rem;font-weight:600;letter-spacing:.08em;padding:3px 7px;border-radius:0 0 5px 5px}
@@ -357,6 +330,7 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
 #chat-send{width:100%;padding:10px;background:var(--teal);color:var(--bg);border:none;border-radius:var(--r);font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
 #chat-send:hover{opacity:.88}
 #chat-sent{display:none;text-align:center;padding:20px 0;font-size:.8rem;color:var(--teal)}
+@media(max-width:900px){.pgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.fgrid{grid-template-columns:1fr 1fr}.pgrid{grid-template-columns:1fr}.tgrid{grid-template-columns:1fr}}
 
 /* ═══ AUTH ═══ */
@@ -438,6 +412,7 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
 .pwsave{background:var(--gold);color:var(--bg);font-size:.52rem;font-weight:800;padding:2px 6px;border-radius:8px}
 .pwnote{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--tx3);margin-top:8px}
 .pwskip{width:100%;background:none;border:1px solid var(--border);border-radius:var(--r);padding:8px;font-size:.72rem;color:var(--tx3);margin-top:8px;transition:.18s}.pwskip:hover{color:var(--tx)}
+@media screen and (max-width:680px){#pw .pwbox{max-width:95vw!important;padding:20px 14px}#pw .pwbox>div[style*="grid-template-columns"]{grid-template-columns:1fr!important}}
 
 /* ═══ TOAST ═══ */
 #toasts{position:fixed;top:12px;right:12px;z-index:9500;display:flex;flex-direction:column;gap:6px;pointer-events:none}
@@ -514,7 +489,7 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
     <button class="nb nb-f" id="nav-reg" onclick="openAuth('reg')">Registrati</button>
     <!-- Visibili solo dopo login -->
     <span class="pill pill-free hidden" id="nav-badge">FREE</span>
-    <span class="pill-use hidden" id="nav-use">0/20</span>
+    <span class="pill-use hidden" id="nav-use">0/50</span>
     <input class="pinput hidden" id="proj-name" type="text" value="Nuova Analisi" placeholder="Nome analisi…">
     <button class="nb nb-o hidden" id="nav-export" onclick="doExport()">↗ Export</button>
     <button class="nb nb-o hidden" id="nav-load" onclick="openProjectsList()">📂 Carica</button>
@@ -600,7 +575,7 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
   <div class="fbar">
     <div class="fdots"><i class="fd1"></i><i class="fd2"></i><i class="fd3"></i></div>
     <div class="furl">investpro · analisi live</div>
-    <div class="fpill" id="frame-pill">0/20</div>
+    <div class="fpill" id="frame-pill">0/50</div>
   </div>
   <div class="fbody">
     <div class="finputs">
@@ -761,8 +736,9 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
   <section class="lsec" style="border-top:1px solid var(--border);padding-top:60px">
     <div class="ltag">Pricing</div>
     <h2 class="lh">Inizia gratis. Scala quando serve.</h2>
-    <div class="lsub">50 analisi al giorno con il piano Free. Pro sblocca tutto senza limiti.</div>
+    <div class="lsub">Quattro piani per ogni fase del tuo percorso immobiliare.</div>
     <div class="pgrid">
+      <!-- FREE -->
       <div class="pc">
         <div class="pcp">Free</div>
         <div class="pca"><span class="cur">€</span>0</div>
@@ -770,11 +746,30 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
         <ul class="pcf"><li>50 analisi/giorno</li><li>Messa a Reddito</li><li>4 regimi fiscali</li><li>Scenari</li></ul>
         <button class="pcb pcb-o" onclick="openAuth('reg')">Inizia Gratis</button>
       </div>
-      <div class="pc hi">
+      <!-- PRO -->
+      <div class="pc">
         <div class="pcp">Pro</div>
         <div class="pca"><span class="cur">€</span>29<span style="font-size:1rem;margin-top:8px">,90</span></div>
         <div class="pcper">/mese · o €199/anno (−45%)</div>
         <ul class="pcf"><li>Analisi illimitate</li><li>Trading / Flip</li><li>Salvataggio progetti</li><li>Export Excel</li><li>Supporto prioritario</li></ul>
+        <button class="pcb pcb-f" onclick="openPW()">Scegli Pro →</button>
+      </div>
+      <!-- PRO+ (CONSIGLIATO) -->
+      <div class="pc hi">
+        <div class="pcp">Pro+</div>
+        <div class="pca"><span class="cur">€</span>59</div>
+        <div class="pcper">/mese</div>
+        <ul class="pcf"><li>Tutto di Pro</li><li>Report PDF brandizzato</li><li>Storico analisi completo</li><li>Supporto prioritario</li></ul>
+        <button class="pcb pcb-f" onclick="openPW()">Scegli Pro+ →</button>
+      </div>
+      <!-- AGENCY -->
+      <div class="pc" style="border-color:var(--gold)">
+        <div class="pcp" style="color:var(--gold)">Agency</div>
+        <div class="pca"><span class="cur">€</span>149</div>
+        <div class="pcper">/mese</div>
+        <ul class="pcf"><li>Tutto di Pro+</li><li>5 utenti inclusi</li><li>Dashboard condivisa</li><li>White-label parziale</li></ul>
+        <button class="pcb" style="background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:11px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;width:100%;transition:.18s" onclick="openPW()">Scegli Agency →</button>
+      </div>
     </div>
 
     <!-- Payment Trust Badge -->
@@ -854,7 +849,6 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/></svg>
     </button>
   </div>
-</div>
 <!-- ═══ AUTH ═══ -->
 <div id="auth">
   <div class="abox">
@@ -941,16 +935,58 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
 
 <!-- ═══ PAYWALL ═══ -->
 <div id="pw">
-  <div class="pwbox">
-    <div class="pwtag">InvestPro Pro</div>
+  <div class="pwbox" style="max-width:720px">
+    <div class="pwtag">Scegli il tuo piano</div>
     <div class="pwh" id="pw-h">Sblocca l'analisi completa</div>
-    <div class="pwp" id="pw-p">Piano Free: 50 analisi/giorno. Pro sblocca tutto senza limiti.</div>
-    <ul class="pwf"><li>Analisi illimitate</li><li>Trading / Flip</li><li>Salvataggio progetti</li><li>Export Excel</li><li>Supporto prioritario</li></ul>
-    <div class="pwbtns">
-      <button class="pwb pwm" id="co-m" onclick="checkout('monthly')">€29,90 / mese</button>
-      <button class="pwb pwy" id="co-y" onclick="checkout('yearly')"><span>€199 / anno</span><span class="pwsave">−45%</span></button>
+    <div class="pwp" id="pw-p">Nessuna carta richiesta per il piano Free.</div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0">
+
+      <!-- PRO -->
+      <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rl);padding:16px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em">Pro</div>
+        <div style="font-size:1.4rem;font-weight:800;color:var(--tx)">€29,90<span style="font-size:.75rem;font-weight:400;color:var(--tx2)">/mese</span></div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;font-size:.76rem;color:var(--tx2);flex:1;padding:0">
+          <li>✓ Analisi illimitate</li>
+          <li>✓ Trading / Flip</li>
+          <li>✓ Salvataggio progetti</li>
+          <li>✓ Export Excel</li>
+          <li>✓ Supporto prioritario</li>
+        </ul>
+        <button class="pwb pwm" id="co-m" onclick="checkout('monthly')" style="margin-top:8px">Scegli Pro</button>
+        <button style="background:none;border:none;color:var(--tx3);font-size:.68rem;cursor:pointer;text-decoration:underline" id="co-y" onclick="checkout('yearly')">oppure €199/anno (−45%)</button>
+      </div>
+
+      <!-- PRO+ -->
+      <div style="background:var(--bg3);border:2px solid var(--teal);border-radius:var(--rl);padding:16px;display:flex;flex-direction:column;gap:8px;position:relative">
+        <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--teal);color:var(--bg);font-size:.58rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.06em;white-space:nowrap">PIÙ POPOLARE</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em">Pro+</div>
+        <div style="font-size:1.4rem;font-weight:800;color:var(--tx)">€59<span style="font-size:.75rem;font-weight:400;color:var(--tx2)">/mese</span></div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;font-size:.76rem;color:var(--tx2);flex:1;padding:0">
+          <li>✓ Tutto di Pro</li>
+          <li style="color:var(--teal);font-weight:600">✓ Report PDF brandizzato</li>
+          <li style="color:var(--teal);font-weight:600">✓ Storico analisi completo</li>
+          <li>✓ Supporto prioritario</li>
+        </ul>
+        <button class="pwb pwm" id="co-pp" onclick="checkout('proplus')" style="margin-top:8px">Scegli Pro+</button>
+      </div>
+
+      <!-- AGENCY -->
+      <div style="background:var(--bg3);border:1px solid var(--gold);border-radius:var(--rl);padding:16px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--gold);text-transform:uppercase;letter-spacing:.07em">Agency</div>
+        <div style="font-size:1.4rem;font-weight:800;color:var(--tx)">€149<span style="font-size:.75rem;font-weight:400;color:var(--tx2)">/mese</span></div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;font-size:.76rem;color:var(--tx2);flex:1;padding:0">
+          <li>✓ Tutto di Pro+</li>
+          <li style="color:var(--gold);font-weight:600">✓ 5 utenti inclusi</li>
+          <li style="color:var(--gold);font-weight:600">✓ Dashboard condivisa</li>
+          <li style="color:var(--gold);font-weight:600">✓ White-label parziale</li>
+        </ul>
+        <button class="pwb" id="co-ag" onclick="checkout('agency')" style="margin-top:8px;background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:10px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.18s">Scegli Agency</button>
+      </div>
+
     </div>
-    <div class="pwnote">// Stripe · Cancella quando vuoi</div>
+
+    <div class="pwnote">// Stripe · Cancella quando vuoi · Nessun costo nascosto</div>
     <button class="pwskip" onclick="closePW()">Continua con Free</button>
   </div>
 </div>
@@ -979,6 +1015,8 @@ const SB_URL='https://amzjefyegfxkpzjifynj.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtemplZnllZ2Z4a3B6amlmeW5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1Mjk4NTcsImV4cCI6MjA5MjEwNTg1N30.RDnpaTFtSkx2wmI5vWScef2x9CFgyGxPoAvXy-1lNrE';
 const PRM='price_1T0KhVCP1ytB9mXWR6roA7uB'; // €29,90/mese
 const PRY='price_1TQmhkCP1ytB9mXWHDVnQiKU'; // €199/anno
+const PPM='price_1TWETICP1ytB9mXWNf4YyJPr'; // €59/mese  Pro+
+const AGM='price_1TWETUCP1ytB9mXWwBTgcJJw'; // €149/mese Agency
 // SICUREZZA: super_admin determinato ESCLUSIVAMENTE da profiles.role nel DB.
 // Nessuna email hardcoded nel sorgente pubblico.
 const sb=supabase.createClient(SB_URL,SB_KEY);
@@ -1002,7 +1040,7 @@ function uPill(){
   const c=gCnt();
   document.querySelectorAll('#frame-pill,#nav-use').forEach(el=>{
     // Super admin e Pro: nessun limite visualizzato
-    if(isSuperAdmin||isPro){el.classList.add('hidden');return}
+    if(hasFullAccess()){el.classList.add('hidden');return}
     el.classList.remove('hidden','warn','danger');
     el.textContent=`${c}/${LIM}`;
     if(c>=LIM)el.classList.add('danger');
@@ -1013,17 +1051,18 @@ function uPill(){
 // ════════════════════════════════════════════════
 // STATO GLOBALE + RBAC
 // ════════════════════════════════════════════════
-let user=null, isPro=false, isSuperAdmin=false, profile=null, mode='rent', limShown=false;
+let user=null, isPro=false, isProPlus=false, isAgency=false, isSuperAdmin=false, profile=null, mode='rent', limShown=false;
 let _pendingAuth=null;
 let _authProcessing=false;
 let _logoutDone=false;
 
-// Helper RBAC — il super_admin bypassa tutto
-const hasFullAccess = ()=> isSuperAdmin || isPro;
-const canFlip       = ()=> isSuperAdmin || isPro;
-const canSave       = ()=> isSuperAdmin || isPro;
-const canExport     = ()=> isSuperAdmin || isPro;
-const isLimited     = ()=> !isSuperAdmin && !isPro;
+// Pro+ e Agency includono tutto ciò che ha Pro
+const hasFullAccess = ()=> isSuperAdmin || isPro || isProPlus || isAgency;
+const canFlip       = ()=> hasFullAccess();
+const canSave       = ()=> hasFullAccess();
+const canExport     = ()=> hasFullAccess();
+const canPDF        = ()=> isSuperAdmin || isProPlus || isAgency;
+const isLimited     = ()=> !hasFullAccess();
 
 // ════════════════════════════════════════════════
 // AUTH LIFECYCLE
@@ -1061,8 +1100,10 @@ async function _handleAuth(event,session){
 
     profile=p;
     isPro=p?.plan==='pro';
+    isProPlus=p?.plan==='pro_plus';
+    isAgency=p?.plan==='agency';
     isSuperAdmin=p?.role==='super_admin';
-    if(isSuperAdmin) isPro=true;
+    if(isSuperAdmin){isPro=true;isProPlus=true;isAgency=true;}
 
     if(hasFullAccess()){
       limShown=false;
@@ -1099,6 +1140,8 @@ async function _handleAuth(event,session){
     const badge=document.getElementById('nav-badge');
     if(badge){
       if(isSuperAdmin){badge.textContent='★ ADMIN';badge.className='pill pill-sa'}
+      else if(isAgency) {badge.textContent='◈ AGENCY';badge.className='pill pill-sa'}
+      else if(isProPlus){badge.textContent='✦ PRO+';badge.className='pill pill-pro'}
       else if(isPro)  {badge.textContent='✦ PRO';  badge.className='pill pill-pro'}
       else            {badge.textContent='FREE';    badge.className='pill pill-free'}
     }
@@ -1112,7 +1155,7 @@ async function _handleAuth(event,session){
     calc();
   } else {
     if(_logoutDone) return;
-    user=null; isPro=false; isSuperAdmin=false; profile=null; limShown=false;
+    user=null; isPro=false; isProPlus=false; isAgency=false; isSuperAdmin=false; profile=null; limShown=false;
 
     let stripeIntent=false;
     try{stripeIntent=!!localStorage.getItem('ip_stripe_intent')}catch(e){}
@@ -1285,7 +1328,7 @@ async function doLogout(){
   if(btn){btn.disabled=true;btn.textContent='Uscita...';}
   _logoutDone=true;
   try{
-    user=null; profile=null; isPro=false; isSuperAdmin=false;
+    user=null; profile=null; isPro=false; isProPlus=false; isAgency=false; isSuperAdmin=false;
     limShown=false;
     resetUIToLanding();
     calc();
@@ -1352,7 +1395,7 @@ async function openAdminPanel(){
         // u.email e u.display_name sono user-controlled → mai interpolati in innerHTML.
         const uid=String(u.id).replace(/[^a-f0-9\-]/gi,''); // sanitize UUID extra-safety
         const roleClass=isSA?'role-sa':u.role==='admin'?'role-admin':'';
-        const planVal=u.plan==='pro'?'pro':'free';
+        const planVal=['free','pro','pro_plus','agency'].includes(u.plan)?u.plan:'free';
         const roleVal=u.role==='admin'?'admin':'user';
 
         const tr=document.createElement('tr');
@@ -1369,7 +1412,7 @@ async function openAdminPanel(){
         const tdPlan=document.createElement('td');
         const selPlan=document.createElement('select');
         selPlan.disabled=isSA;
-        ['free','pro'].forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v.charAt(0).toUpperCase()+v.slice(1);if(v===planVal)o.selected=true;selPlan.appendChild(o)});
+        ['free','pro','pro_plus','agency'].forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v==='pro_plus'?'Pro+':v.charAt(0).toUpperCase()+v.slice(1);if(v===planVal)o.selected=true;selPlan.appendChild(o)});
         selPlan.addEventListener('change',()=>adminChangePlan(uid,selPlan.value));
         tdPlan.appendChild(selPlan);tr.appendChild(tdPlan);
 
@@ -1434,8 +1477,10 @@ function openAcct(){
   document.getElementById('acct-email').textContent=user?.email||'—';
   const planEl=document.getElementById('acct-plan');
   if(isSuperAdmin){planEl.textContent='★ SUPER ADMIN';planEl.className='adv gold'}
-  else if(isPro)  {planEl.textContent='✦ PRO';         planEl.className='adv teal'}
-  else            {planEl.textContent='Free';           planEl.className='adv amber'}
+  else if(isAgency) {planEl.textContent='◈ AGENCY';     planEl.className='adv gold'}
+  else if(isProPlus){planEl.textContent='✦ PRO+';       planEl.className='adv teal'}
+  else if(isPro)    {planEl.textContent='✦ PRO';         planEl.className='adv teal'}
+  else              {planEl.textContent='Free';           planEl.className='adv amber'}
   document.getElementById('acct-role').textContent=profile?.role||'user';
   document.getElementById('acct-usage').textContent=isLimited()?`${gCnt()}/${LIM} oggi`:'Illimitate';
   document.getElementById('acct-exp').textContent=profile?.plan_expires_at
@@ -1465,17 +1510,20 @@ function closePW(){document.getElementById('pw').classList.remove('on')}
 
 async function checkout(period){
   if(!user){openAuth('reg');closePW();toast('Registrati prima di acquistare.','warn');return}
-  const pid=period==='monthly'?PRM:PRY;
-  const btn=document.getElementById(period==='monthly'?'co-m':'co-y');
-  const orig=btn.innerHTML;
-  btn.disabled=true;btn.textContent='Collegamento a Stripe...';
+  const pidMap={monthly:PRM,yearly:PRY,proplus:PPM,agency:AGM};
+  const btnMap={monthly:'co-m',yearly:'co-y',proplus:'co-pp',agency:'co-ag'};
+  const pid=pidMap[period];
+  if(!pid){toast('Piano non riconosciuto.','err');return}
+  const btn=document.getElementById(btnMap[period]);
+  const orig=btn?.innerHTML;
+  if(btn){btn.disabled=true;btn.textContent='Collegamento a Stripe...';}
   try{
     const{data,error:fnErr}=await sb.functions.invoke('create-checkout',{
-      body:{priceId:pid,successUrl:location.origin+'/index.html?success=1',cancelUrl:location.origin+'/index.html?canceled=1'}
+      body:{priceId:pid,successUrl:location.origin+location.pathname+'?success=1',cancelUrl:location.origin+location.pathname+'?canceled=1'}
     });
     if(fnErr)throw new Error(fnErr.message||'Errore Edge Function');
     if(!data?.url)throw new Error('URL checkout non ricevuto dal server.');
-    btn.textContent='Reindirizzamento...';
+    if(btn)btn.textContent='Reindirizzamento...';
     // Marcatore persistente: se la sessione scade durante il checkout Stripe,
     // onAuthStateChange può rilevare il rientro e guidare il re-login.
     try{localStorage.setItem('ip_stripe_intent',Date.now().toString())}catch(e){}
@@ -1483,7 +1531,7 @@ async function checkout(period){
   }catch(e){
     if(e.name==='AbortError') toast('Timeout: il server non risponde. Riprova.','err');
     else toast('Errore: '+e.message,'err');
-    btn.disabled=false;btn.innerHTML=orig;
+    if(btn){btn.disabled=false;btn.innerHTML=orig;}
   }
 }
 
