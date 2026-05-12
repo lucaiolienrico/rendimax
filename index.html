@@ -1216,24 +1216,49 @@ async function doReg(){
 // LIVE CHAT WIDGET — invio asincrono via email
 // ════════════════════════════════════════════════
 async function sendChatMsg(){
-  const name=document.getElementById('chat-name').value.trim();
-  const msg=document.getElementById('chat-msg').value.trim();
-  if(!name||!msg){toast('Inserisci nome e messaggio.','err');return}
+  const nameEl=document.getElementById('chat-name');
+  const msgEl=document.getElementById('chat-msg');
+  const name=nameEl.value.trim();
+  const message=msgEl.value.trim();
+  if(!name||!message){toast('Inserisci nome e messaggio.','err');return}
+
   const btn=document.getElementById('chat-send');
+  const orig=btn.textContent;
   btn.disabled=true;btn.textContent='Invio in corso...';
+
   try{
-    // Invio via Supabase Edge Function oppure mailto fallback
-    // Se non è configurata una Edge Function mail, usa mailto come fallback affidabile
-    const subject=encodeURIComponent('[InvestPro Chat] Messaggio da '+name);
-    const body=encodeURIComponent('Nome: '+name+'\n\nMessaggio:\n'+msg);
-    window.open('mailto:support@appnetto.it?subject='+subject+'&body='+body,'_blank');
+    // Chiama la Edge Function send-contact → email a lucaiolienrico@gmail.com
+    const res=await fetch(SB_URL+'/functions/v1/send-contact',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY},
+      body:JSON.stringify({name,message})
+    });
+
+    const data=await res.json().catch(()=>({}));
+
+    if(!res.ok){
+      // Fallback mailto se la Edge Function non è raggiungibile
+      const sub=encodeURIComponent('[InvestPro] Messaggio da '+name);
+      const bod=encodeURIComponent('Nome: '+name+'\n\nMessaggio:\n'+message);
+      window.open('mailto:lucaiolienrico@gmail.com?subject='+sub+'&body='+bod,'_blank');
+      toast('Email aperta nel client di posta.','ok');
+      btn.disabled=false;btn.textContent=orig;
+      return;
+    }
+
+    // Successo: nasconde il form e mostra conferma
     document.getElementById('chat-sent').style.display='block';
-    document.getElementById('chat-name').style.display='none';
-    document.getElementById('chat-msg').style.display='none';
+    nameEl.style.display='none';
+    msgEl.style.display='none';
     btn.style.display='none';
-  }catch(e){
-    toast('Errore invio. Scrivi a support@appnetto.it','err');
-    btn.disabled=false;btn.textContent='Invia messaggio →';
+    toast('✓ Messaggio inviato!','ok');
+
+  }catch(err){
+    // Fallback mailto su errore di rete
+    const sub=encodeURIComponent('[InvestPro] Messaggio da '+name);
+    const bod=encodeURIComponent('Nome: '+name+'\n\nMessaggio:\n'+message);
+    window.open('mailto:lucaiolienrico@gmail.com?subject='+sub+'&body='+bod,'_blank');
+    btn.disabled=false;btn.textContent=orig;
   }
 }
 // ════════════════════════════════════════════════
