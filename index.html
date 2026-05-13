@@ -275,15 +275,15 @@ body::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;background:r
 .fci{font-size:1.1rem;margin-bottom:12px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--bg);border:1px solid var(--border);border-radius:9px}
 .fct{font-size:.95rem;font-weight:700;margin-bottom:7px}.fcd{font-size:.82rem;color:var(--tx2);line-height:1.6;font-weight:400}
 /* Pricing */
-.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:960px;margin-top:32px}
-.pc{border:1px solid var(--border2);border-radius:var(--rx);padding:28px 24px;position:relative;overflow:hidden}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:960px;margin-top:28px}
+.pc{border:1px solid var(--border2);border-radius:var(--rx);padding:20px 18px;position:relative;overflow:hidden;display:flex;flex-direction:column}
 .pc.hi{border-color:var(--teal);background:var(--tg)}
-.pc.hi::before{content:'CONSIGLIATO';position:absolute;top:0;right:20px;background:var(--teal);color:var(--bg);font-family:'JetBrains Mono',monospace;font-size:.5rem;font-weight:600;letter-spacing:.08em;padding:3px 7px;border-radius:0 0 5px 5px}
-.pcp{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-.pca{font-size:2.2rem;font-weight:900;letter-spacing:-.04em;margin-bottom:2px;display:flex;align-items:flex-start;gap:3px}.pca .cur{font-size:1rem;margin-top:6px;color:var(--tx2)}
-.pcper{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--tx3);margin-bottom:18px}
-.pcf{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:20px}.pcf li{font-size:.78rem;color:var(--tx2);display:flex;gap:5px;font-weight:300}.pcf li::before{content:'→';color:var(--teal);flex-shrink:0}
-.pcb{width:100%;border:none;border-radius:var(--r);padding:11px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:.18s;cursor:pointer}
+.pc.hi::before{content:'CONSIGLIATO';position:absolute;top:0;right:16px;background:var(--teal);color:var(--bg);font-family:'JetBrains Mono',monospace;font-size:.48rem;font-weight:600;letter-spacing:.08em;padding:2px 7px;border-radius:0 0 5px 5px}
+.pcp{font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.pca{font-size:1.8rem;font-weight:900;letter-spacing:-.04em;margin-bottom:1px;display:flex;align-items:flex-start;gap:2px}.pca .cur{font-size:.85rem;margin-top:4px;color:var(--tx2)}
+.pcper{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--tx3);margin-bottom:14px}
+.pcf{list-style:none;display:flex;flex-direction:column;gap:4px;margin-bottom:0;flex:1}.pcf li{font-size:.72rem;color:var(--tx2);display:flex;gap:5px;font-weight:300;line-height:1.3}.pcf li::before{content:'→';color:var(--teal);flex-shrink:0}
+.pcb{width:100%;border:none;border-radius:var(--r);padding:10px;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:.18s;cursor:pointer;margin-top:auto}
 .pcb-f{background:var(--teal);color:var(--bg)}.pcb-f:hover{background:var(--teal-h)}
 .pcb-o{background:none;border:1px solid var(--border2);color:var(--tx2)}.pcb-o:hover{border-color:var(--teal);color:var(--teal)}
 .foot{border-top:1px solid var(--border);padding:40px 40px 28px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--tx3)}
@@ -768,7 +768,7 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
         <div class="pca"><span class="cur">€</span>149</div>
         <div class="pcper">/mese</div>
         <ul class="pcf"><li>Tutto di Pro+</li><li>5 utenti inclusi</li><li>Dashboard condivisa</li><li>White-label parziale</li></ul>
-        <button class="pcb" style="background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:11px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;width:100%;transition:.18s" onclick="openPW()">Scegli Agency →</button>
+        <button class="pcb" style="background:var(--gold);color:var(--bg)" onclick="openPW()">Scegli Agency →</button>
       </div>
     </div>
 
@@ -940,48 +940,48 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
     <div class="pwh" id="pw-h">Sblocca l'analisi completa</div>
     <div class="pwp" id="pw-p">Nessuna carta richiesta per il piano Free.</div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0">
 
       <!-- PRO -->
-      <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rl);padding:16px;display:flex;flex-direction:column;gap:8px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em">Pro</div>
-        <div style="font-size:1.4rem;font-weight:800;color:var(--tx)">€29,90<span style="font-size:.75rem;font-weight:400;color:var(--tx2)">/mese</span></div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;font-size:.76rem;color:var(--tx2);flex:1;padding:0">
+      <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rl);padding:14px;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em">Pro</div>
+        <div style="font-size:1.2rem;font-weight:800;color:var(--tx)">€29,90<span style="font-size:.68rem;font-weight:400;color:var(--tx2)">/mese</span></div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:3px;font-size:.7rem;color:var(--tx2);flex:1;padding:0;line-height:1.3">
           <li>✓ Analisi illimitate</li>
           <li>✓ Trading / Flip</li>
           <li>✓ Salvataggio progetti</li>
           <li>✓ Export Excel</li>
           <li>✓ Supporto prioritario</li>
         </ul>
-        <button class="pwb pwm" id="co-m" onclick="checkout('monthly')" style="margin-top:8px">Scegli Pro</button>
-        <button style="background:none;border:none;color:var(--tx3);font-size:.68rem;cursor:pointer;text-decoration:underline" id="co-y" onclick="checkout('yearly')">oppure €199/anno (−45%)</button>
+        <button class="pwb pwm" id="co-m" onclick="checkout('monthly')" style="margin-top:auto">Scegli Pro</button>
+        <button style="background:none;border:none;color:var(--tx3);font-size:.62rem;cursor:pointer;text-decoration:underline" id="co-y" onclick="checkout('yearly')">oppure €199/anno (−45%)</button>
       </div>
 
       <!-- PRO+ -->
-      <div style="background:var(--bg3);border:2px solid var(--teal);border-radius:var(--rl);padding:16px;display:flex;flex-direction:column;gap:8px;position:relative">
-        <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--teal);color:var(--bg);font-size:.58rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.06em;white-space:nowrap">PIÙ POPOLARE</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em">Pro+</div>
-        <div style="font-size:1.4rem;font-weight:800;color:var(--tx)">€59<span style="font-size:.75rem;font-weight:400;color:var(--tx2)">/mese</span></div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;font-size:.76rem;color:var(--tx2);flex:1;padding:0">
+      <div style="background:var(--bg3);border:2px solid var(--teal);border-radius:var(--rl);padding:14px;display:flex;flex-direction:column;gap:6px;position:relative">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--teal);color:var(--bg);font-size:.52rem;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.06em;white-space:nowrap">PIÙ POPOLARE</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--teal);text-transform:uppercase;letter-spacing:.07em">Pro+</div>
+        <div style="font-size:1.2rem;font-weight:800;color:var(--tx)">€59<span style="font-size:.68rem;font-weight:400;color:var(--tx2)">/mese</span></div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:3px;font-size:.7rem;color:var(--tx2);flex:1;padding:0;line-height:1.3">
           <li>✓ Tutto di Pro</li>
           <li style="color:var(--teal);font-weight:600">✓ Report PDF brandizzato</li>
           <li style="color:var(--teal);font-weight:600">✓ Storico analisi completo</li>
           <li>✓ Supporto prioritario</li>
         </ul>
-        <button class="pwb pwm" id="co-pp" onclick="checkout('proplus')" style="margin-top:8px">Scegli Pro+</button>
+        <button class="pwb pwm" id="co-pp" onclick="checkout('proplus')" style="margin-top:auto">Scegli Pro+</button>
       </div>
 
       <!-- AGENCY -->
-      <div style="background:var(--bg3);border:1px solid var(--gold);border-radius:var(--rl);padding:16px;display:flex;flex-direction:column;gap:8px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--gold);text-transform:uppercase;letter-spacing:.07em">Agency</div>
-        <div style="font-size:1.4rem;font-weight:800;color:var(--tx)">€149<span style="font-size:.75rem;font-weight:400;color:var(--tx2)">/mese</span></div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;font-size:.76rem;color:var(--tx2);flex:1;padding:0">
+      <div style="background:var(--bg3);border:1px solid var(--gold);border-radius:var(--rl);padding:14px;display:flex;flex-direction:column;gap:6px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.54rem;color:var(--gold);text-transform:uppercase;letter-spacing:.07em">Agency</div>
+        <div style="font-size:1.2rem;font-weight:800;color:var(--tx)">€149<span style="font-size:.68rem;font-weight:400;color:var(--tx2)">/mese</span></div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:3px;font-size:.7rem;color:var(--tx2);flex:1;padding:0;line-height:1.3">
           <li>✓ Tutto di Pro+</li>
           <li style="color:var(--gold);font-weight:600">✓ 5 utenti inclusi</li>
           <li style="color:var(--gold);font-weight:600">✓ Dashboard condivisa</li>
           <li style="color:var(--gold);font-weight:600">✓ White-label parziale</li>
         </ul>
-        <button class="pwb" id="co-ag" onclick="checkout('agency')" style="margin-top:8px;background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:10px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.18s">Scegli Agency</button>
+        <button class="pwb" id="co-ag" onclick="checkout('agency')" style="margin-top:auto;background:var(--gold);color:var(--bg);border:none;border-radius:var(--r);padding:10px;font-size:.72rem;font-weight:700;cursor:pointer;transition:.18s">Scegli Agency</button>
       </div>
 
     </div>
