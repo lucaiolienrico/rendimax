@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://amzjefyegfxkpzjifynj.supabase.co https://*.supabase.co wss://amzjefyegfxkpzjifynj.supabase.co wss://*.supabase.co https://api.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://amzjefyegfxkpzjifynj.supabase.co https://*.supabase.co wss://amzjefyegfxkpzjifynj.supabase.co wss://*.supabase.co https://api.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>InvestPro — Analisi Finanziaria Immobiliare</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1277,10 +1277,10 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
   </div>
 </div>
 
-<!-- CDN con SRI — hash calcolati da npm packages -->
+<!-- CDN con SRI — tutti da jsdelivr (npm verbatim, hash verificabili) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" integrity="sha384-fCAW/rDWORTbQXSiB7mOg0QtQ5c+r0f544y6XoKjuVva0nMBlCpNUjiFeG5iMdS3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js" integrity="sha384-fCAW/rDWORTbQXSiB7mOg0QtQ5c+r0f544y6XoKjuVva0nMBlCpNUjiFeG5iMdS3" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.4/dist/umd/supabase.js" integrity="sha384-7SfFUrg31wOnGWBLLniKFCNmCSguYA5wI1WPDOt7kP/mom4R9/0pwghVEnv0uwYP" crossorigin="anonymous"></script>
 <script>
 // ════════════════════════════════════════════════
@@ -1774,11 +1774,15 @@ async function fetchLogoBase64(url){if(!url)return null;try{return await new Pro
 
 async function doPDF(){
   if(!canPDF()){openPW('export');return}
-  if(typeof jspdf==='undefined'||!jspdf.jsPDF){toast('Libreria PDF non caricata.','err');return}
+  if(typeof jspdf==='undefined'||!jspdf.jsPDF){toast('Libreria PDF non caricata. Ricarica la pagina.','err');return}
+  try{
   toast('Generazione PDF...','ok');
-  if(!_brandCache&&user){try{const{data}=await sb.from('brand_settings').select('*').eq('user_id',user.id).maybeSingle();if(data)_brandCache=data}catch(e){}}
+  if(!_brandCache&&user&&sb){try{const{data}=await sb.from('brand_settings').select('*').eq('user_id',user.id).maybeSingle();if(data)_brandCache=data}catch(e){}}
   const brand=_brandCache||{};const projName=document.getElementById('proj-name').value||'Analisi';const isFlip=mode==='flip';
-  const{jsPDF}=jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const pageW=doc.internal.pageSize.getWidth(),pageH=doc.internal.pageSize.getHeight(),margin=18,usable=pageW-margin*2;let y=margin;
+  const{jsPDF}=jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  // Verifica plugin autoTable
+  if(typeof doc.autoTable!=='function'){toast('Plugin autoTable non caricato. Ricarica la pagina.','err');return}
+  const pageW=doc.internal.pageSize.getWidth(),pageH=doc.internal.pageSize.getHeight(),margin=18,usable=pageW-margin*2;let y=margin;
   const pc=brand.primary_color||'#00d4a4';const sc=brand.secondary_color||'#050a14';const pcRgb=hexToRgb(pc);const scRgb=hexToRgb(sc);
   // Header bar
   doc.setFillColor(...scRgb);doc.rect(0,0,pageW,32,'F');doc.setFillColor(...pcRgb);doc.rect(0,30,pageW,2.5,'F');
@@ -1809,6 +1813,7 @@ async function doPDF(){
   // Footer
   const totalPages=doc.internal.getNumberOfPages();for(let i=1;i<=totalPages;i++){doc.setPage(i);doc.setDrawColor(...pcRgb);doc.setLineWidth(0.4);doc.line(margin,pageH-16,pageW-margin,pageH-16);doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(140,150,160);doc.text(brand.footer_text||('Generato con '+(brand.company_name||'InvestPro')),margin,pageH-11);doc.text('Pagina '+i+'/'+totalPages,pageW-margin,pageH-11,{align:'right'})}
   doc.save((projName.replace(/[^a-zA-Z0-9À-ú ]/g,'').trim()||'Report')+'_InvestPro.pdf');toast('✓ PDF scaricato.','ok');
+  }catch(pdfErr){console.error('[PDF] Errore generazione:',pdfErr);toast('Errore PDF: '+(pdfErr.message||'sconosciuto')+'. Controlla la console.','err')}
 }
 
 // ════════════════════════════════════════════════
