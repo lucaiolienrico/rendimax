@@ -1277,7 +1277,7 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
   </div>
 </div>
 
-<!-- CDN con SRI — tutti da jsdelivr (npm verbatim, hash verificabili) -->
+<!-- CDN pinned con SRI — tutti su jsdelivr (npm verbatim, hash verificabili) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js" integrity="sha384-fCAW/rDWORTbQXSiB7mOg0QtQ5c+r0f544y6XoKjuVva0nMBlCpNUjiFeG5iMdS3" crossorigin="anonymous"></script>
@@ -1351,6 +1351,41 @@ async function _handleAuth(event,session){
     if(_pendingAuth)return;
 
     profile=p;
+
+    // ── SYNC PLAN DA STRIPE ─────────────────────────────────────────────────
+    // Chiama la edge function sync-plan per sincronizzare il piano con Stripe.
+    // Non blocca il login: se fallisce, usa il piano già in DB.
+    // Non viene chiamata per superadmin (piano non dipende da Stripe).
+    if(p && p.role !== 'super_admin' && p.stripe_customer_id && p.subscription_status !== 'lifetime'){
+      try{
+        const syncRes = await sb.functions.invoke('sync-plan', {});
+        if(syncRes.data && syncRes.data.changed){
+          // Il piano è stato aggiornato: ricarica il profilo aggiornato
+          const{data:updatedProfile}=await sb.from('profiles').select('*').eq('id',user.id).single();
+          if(updatedProfile) p=updatedProfile;
+          console.log('[sync-plan] piano aggiornato:', syncRes.data.plan, syncRes.data.status);
+        }
+      }catch(syncErr){
+        // Non bloccante: logga e continua con il piano in DB
+        console.warn('[sync-plan] fallito, continuo con piano DB:', syncErr.message);
+      }
+    }
+
+    // ── FIX GRACE PERIOD SCADUTO ────────────────────────────────────────────
+    // Se il grace period è scaduto lato client (nessun webhook ricevuto), 
+    // retrocede localmente a free senza bisogno di RPC.
+    if(p?.subscription_status === 'grace_period' && p?.plan_expires_at){
+      if(new Date(p.plan_expires_at) < new Date()){
+        try{
+          await sb.from('profiles').update({plan:'free', subscription_status:'expired', updated_at:new Date().toISOString()}).eq('id',user.id);
+          p = {...p, plan:'free', subscription_status:'expired'};
+          console.log('[grace-period] scaduto, retrocesso a free');
+        }catch(e){console.warn('[grace-period] update fallito:',e.message)}
+      }
+    }
+    // ───────────────────────────────────────────────────────────────────────
+
+    profile=p;
     isPro=p?.plan==='pro';isProPlus=p?.plan==='pro_plus';isAgency=p?.plan==='agency';isSuperAdmin=p?.role==='super_admin';
     if(isSuperAdmin){isPro=true;isProPlus=true;isAgency=true}
 
@@ -1395,7 +1430,11 @@ async function _handleAuth(event,session){
     uPill();
 
     const u=new URLSearchParams(location.search);
-    if(u.get('success')){toast('Piano Pro attivato!','ok');history.replaceState({},'',location.pathname)}
+    if(u.get('success')){
+      const planName=isAgency?'Agency':isProPlus?'Pro+':isPro?'Pro':'';
+      toast('✓ Piano '+(planName||'Pro')+' attivato! Benvenuto.','ok');
+      history.replaceState({},'',location.pathname);
+    }
     if(u.get('canceled')){toast('Pagamento annullato.','warn');history.replaceState({},'',location.pathname)}
 
     // Carica workspace, membri, inviti (Fase 3/4)
@@ -1780,7 +1819,6 @@ async function doPDF(){
   if(!_brandCache&&user&&sb){try{const{data}=await sb.from('brand_settings').select('*').eq('user_id',user.id).maybeSingle();if(data)_brandCache=data}catch(e){}}
   const brand=_brandCache||{};const projName=document.getElementById('proj-name').value||'Analisi';const isFlip=mode==='flip';
   const{jsPDF}=jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  // Verifica plugin autoTable
   if(typeof doc.autoTable!=='function'){toast('Plugin autoTable non caricato. Ricarica la pagina.','err');return}
   const pageW=doc.internal.pageSize.getWidth(),pageH=doc.internal.pageSize.getHeight(),margin=18,usable=pageW-margin*2;let y=margin;
   const pc=brand.primary_color||'#00d4a4';const sc=brand.secondary_color||'#050a14';const pcRgb=hexToRgb(pc);const scRgb=hexToRgb(sc);
@@ -1813,7 +1851,7 @@ async function doPDF(){
   // Footer
   const totalPages=doc.internal.getNumberOfPages();for(let i=1;i<=totalPages;i++){doc.setPage(i);doc.setDrawColor(...pcRgb);doc.setLineWidth(0.4);doc.line(margin,pageH-16,pageW-margin,pageH-16);doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(140,150,160);doc.text(brand.footer_text||('Generato con '+(brand.company_name||'InvestPro')),margin,pageH-11);doc.text('Pagina '+i+'/'+totalPages,pageW-margin,pageH-11,{align:'right'})}
   doc.save((projName.replace(/[^a-zA-Z0-9À-ú ]/g,'').trim()||'Report')+'_InvestPro.pdf');toast('✓ PDF scaricato.','ok');
-  }catch(pdfErr){console.error('[PDF] Errore generazione:',pdfErr);toast('Errore PDF: '+(pdfErr.message||'sconosciuto')+'. Controlla la console.','err')}
+  }catch(pdfErr){console.error('[PDF] errore:',pdfErr);toast('Errore PDF: '+(pdfErr.message||'sconosciuto')+'. Controlla la console.','err')}
 }
 
 // ════════════════════════════════════════════════
