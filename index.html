@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://amzjefyegfxkpzjifynj.supabase.co https://*.supabase.co wss://amzjefyegfxkpzjifynj.supabase.co wss://*.supabase.co https://api.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://amzjefyegfxkpzjifynj.supabase.co https://*.supabase.co wss://amzjefyegfxkpzjifynj.supabase.co wss://*.supabase.co https://api.stripe.com https://cdn.jsdelivr.net; frame-src https://js.stripe.com https://hooks.stripe.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>InvestPro — Analisi Finanziaria Immobiliare</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1984,7 +1984,22 @@ async function sendInvite(){
   try{const{data:exists,error:chkErr}=await sb.rpc('check_user_exists_by_email',{p_email:email});if(chkErr)throw chkErr;if(!exists){errEl.textContent='Nessun utente con questa email. Deve prima registrarsi su InvestPro.';errEl.classList.add('on');return}}catch(e){console.warn('[invite] check fallita, procedo:',e)}
   if(_wsMembers.length>=_workspace.max_members){errEl.textContent='Limite '+_workspace.max_members+' membri raggiunto.';errEl.classList.add('on');return}
   btn.disabled=true;btn.textContent='Invio...';
-  try{const{error}=await sb.from('workspace_invites').insert({workspace_id:_workspace.id,invited_email:email,invited_by:user.id,role:roleEl.value||'member',status:'pending',expires_at:new Date(Date.now()+7*86400000).toISOString()});if(error){errEl.textContent=error.message?.includes('duplicate')?'Invito già inviato.':'Errore: '+(error.message||'');errEl.classList.add('on')}else{emailEl.value='';toast('✓ Invito inviato a '+email,'ok');loadTeamInvites()}}catch(e){errEl.textContent='Errore di rete.';errEl.classList.add('on')}
+  try{
+    const role=roleEl.value||'member';
+    const{error}=await sb.from('workspace_invites').insert({workspace_id:_workspace.id,invited_email:email,invited_by:user.id,role,status:'pending',expires_at:new Date(Date.now()+7*86400000).toISOString()});
+    if(error){errEl.textContent=error.message?.includes('duplicate')?'Invito già inviato.':'Errore DB: '+(error.message||'');errEl.classList.add('on');btn.disabled=false;btn.textContent='Invita';return}
+    // B1 FIX: invia email di notifica via edge function
+    try{
+      const{data:{session}}=await sb.auth.getSession();
+      const inviterName=profile?.display_name||user.email||'Un collega';
+      const wsName=_workspace.name||'Workspace';
+      const emailRes=await fetch(SB_URL+'/functions/v1/send-invite',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(session?.access_token||''),'apikey':SB_KEY},body:JSON.stringify({invited_email:email,workspace_name:wsName,role,inviter_name:inviterName})});
+      if(!emailRes.ok){const detail=await emailRes.json().catch(()=>({}));console.warn('[invite] email non inviata:',detail.error||emailRes.status);toast('✓ Invito salvato (email non inviata: '+( detail.error||emailRes.status)+')','warn')}
+      else{toast('✓ Invito inviato a '+email,'ok')}
+    }catch(emailErr){console.warn('[invite] errore invio email:',emailErr.message);toast('✓ Invito salvato (email non inviata)','warn')}
+    emailEl.value='';
+    loadTeamInvites();
+  }catch(e){errEl.textContent='Errore di rete.';errEl.classList.add('on')}
   btn.disabled=false;btn.textContent='Invita';
 }
 
@@ -1994,7 +2009,7 @@ async function loadTeamInvites(){if(!_workspace)return;const listEl=document.get
     _wsInvites.forEach(inv=>{const item=document.createElement('div');item.className='inv-item';const es=document.createElement('span');es.className='inv-email';es.textContent=inv.invited_email;const rs=document.createElement('span');rs.style.cssText='font-family:"JetBrains Mono",monospace;font-size:.54rem;color:var(--tx3);margin-left:4px';rs.textContent=inv.role.toUpperCase();const ss=document.createElement('span');ss.className='inv-status '+inv.status;const isExp=new Date(inv.expires_at)<new Date();ss.textContent=isExp&&inv.status==='pending'?'SCADUTO':inv.status.toUpperCase();item.appendChild(es);item.appendChild(rs);item.appendChild(ss);
       if(inv.status==='pending'&&!isExp){const cb=document.createElement('button');cb.className='inv-cancel';cb.textContent='✕';cb.addEventListener('click',async()=>{try{await sb.from('workspace_invites').delete().eq('id',inv.id);toast('Annullato.','ok');loadTeamInvites()}catch(e){toast('Errore.','err')}});item.appendChild(cb)}
       listEl.appendChild(item)})
-  }catch(e){}}
+  }catch(e){console.error('[loadTeamInvites]',e?.message||e);emptyEl.textContent='Errore caricamento inviti: '+(e?.message||'riprova');emptyEl.style.display='block'}}
 
 async function checkPendingInvites(){if(!user||!sb)return;const container=document.getElementById('invite-banners');container.innerHTML='';
   try{const{data:invites,error}=await sb.rpc('get_my_pending_invites');if(error)throw error;_pendingInvites=invites||[];if(!_pendingInvites.length)return;
