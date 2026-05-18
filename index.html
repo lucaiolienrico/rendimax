@@ -1897,10 +1897,64 @@ async function doPDF(){
 function openTeamModal(){if(!canTeam()){openPW('export');return}document.getElementById('team-modal').classList.add('on');loadTeamData()}
 function closeTeamModal(){document.getElementById('team-modal').classList.remove('on')}
 
-async function loadUserWorkspace(){if(!user)return;try{const{data:owned}=await sb.from('workspaces').select('id,name,max_members,owner_id').eq('owner_id',user.id).maybeSingle();if(owned){_workspace=owned;return}const{data:membership}=await sb.from('workspace_members').select('workspace_id').eq('user_id',user.id).limit(1).maybeSingle();if(membership){const{data:ws}=await sb.from('workspaces').select('id,name,max_members,owner_id').eq('id',membership.workspace_id).single();if(ws)_workspace=ws}}catch(e){console.error('[workspace]',e)}}
+async function loadUserWorkspace(){
+  if(!user)return;
+  try{
+    // 1. Proprietario diretto
+    const{data:owned,error:ownErr}=await sb.from('workspaces')
+      .select('id,name,max_members,owner_id').eq('owner_id',user.id).maybeSingle();
+    if(ownErr)console.error('[workspace] query owned:',ownErr.message,ownErr.code);
+    if(owned){_workspace=owned;return}
+
+    // 2. Membro di un workspace altrui
+    const{data:membership,error:memErr}=await sb.from('workspace_members')
+      .select('workspace_id').eq('user_id',user.id).limit(1).maybeSingle();
+    if(memErr)console.error('[workspace] query membership:',memErr.message,memErr.code);
+    if(membership){
+      const{data:ws,error:wsErr}=await sb.from('workspaces')
+        .select('id,name,max_members,owner_id').eq('id',membership.workspace_id).single();
+      if(wsErr)console.error('[workspace] query by membership:',wsErr.message,wsErr.code);
+      if(ws){_workspace=ws;return}
+    }
+
+    // 3. Nessun workspace: auto-provisioning per utenti Agency/super_admin
+    if(!canTeam())return;
+    console.log('[workspace] nessun workspace trovato, avvio provisioning...');
+    const{data:prov,error:provErr}=await sb.rpc('provision_agency_workspace');
+    if(provErr){console.error('[workspace] provisioning RPC:',provErr.message);return}
+    if(prov?.ok && prov.workspace_id){
+      const{data:newWs,error:newErr}=await sb.from('workspaces')
+        .select('id,name,max_members,owner_id').eq('id',prov.workspace_id).single();
+      if(newErr)console.error('[workspace] reload after provision:',newErr.message);
+      if(newWs){_workspace=newWs;console.log('[workspace] provisioning OK →',newWs.name)}
+    } else {
+      console.warn('[workspace] provisioning risposta negativa:',prov?.error);
+    }
+  }catch(e){console.error('[workspace] eccezione:',e)}
+}
+
+// Aggiorna lo stato del pulsante INVITA in base alla disponibilità del workspace
+function _syncInviteBtn(){
+  const btn=document.getElementById('tm-invite-btn');
+  if(!btn)return;
+  btn.disabled=!_workspace;
+  btn.style.opacity=_workspace?'1':'0.4';
+  btn.style.cursor=_workspace?'pointer':'not-allowed';
+  btn.title=_workspace?'Invia invito':'Workspace non ancora caricato';
+}
 
 async function loadTeamData(){
-  if(!_workspace){await loadUserWorkspace();if(!_workspace){document.getElementById('tm-members-loading').textContent='Nessun workspace trovato.';return}}
+  _syncInviteBtn();
+  if(!_workspace){
+    await loadUserWorkspace();
+    if(!_workspace){
+      const loadingEl=document.getElementById('tm-members-loading');
+      if(loadingEl){loadingEl.innerHTML='&#9888; Nessun workspace trovato.'+(canTeam()?' <span style="color:var(--teal);cursor:pointer;text-decoration:underline" onclick="loadTeamData()">Riprova</span>':'');}
+      _syncInviteBtn();
+      return;
+    }
+  }
+  _syncInviteBtn(); // workspace caricato: abilita il bottone
   document.getElementById('tm-ws-name').textContent=_workspace.name;document.getElementById('tm-ws-max').textContent=_workspace.max_members+' utenti';
   const loadEl=document.getElementById('tm-members-loading'),listEl=document.getElementById('tm-members-list');loadEl.style.display='block';listEl.innerHTML='';
   try{const{data:members,error:mErr}=await sb.from('workspace_members').select('id,user_id,role,joined_at').eq('workspace_id',_workspace.id).order('joined_at',{ascending:true});if(mErr)throw mErr;_wsMembers=members||[];document.getElementById('tm-ws-count').textContent=_wsMembers.length+'/'+_workspace.max_members;loadEl.style.display='none';
@@ -1922,7 +1976,9 @@ async function updateMemberRole(memberId,newRole){try{await sb.from('workspace_m
 
 // Fix M-4: verifica esistenza email prima di invitare
 async function sendInvite(){
-  if(!_workspace)return;const emailEl=document.getElementById('tm-invite-email'),roleEl=document.getElementById('tm-invite-role'),errEl=document.getElementById('tm-invite-err'),btn=document.getElementById('tm-invite-btn');const email=emailEl.value.trim().toLowerCase();errEl.classList.remove('on');
+  if(!_workspace){toast('Workspace non caricato. Riapri la finestra.','err');return;}
+  const emailEl=document.getElementById('tm-invite-email'),roleEl=document.getElementById('tm-invite-role'),errEl=document.getElementById('tm-invite-err'),btn=document.getElementById('tm-invite-btn');
+  const email=emailEl.value.trim().toLowerCase();errEl.classList.remove('on');
   if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEl.textContent='Email non valida.';errEl.classList.add('on');return}
   // Fix M-4: check user exists
   try{const{data:exists,error:chkErr}=await sb.rpc('check_user_exists_by_email',{p_email:email});if(chkErr)throw chkErr;if(!exists){errEl.textContent='Nessun utente con questa email. Deve prima registrarsi su InvestPro.';errEl.classList.add('on');return}}catch(e){console.warn('[invite] check fallita, procedo:',e)}
