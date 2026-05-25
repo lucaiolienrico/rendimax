@@ -739,7 +739,7 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
         <div class="dr"><div class="df"><label class="dl">Fissi/Mese</label><div class="dw"><span class="dp">€</span><input class="di hp" type="number" id="fixed" value="200" min="0" step="10" oninput="calc()"></div></div><div class="df"><label class="dl">Var./Notte</label><div class="dw"><span class="dp">€</span><input class="di hp" type="number" id="varco" value="15" min="0" step="5" oninput="calc()"></div></div></div>
         <div class="dr"><div class="df"><label class="dl">Manut./Mese</label><div class="dw"><span class="dp">€</span><input class="di hp" type="number" id="maint" value="100" min="0" step="10" oninput="calc()"></div></div><div class="df"><label class="dl">Vacancy %</label><div class="dw"><input class="di hs" type="number" id="vac" value="5" min="0" max="30" step="1" oninput="calc()"><span class="ds">%</span></div></div></div>
         <div class="ddiv"></div>
-        <div class="df full"><label class="dl">Regime Fiscale</label><div class="dtax"><button class="dtb" onclick="setTax(0,this)">Nessuna</button><button class="dtb on" onclick="setTax(21,this)">Ced. 21%</button><button class="dtb" onclick="setTax(10,this)">Ced. 10%</button><button class="dtb" onclick="setTax(26,this)">IRPEF 26%</button></div><div style="margin-top:5px"><div class="dw"><input class="di hs" type="number" id="tax-rate" value="21" min="0" max="50" step="1" oninput="calc()"><span class="ds">%</span></div></div></div>
+        <div class="df full"><label class="dl">Regime Fiscale</label><div class="dtax"><button class="dtb" onclick="setTax(0,this)" data-regime="none">Nessuna</button><button class="dtb on" onclick="setTax(21,this)" data-regime="cedolare">Ced. 21%</button><button class="dtb" onclick="setTax(10,this)" data-regime="cedolare">Ced. 10%</button><button class="dtb" onclick="setTax(26,this)" data-regime="irpef">IRPEF 26%</button></div><div style="margin-top:5px"><div class="dw"><input class="di hs" type="number" id="tax-rate" value="21" min="0" max="50" step="1" oninput="calc()"><span class="ds">%</span></div></div></div>
       </div></div>
       <!-- Flip -->
       <div class="sec flip-sec" id="sec-flip"><div class="sh"><span class="st">🔄 Trading / Flip</span></div><div class="sb">
@@ -766,6 +766,8 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
           <div class="rr"><span class="rk">Mutuo/anno</span><span class="rv neg" id="r-mort">€ 0</span></div>
           <div class="rr"><span class="rk">Notti</span><span class="rv" id="r-n">—</span></div>
           <div class="rr"><span class="rk">MOL/mese</span><span class="rv" id="r-mol">€ 0</span></div>
+          <div class="rr"><span class="rk">Rivalutazione/anno</span><span class="rv pos" id="r-appr">€ 0</span></div>
+          <div class="rr"><span class="rk">ROI Totale</span><span class="rv" id="r-troi">0%</span></div>
           <div class="big" id="big-cf"><div class="bl">// Cashflow Mensile Netto</div><div class="bv" id="br-cf">€ 0</div><div class="bsub" id="br-cfs">—</div></div>
         </div></div>
         <div class="sec"><div class="sh"><span class="st">🎯 Scenari</span></div><div class="sb"><div class="scg">
@@ -1633,43 +1635,110 @@ function setMode(m){mode=m;document.getElementById('pill-rent').classList.toggle
 // ════════════════════════════════════════════════
 // CALCULATOR
 // ════════════════════════════════════════════════
+// ══ FIX P2: Integer Cents Architecture — all monetary ops in integer centesimi ══
+const toCents=v=>Math.round(v*100);
+const fromCents=c=>c/100;
 const eur=v=>new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
 const pct=v=>v.toFixed(2)+'%';
-const n=id=>parseFloat(document.getElementById(id)?.value)||0;
+// FIX P1: input sanitization — clamp to [min, max], NaN→0
+const n=(id,min=0,max=Infinity)=>{const v=parseFloat(document.getElementById(id)?.value);return isNaN(v)?0:Math.max(min,Math.min(max,v))};
 function sv(id,v){const el=document.getElementById(id);if(el)el.textContent=v}
 function setTax(r,btn){document.getElementById('tax-rate').value=r;document.querySelectorAll('.dtb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');calc()}
 
 let _calcTimer=null;
 function _scheduleCount(){if(_calcTimer)clearTimeout(_calcTimer);_calcTimer=setTimeout(()=>{if(!isLimited())return;const c=gCnt();if(c>=LIM){if(!limShown){limShown=true;document.getElementById('lock-overlay').classList.add('on');openPW('limit')}uPill();return}iCnt();uPill();limShown=false;document.getElementById('lock-overlay').classList.remove('on');const nc=gCnt();if(nc===LIM-1)toast('⚠️ Ultima analisi.','warn');if(nc===LIM)toast('⚠️ Analisi esaurite.','warn');_calcTimer=null},800)}
 
+// FIX P0: correct tax base per Italian fiscal law
+// Cedolare secca (art.3 D.Lgs.23/2011, Circ.AdE 24/E 2017): base = lordo, nessuna deduzione
+// IRPEF ordinaria (redditi fondiari): base = lordo − 5% forfettario
+function _taxBaseC(grossC,taxR){
+  if(taxR===0)return 0;
+  const regime=document.querySelector('.dtb.on')?.dataset?.regime||'cedolare';
+  if(regime==='irpef')return Math.round(grossC*0.95);
+  return grossC;
+}
+
 function calc(){
   if(isLimited()){const c=gCnt();if(c>=LIM){if(!limShown){limShown=true;document.getElementById('lock-overlay').classList.add('on');openPW('limit')}uPill();return}_scheduleCount()}
   else{document.getElementById('lock-overlay')?.classList.remove('on');document.getElementById('nav-use')?.classList.add('hidden');document.getElementById('frame-pill')?.classList.add('hidden')}
-  const price=n('price'),reno=n('reno'),closing=n('closing');const ltv=n('ltv'),rate=n('rate'),years=n('years');
-  const loan=price*(ltv/100),equity=price-loan+reno+closing;const mr=(rate/100)/12,np=years*12;
-  const mp=mr>0?loan*(mr*Math.pow(1+mr,np))/(Math.pow(1+mr,np)-1):(np>0?loan/np:0);
-  document.getElementById('mort-pay').value=Math.round(mp).toLocaleString('it-IT');
-  document.getElementById('equity-req').value=Math.round(equity).toLocaleString('it-IT');
-  if(mode==='flip'&&canFlip()){calcFlip(equity,mp);return}
-  const adr=n('adr'),occ=n('occ'),taxR=n('tax-rate'),otaP=n('ota');const fc=n('fixed'),vc=n('varco'),maint=n('maint'),vac=n('vac');const guests=n('guests'),ct=n('city-tax');
-  const nights=365*(occ/100),gross=adr*nights;const otaC=gross*(otaP/100),ctC=guests*nights*ct;
-  const ops=fc*12+vc*nights+maint*12+gross*(vac/100);const taxes=Math.max(0,(gross-otaC-ops)*(taxR/100));
-  const mortY=mp*12,net=gross-otaC-ctC-ops-taxes-mortY;const mcf=net/12,mol=(gross-otaC-ops)/12;
-  const coc=equity>0?(net/equity)*100:0;const be=net>0?equity/net:null;
-  sv('k-inv',eur(equity));sv('k-roi',pct(coc));
+
+  // ── Inputs (FIX P1: clamped ranges) ──
+  const price=n('price'),reno=n('reno'),closing=n('closing');
+  const ltv=n('ltv',0,100),rate=n('rate',0,100),years=n('years',0,50);
+  const apprec=n('apprec',-50,100); // FIX P0: was dead input — now used for Total ROI
+
+  // ── Financing (FIX P2: integer cents) ──
+  const priceC=toCents(price),renoC=toCents(reno),closingC=toCents(closing);
+  const loanC=Math.round(priceC*(ltv/100)),equityC=priceC-loanC+renoC+closingC;
+  const mr=(rate/100)/12,np=years*12;
+  // PMT: computed in float (pow not integer-safe), then converted to cents
+  const loanF=fromCents(loanC);
+  const mpF=mr>0?loanF*(mr*Math.pow(1+mr,np))/(Math.pow(1+mr,np)-1):(np>0?loanF/np:0);
+  const mpC=toCents(mpF);
+
+  document.getElementById('mort-pay').value=Math.round(fromCents(mpC)).toLocaleString('it-IT');
+  document.getElementById('equity-req').value=Math.round(fromCents(equityC)).toLocaleString('it-IT');
+
+  if(mode==='flip'&&canFlip()){calcFlip(equityC,mpC,priceC);return}
+
+  // ── Rental Inputs (FIX P1: clamped) ──
+  const adr=n('adr'),occ=n('occ',0,100),taxR=n('tax-rate',0,100),otaP=n('ota',0,100);
+  const fc=n('fixed'),vc=n('varco'),maint=n('maint'),vac=n('vac',0,100);
+  const guests=Math.max(0,Math.round(n('guests'))),ct=n('city-tax');
+  const adrC=toCents(adr),fcC=toCents(fc),vcC=toCents(vc),maintC=toCents(maint),ctUC=toCents(ct);
+
+  // ── Revenue (FIX P2: cents) ──
+  const nights=365*(occ/100);
+  const grossC=Math.round(adrC*nights);
+  const otaCC=Math.round(grossC*(otaP/100));
+  const ctCC=Math.round(guests*nights*ctUC);
+
+  // ── Opex (FIX P2: cents) ──
+  const opsC=fcC*12+Math.round(vcC*nights)+maintC*12+Math.round(grossC*(vac/100));
+
+  // ── Taxes (FIX P0: correct base per regime — cedolare=lordo, IRPEF=lordo−5%) ──
+  const taxBsC=_taxBaseC(grossC,taxR);
+  const taxesC=Math.round(taxBsC*(taxR/100));
+
+  // ── P&L (FIX P2: cents throughout) ──
+  const mortYC=mpC*12;
+  const netC=grossC-otaCC-ctCC-opsC-taxesC-mortYC;
+
+  // ── Metrics ──
+  const mcf=fromCents(netC)/12;
+  const mol=fromCents(grossC-otaCC-ctCC-opsC)/12; // FIX P1: ctC now included in MOL
+  const coc=equityC>0?(netC/equityC)*100:0;
+  const be=netC>0?fromCents(equityC)/fromCents(netC):null;
+  // FIX P0: Total ROI includes annual appreciation (was dead input)
+  const apprGainC=Math.round(priceC*(apprec/100));
+  const totalROI=equityC>0?((netC+apprGainC)/equityC)*100:0;
+
+  // ── Render ──
+  sv('k-inv',eur(fromCents(equityC)));sv('k-roi',pct(coc));
   const cfEl=document.getElementById('k-cf');cfEl.textContent=eur(mcf);cfEl.className='kv '+(mcf>=0?'pos':'neg');
-  sv('k-be',be?be.toFixed(1)+'a':'Mai');sv('r-g',eur(gross));sv('r-ota',eur(otaC));sv('r-ct',eur(ctC));sv('r-op',eur(ops));sv('r-tax',eur(taxes));sv('r-mort',eur(mortY));sv('r-n',Math.round(nights)+' notti');sv('r-mol',eur(mol));
-  const bv=document.getElementById('br-cf'),bd=document.getElementById('big-cf');bv.textContent=eur(mcf);bv.className='bv '+(mcf>=0?'':'neg');bd.className='big '+(mcf<0?'neg':'');sv('br-cfs',`ROI ${pct(coc)} · BE ${be?be.toFixed(1)+'a':'Mai'}`);
-  [{o:50,k:'p'},{o:65,k:'m'},{o:85,k:'o'}].forEach(s=>{const nb=365*(s.o/100),gr=adr*nb;const op=fc*12+vc*nb+maint*12+gr*(vac/100);const tx=Math.max(0,(gr-gr*(otaP/100)-op)*(taxR/100));const cf=(gr-gr*(otaP/100)-op-tx-mp*12)/12;sv(`s${s.k}-o`,s.o+'%');const el=document.getElementById(`s${s.k}-v`);el.textContent=eur(cf);el.className='scv '+(cf>=0?'pos':'neg')});
+  sv('k-be',be?be.toFixed(1)+'a':'Mai');sv('r-g',eur(fromCents(grossC)));sv('r-ota',eur(fromCents(otaCC)));sv('r-ct',eur(fromCents(ctCC)));sv('r-op',eur(fromCents(opsC)));sv('r-tax',eur(fromCents(taxesC)));sv('r-mort',eur(fromCents(mortYC)));sv('r-n',Math.round(nights)+' notti');sv('r-mol',eur(mol));
+  sv('r-appr',eur(fromCents(apprGainC)));sv('r-troi',pct(totalROI)); // FIX P0: new metrics
+  const bv=document.getElementById('br-cf'),bd=document.getElementById('big-cf');bv.textContent=eur(mcf);bv.className='bv '+(mcf>=0?'':'neg');bd.className='big '+(mcf<0?'neg':'');sv('br-cfs',`CoC ${pct(coc)} · ROI Tot. ${pct(totalROI)} · BE ${be?be.toFixed(1)+'a':'Mai'}`);
+
+  // ── Scenarios (FIX P1: aligned with main engine — adds ctC, correct tax base) ──
+  [{o:50,k:'p'},{o:65,k:'m'},{o:85,k:'o'}].forEach(s=>{const nb=365*(s.o/100),grC=Math.round(adrC*nb);const otaSC=Math.round(grC*(otaP/100));const ctSC=Math.round(guests*nb*ctUC);const opC=fcC*12+Math.round(vcC*nb)+maintC*12+Math.round(grC*(vac/100));const txBsC=_taxBaseC(grC,taxR);const txC=Math.round(txBsC*(taxR/100));const cfC=grC-otaSC-ctSC-opC-txC-mortYC;const cf=fromCents(cfC)/12;sv(`s${s.k}-o`,s.o+'%');const el=document.getElementById(`s${s.k}-v`);el.textContent=eur(cf);el.className='scv '+(cf>=0?'pos':'neg')});
 }
 
-function calcFlip(equity,mp){
-  const price=n('price'),reno=n('reno'),closing=n('closing');const sell=n('flip-price'),months=n('flip-months'),ag=n('flip-ag');const hold=n('flip-hold'),ftax=n('flip-tax');
-  const agC=sell*(ag/100),holdC=(mp+hold)*months;const gross=sell-price-reno-closing-agC-holdC;const taxes=Math.max(0,gross*(ftax/100)),net=gross-taxes;
-  const roi=equity>0?(net/equity)*100:0,mP=months>0?net/months:0;
-  sv('k-inv',eur(equity));sv('k-roi',pct(roi));const cfEl=document.getElementById('k-cf');cfEl.textContent=eur(mP);cfEl.className='kv '+(mP>=0?'pos':'neg');sv('k-be',months+'m');
-  sv('f-sell',eur(sell));sv('f-acq',eur(price+reno+closing));sv('f-ag',eur(agC));sv('f-hold',eur(holdC));sv('f-gross',eur(gross));sv('f-tax',eur(taxes));
-  const bv=document.getElementById('br-fl'),bd=document.getElementById('big-fl');bv.textContent=eur(net);bv.className='bv '+(net>=0?'':'neg');bd.className='big '+(net<0?'neg':'');sv('br-fls',`ROI ${pct(roi)} · ${months} mesi`);
+// ── FLIP ENGINE (FIX P0: separate economic profit from taxable plusvalenza) ──
+function calcFlip(equityC,mpC,priceC){
+  const price=n('price'),reno=n('reno'),closing=n('closing');const sell=n('flip-price'),months=n('flip-months',0,600),ag=n('flip-ag',0,100);const hold=n('flip-hold'),ftax=n('flip-tax',0,100);
+  const renoC=toCents(reno),closingC=toCents(closing),sellC=toCents(sell),holdMoC=toCents(hold);
+  const agCC=Math.round(sellC*(ag/100)),holdCC=(mpC+holdMoC)*months;
+  // Economic profit (P&L): includes ALL costs
+  const econC=sellC-priceC-renoC-closingC-agCC-holdCC;
+  // FIX P0: Taxable plusvalenza (art.68 TUIR) — holding costs NOT deductible from fiscal base
+  // Deductible: prezzo acquisto + oneri notarili + ristrutturazione capitalizzata + agenzia vendita
+  const taxableC=Math.max(0,sellC-priceC-renoC-closingC-agCC);
+  const taxesC=Math.round(taxableC*(ftax/100)),netC=econC-taxesC;
+  const roi=equityC>0?(netC/equityC)*100:0,mPC=months>0?Math.round(netC/months):0;
+  sv('k-inv',eur(fromCents(equityC)));sv('k-roi',pct(roi));const cfEl=document.getElementById('k-cf');cfEl.textContent=eur(fromCents(mPC));cfEl.className='kv '+(mPC>=0?'pos':'neg');sv('k-be',months+'m');
+  sv('f-sell',eur(fromCents(sellC)));sv('f-acq',eur(fromCents(priceC+renoC+closingC)));sv('f-ag',eur(fromCents(agCC)));sv('f-hold',eur(fromCents(holdCC)));sv('f-gross',eur(fromCents(econC)));sv('f-tax',eur(fromCents(taxesC)));
+  const bv=document.getElementById('br-fl'),bd=document.getElementById('big-fl');bv.textContent=eur(fromCents(netC));bv.className='bv '+(netC>=0?'':'neg');bd.className='big '+(netC<0?'neg':'');sv('br-fls',`ROI ${pct(roi)} · ${months} mesi`);
 }
 
 // ════════════════════════════════════════════════
@@ -1753,7 +1822,10 @@ function renderProjectList(projects){
 }
 
 function applyProject(p){const d=p.data||{};if(d.mode==='flip'&&canFlip())setMode('flip');else setMode('rent');const ni=document.getElementById('proj-name');if(ni)ni.value=p.name||d.name||'';
-  ['price','reno','closing','city-tax','ltv','rate','years','apprec','adr','occ','ota','guests','fixed','varco','maint','vac','tax-rate','flip-price','flip-months','flip-ag','flip-hold','flip-tax'].forEach(id=>{const el=document.getElementById(id);if(el&&d[id]!==undefined)el.value=d[id]});calc();
+  ['price','reno','closing','city-tax','ltv','rate','years','apprec','adr','occ','ota','guests','fixed','varco','maint','vac','tax-rate','flip-price','flip-months','flip-ag','flip-hold','flip-tax'].forEach(id=>{const el=document.getElementById(id);if(el&&d[id]!==undefined)el.value=d[id]});
+  // FIX: sync tax regime buttons with loaded value so _taxBaseC detects correct regime
+  const _tr=parseFloat(d['tax-rate'])||0;const _tb=document.querySelectorAll('.dtb');_tb.forEach(b=>b.classList.remove('on'));const _ti=_tr===0?0:_tr===21?1:_tr===10?2:_tr===26?3:-1;if(_ti>=0&&_tb[_ti])_tb[_ti].classList.add('on');else if(_tb[1])_tb[1].classList.add('on');
+  calc();
   toast(p._isOwn===false?'✓ Progetto di '+(p._owner||'team')+' caricato.':'✓ Progetto caricato.','ok');
 }
 
@@ -1798,7 +1870,7 @@ function doExport(){
   if(!canExport()){openPW('export');return}
   try{if(typeof XLSX==='undefined')throw new Error('Libreria Excel non caricata.');
     const name=document.getElementById('proj-name').value||'Analisi';
-    const rows=mode==='rent'?[['Parametro','Valore'],['Prezzo Acquisto',n('price')],['Ristrutturazione',n('reno')],['Costi Notarili',n('closing')],['LTV %',n('ltv')],['Tasso %',n('rate')],['Durata anni',n('years')],['ADR/notte',n('adr')],['Occupazione %',n('occ')],['OTA %',n('ota')],['Ospiti medi',n('guests')],['Costi fissi/mese',n('fixed')],['Variabili/notte',n('varco')],['Manutenzione/mese',n('maint')],['Vacancy %',n('vac')],['Aliquota fiscale %',n('tax-rate')],['Tassa soggiorno/notte',n('city-tax')],[],[],['Risultato','Valore'],['Ricavi lordi/anno',document.getElementById('r-g')?.textContent],['Commissioni OTA',document.getElementById('r-ota')?.textContent],['Tassa soggiorno',document.getElementById('r-ct')?.textContent],['Costi operativi',document.getElementById('r-op')?.textContent],['Imposte',document.getElementById('r-tax')?.textContent],['Mutuo/anno',document.getElementById('r-mort')?.textContent],['Notti occupate',document.getElementById('r-n')?.textContent],['MOL mensile',document.getElementById('r-mol')?.textContent],['Cashflow netto/mese',document.getElementById('br-cf')?.textContent],['ROI annuo',document.getElementById('k-roi')?.textContent],['Break-even',document.getElementById('k-be')?.textContent]]:[['Parametro','Valore'],['Prezzo Acquisto',n('price')],['Ristrutturazione',n('reno')],['Costi Notarili',n('closing')],['Prezzo Vendita',n('flip-price')],['Durata mesi',n('flip-months')],['Comm. Agenzia %',n('flip-ag')],['Holding/mese',n('flip-hold')],['Plus-valenza %',n('flip-tax')],[],[],['Risultato','Valore'],['Prezzo vendita',document.getElementById('f-sell')?.textContent],['Costi acquisizione',document.getElementById('f-acq')?.textContent],['Comm. agenzia',document.getElementById('f-ag')?.textContent],['Costi holding',document.getElementById('f-hold')?.textContent],['Profitto lordo',document.getElementById('f-gross')?.textContent],['Imposte',document.getElementById('f-tax')?.textContent],['Profitto netto',document.getElementById('br-fl')?.textContent],['ROI',document.getElementById('k-roi')?.textContent]];
+    const rows=mode==='rent'?[['Parametro','Valore'],['Prezzo Acquisto',n('price')],['Ristrutturazione',n('reno')],['Costi Notarili',n('closing')],['LTV %',n('ltv')],['Tasso %',n('rate')],['Durata anni',n('years')],['ADR/notte',n('adr')],['Occupazione %',n('occ')],['OTA %',n('ota')],['Ospiti medi',n('guests')],['Costi fissi/mese',n('fixed')],['Variabili/notte',n('varco')],['Manutenzione/mese',n('maint')],['Vacancy %',n('vac')],['Aliquota fiscale %',n('tax-rate')],['Tassa soggiorno/notte',n('city-tax')],[],[],['Risultato','Valore'],['Ricavi lordi/anno',document.getElementById('r-g')?.textContent],['Commissioni OTA',document.getElementById('r-ota')?.textContent],['Tassa soggiorno',document.getElementById('r-ct')?.textContent],['Costi operativi',document.getElementById('r-op')?.textContent],['Imposte',document.getElementById('r-tax')?.textContent],['Mutuo/anno',document.getElementById('r-mort')?.textContent],['Notti occupate',document.getElementById('r-n')?.textContent],['MOL mensile',document.getElementById('r-mol')?.textContent],['Rivalutazione/anno',document.getElementById('r-appr')?.textContent],['ROI Totale',document.getElementById('r-troi')?.textContent],['Cashflow netto/mese',document.getElementById('br-cf')?.textContent],['ROI annuo',document.getElementById('k-roi')?.textContent],['Break-even',document.getElementById('k-be')?.textContent]]:[['Parametro','Valore'],['Prezzo Acquisto',n('price')],['Ristrutturazione',n('reno')],['Costi Notarili',n('closing')],['Prezzo Vendita',n('flip-price')],['Durata mesi',n('flip-months')],['Comm. Agenzia %',n('flip-ag')],['Holding/mese',n('flip-hold')],['Plus-valenza %',n('flip-tax')],[],[],['Risultato','Valore'],['Prezzo vendita',document.getElementById('f-sell')?.textContent],['Costi acquisizione',document.getElementById('f-acq')?.textContent],['Comm. agenzia',document.getElementById('f-ag')?.textContent],['Costi holding',document.getElementById('f-hold')?.textContent],['Profitto lordo',document.getElementById('f-gross')?.textContent],['Imposte',document.getElementById('f-tax')?.textContent],['Profitto netto',document.getElementById('br-fl')?.textContent],['ROI',document.getElementById('k-roi')?.textContent]];
     const ws=XLSX.utils.aoa_to_sheet([['InvestPro — '+(mode==='rent'?'Affitto':'Flip')+': '+name],...rows]);ws['!cols']=[{wch:24},{wch:18}];
     const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Analisi');XLSX.writeFile(wb,name+'.xlsx');toast('✓ File Excel scaricato.','ok');
   }catch(err){toast('Errore export: '+err.message,'err')}
@@ -1874,12 +1946,12 @@ async function doPDF(){
   const kpiW=usable/4;kpis.forEach((kpi,i)=>{const x=margin+i*kpiW;doc.setFillColor(...pcRgb);doc.rect(x+1,y,1.2,20,'F');doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(120,130,140);doc.text(kpi.label.toUpperCase(),x+5,y+7);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(...scRgb);doc.text(kpi.value,x+5,y+15)});y+=28;
   // Params table
   doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(...scRgb);doc.text('Parametri di Input',margin,y);y+=5;
-  const paramRows=isFlip?[['Prezzo Acquisto',eur(n('price'))],['Ristrutturazione',eur(n('reno'))],['Costi Notarili',eur(n('closing'))],['LTV',n('ltv')+'%'],['Tasso',n('rate')+'%'],['Durata',n('years')+' anni'],['Prezzo Vendita',eur(n('flip-price'))],['Durata Flip',n('flip-months')+' mesi'],['Comm. Agenzia',n('flip-ag')+'%'],['Holding/mese',eur(n('flip-hold'))],['Plus-valenza',n('flip-tax')+'%']]:[['Prezzo Acquisto',eur(n('price'))],['Ristrutturazione',eur(n('reno'))],['Costi Notarili',eur(n('closing'))],['LTV',n('ltv')+'%'],['Tasso',n('rate')+'%'],['Durata',n('years')+' anni'],['ADR/notte',eur(n('adr'))],['Occupazione',n('occ')+'%'],['OTA',n('ota')+'%'],['Ospiti medi',n('guests')],['Costi fissi/mese',eur(n('fixed'))],['Variabili/notte',eur(n('varco'))],['Manutenzione/mese',eur(n('maint'))],['Vacancy',n('vac')+'%'],['Aliquota fiscale',n('tax-rate')+'%'],['Tassa soggiorno/notte',eur(n('city-tax'))]];
+  const paramRows=isFlip?[['Prezzo Acquisto',eur(n('price'))],['Ristrutturazione',eur(n('reno'))],['Costi Notarili',eur(n('closing'))],['LTV',n('ltv')+'%'],['Tasso',n('rate')+'%'],['Durata',n('years')+' anni'],['Prezzo Vendita',eur(n('flip-price'))],['Durata Flip',n('flip-months')+' mesi'],['Comm. Agenzia',n('flip-ag')+'%'],['Holding/mese',eur(n('flip-hold'))],['Plus-valenza',n('flip-tax')+'%']]:[['Prezzo Acquisto',eur(n('price'))],['Ristrutturazione',eur(n('reno'))],['Costi Notarili',eur(n('closing'))],['LTV',n('ltv')+'%'],['Tasso',n('rate')+'%'],['Durata',n('years')+' anni'],['ADR/notte',eur(n('adr'))],['Occupazione',n('occ')+'%'],['OTA',n('ota')+'%'],['Ospiti medi',n('guests')],['Costi fissi/mese',eur(n('fixed'))],['Variabili/notte',eur(n('varco'))],['Manutenzione/mese',eur(n('maint'))],['Vacancy',n('vac')+'%'],['Aliquota fiscale',n('tax-rate')+'%'],['Rivalutazione',n('apprec')+'%'],['Tassa soggiorno/notte',eur(n('city-tax'))]];
   doc.autoTable({startY:y,head:[['Parametro','Valore']],body:paramRows,margin:{left:margin,right:margin},theme:'grid',headStyles:{fillColor:pcRgb,textColor:[255,255,255],fontStyle:'bold',fontSize:8},bodyStyles:{fontSize:8,textColor:[40,50,60],cellPadding:3},alternateRowStyles:{fillColor:[245,248,252]},columnStyles:{0:{cellWidth:usable*0.55,fontStyle:'bold'},1:{cellWidth:usable*0.45,halign:'right'}}});
   y=doc.lastAutoTable.finalY+10;if(y>pageH-90){doc.addPage();y=margin}
   // Results table
   doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(...scRgb);doc.text(isFlip?'Analisi Flip':'Conto Economico',margin,y);y+=5;
-  const resultRows=isFlip?[['Vendita',document.getElementById('f-sell')?.textContent||'—'],['Costi acquisizione',document.getElementById('f-acq')?.textContent||'—'],['Comm. agenzia',document.getElementById('f-ag')?.textContent||'—'],['Costi holding',document.getElementById('f-hold')?.textContent||'—'],['Profitto lordo',document.getElementById('f-gross')?.textContent||'—'],['Imposte',document.getElementById('f-tax')?.textContent||'—'],['PROFITTO NETTO',document.getElementById('br-fl')?.textContent||'—']]:[['Ricavi lordi/anno',document.getElementById('r-g')?.textContent||'—'],['Commissioni OTA',document.getElementById('r-ota')?.textContent||'—'],['Tassa soggiorno',document.getElementById('r-ct')?.textContent||'—'],['Costi operativi',document.getElementById('r-op')?.textContent||'—'],['Imposte',document.getElementById('r-tax')?.textContent||'—'],['Mutuo/anno',document.getElementById('r-mort')?.textContent||'—'],['Notti occupate',document.getElementById('r-n')?.textContent||'—'],['MOL/mese',document.getElementById('r-mol')?.textContent||'—'],['CASHFLOW NETTO/MESE',document.getElementById('br-cf')?.textContent||'—']];
+  const resultRows=isFlip?[['Vendita',document.getElementById('f-sell')?.textContent||'—'],['Costi acquisizione',document.getElementById('f-acq')?.textContent||'—'],['Comm. agenzia',document.getElementById('f-ag')?.textContent||'—'],['Costi holding',document.getElementById('f-hold')?.textContent||'—'],['Profitto lordo',document.getElementById('f-gross')?.textContent||'—'],['Imposte',document.getElementById('f-tax')?.textContent||'—'],['PROFITTO NETTO',document.getElementById('br-fl')?.textContent||'—']]:[['Ricavi lordi/anno',document.getElementById('r-g')?.textContent||'—'],['Commissioni OTA',document.getElementById('r-ota')?.textContent||'—'],['Tassa soggiorno',document.getElementById('r-ct')?.textContent||'—'],['Costi operativi',document.getElementById('r-op')?.textContent||'—'],['Imposte',document.getElementById('r-tax')?.textContent||'—'],['Mutuo/anno',document.getElementById('r-mort')?.textContent||'—'],['Notti occupate',document.getElementById('r-n')?.textContent||'—'],['MOL/mese',document.getElementById('r-mol')?.textContent||'—'],['Rivalutazione/anno',document.getElementById('r-appr')?.textContent||'—'],['ROI Totale',document.getElementById('r-troi')?.textContent||'—'],['CASHFLOW NETTO/MESE',document.getElementById('br-cf')?.textContent||'—']];
   doc.autoTable({startY:y,head:[['Voce','Importo']],body:resultRows,margin:{left:margin,right:margin},theme:'grid',headStyles:{fillColor:pcRgb,textColor:[255,255,255],fontStyle:'bold',fontSize:8},bodyStyles:{fontSize:8,textColor:[40,50,60],cellPadding:3},alternateRowStyles:{fillColor:[245,248,252]},columnStyles:{0:{cellWidth:usable*0.55,fontStyle:'bold'},1:{cellWidth:usable*0.45,halign:'right'}},didParseCell:function(data){if(data.row.index===resultRows.length-1){data.cell.styles.fillColor=pcRgb;data.cell.styles.textColor=[255,255,255];data.cell.styles.fontStyle='bold';data.cell.styles.fontSize=10}}});
   y=doc.lastAutoTable.finalY+10;
   // Scenari (rent only)
