@@ -352,6 +352,18 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
 .abtn{background:var(--teal);border:none;border-radius:var(--r);padding:11px;color:var(--bg);font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;transition:.18s;margin-top:4px}.abtn:hover{background:var(--teal-h)}.abtn:disabled{opacity:.4;cursor:not-allowed}
 .aerr{background:var(--rg);border:1px solid rgba(255,81,112,.3);border-radius:var(--r);padding:8px 10px;font-size:.72rem;color:#ff8fa3;display:none}.aerr.on{display:block}
 .aok{background:var(--tg);border:1px solid rgba(0,212,164,.3);border-radius:var(--r);padding:8px 10px;font-size:.72rem;color:var(--teal);display:none}.aok.on{display:block}
+.aforgot{background:none;border:none;color:var(--tx3);font-size:.7rem;text-decoration:underline;cursor:pointer;text-align:right;margin-top:-4px;align-self:flex-end;transition:.15s;font-family:inherit}.aforgot:hover{color:var(--teal)}
+.danger-zone{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,81,112,.2)}
+.danger-zone-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.adbtn-danger{width:100%;background:none;border:1px solid rgba(255,81,112,.35);border-radius:var(--r);padding:9px;font-size:.76rem;color:var(--red);transition:.18s;cursor:pointer}.adbtn-danger:hover{background:rgba(255,81,112,.08);border-color:rgba(255,81,112,.6)}
+#del-modal{position:fixed;inset:0;background:rgba(5,10,20,.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;z-index:9500;padding:20px;opacity:0;pointer-events:none;transition:.22s}#del-modal.on{opacity:1;pointer-events:all}
+.del-box{width:100%;max-width:360px;background:var(--bg2);border:1px solid rgba(255,81,112,.4);border-radius:var(--rx);padding:28px;transform:translateY(10px) scale(.97);transition:.22s}#del-modal.on .del-box{transform:none}
+.del-title{font-size:.98rem;font-weight:700;color:var(--red);margin-bottom:6px}
+.del-sub{font-size:.78rem;color:var(--tx2);line-height:1.6;margin-bottom:16px}
+.del-confirm-input{width:100%;background:var(--input-bg);border:1px solid rgba(255,81,112,.4);border-radius:var(--r);padding:10px 12px;color:var(--tx-input);font-size:.85rem;outline:none;font-family:inherit;transition:border-color .18s;margin-bottom:14px;box-sizing:border-box}.del-confirm-input:focus{border-color:var(--red)}
+.del-btn-row{display:flex;gap:8px}
+.del-cancel{flex:1;background:none;border:1px solid var(--border2);border-radius:var(--r);padding:10px;font-size:.76rem;color:var(--tx3);cursor:pointer;transition:.15s;font-family:inherit}.del-cancel:hover{color:var(--tx)}
+.del-confirm-btn{flex:2;background:var(--red);border:none;border-radius:var(--r);padding:10px;font-size:.76rem;font-weight:700;color:#fff;cursor:pointer;transition:.18s;font-family:inherit;opacity:.4;cursor:not-allowed}.del-confirm-btn.active{opacity:1;cursor:pointer}.del-confirm-btn.active:hover{background:#e0334d}
 
 /* ═══ ADMIN PANEL (super_admin) ═══ */
 #admin-panel{position:fixed;inset:0;background:rgba(5,10,20,.92);backdrop-filter:blur(16px);z-index:8500;overflow-y:auto;opacity:0;pointer-events:none;transition:.25s;padding:20px}
@@ -1153,11 +1165,12 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
     <button class="ax" onclick="closeAuth()">×</button>
     <div class="alogo">Invest<span>Pro</span></div>
     <div class="atag">// analisi finanziaria immobiliare</div>
-    <div class="atabs"><button class="atab on" id="t-li" onclick="sTab('li')">Accedi</button><button class="atab" id="t-re" onclick="sTab('re')">Registrati</button></div>
+    <div class="atabs"><button class="atab on" id="t-li" onclick="sTab('li')">Accedi</button><button class="atab" id="t-re" onclick="sTab('re')">Registrati</button><button class="atab" id="t-pw" onclick="sTab('pw')" style="font-size:.72rem">Password?</button></div>
     <div class="af" id="f-li">
       <div class="aerr" id="e-li"></div>
       <div class="afg"><label class="afl">Email</label><input class="afi" type="email" id="i-em" placeholder="tu@email.it" autocomplete="email"></div>
       <div class="afg"><label class="afl">Password</label><input class="afi" type="password" id="i-pw" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="aforgot" onclick="sTab('pw')" type="button">Password dimenticata?</button>
       <button class="abtn" id="b-li" onclick="doLogin()">Accedi →</button>
     </div>
     <div class="af hidden" id="f-re">
@@ -1165,7 +1178,6 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
       <div class="afg"><label class="afl">Nome</label><input class="afi" type="text" id="i-nm" placeholder="Mario Rossi"></div>
       <div class="afg"><label class="afl">Email</label><input class="afi" type="email" id="i-rem" placeholder="tu@email.it" autocomplete="email"></div>
       <div class="afg"><label class="afl">Password</label><input class="afi" type="password" id="i-rpw" placeholder="Min. 8 caratteri" minlength="8" autocomplete="new-password"></div>
-      <!-- Info piano: tutti iniziano con Free, Pro si attiva via Stripe -->
       <div style="background:rgba(0,212,164,.07);border:1px solid rgba(0,212,164,.2);border-radius:8px;padding:10px 12px">
         <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">// Piano di partenza</div>
         <div style="font-size:.82rem;color:var(--tx2);font-weight:400;line-height:1.5">
@@ -1174,6 +1186,14 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
         </div>
       </div>
       <button class="abtn" id="b-re" onclick="doReg()">Crea Account →</button>
+    </div>
+    <div class="af hidden" id="f-pw">
+      <div class="aerr" id="e-pw"></div>
+      <div class="aok" id="o-pw"></div>
+      <p style="font-size:.78rem;color:var(--tx2);line-height:1.6;margin-bottom:2px">Inserisci la tua email. Riceverai un link per reimpostare la password.</p>
+      <div class="afg"><label class="afl">Email</label><input class="afi" type="email" id="i-pw-email" placeholder="tu@email.it" autocomplete="email"></div>
+      <button class="abtn" id="b-pw" onclick="doResetPassword()">Invia link di recupero →</button>
+      <button class="aforgot" onclick="sTab('li')" type="button" style="align-self:center;margin-top:4px">← Torna al login</button>
     </div>
   </div>
 </div>
@@ -1228,6 +1248,26 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
     <div class="adrow"><span class="adk">Scadenza Pro</span><span class="adv" id="acct-exp">—</span></div>
     <button class="adbtn" id="acct-up-btn" onclick="closeAcct();openPW()">⬆ Passa a Pro</button>
     <button class="adbtn" onclick="closeAcct()">Chiudi</button>
+    <div class="danger-zone">
+      <div class="danger-zone-label">// zona pericolosa</div>
+      <button class="adbtn-danger" onclick="closeAcct();openDelModal()">🗑 Elimina account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Conferma eliminazione account (GDPR art.17) ═══ -->
+<div id="del-modal">
+  <div class="del-box">
+    <div style="font-size:2rem;text-align:center;margin-bottom:10px">⚠️</div>
+    <div class="del-title">Elimina account</div>
+    <div class="del-sub">Questa azione è <strong>irreversibile</strong>. Verranno eliminati tutti i tuoi progetti salvati, le impostazioni e l'accesso al piano Pro.<br><br>Per confermare, scrivi la tua email qui sotto.</div>
+    <label class="afl" style="margin-bottom:4px;display:block">Scrivi la tua email per confermare</label>
+    <input class="del-confirm-input" type="email" id="del-email-confirm" placeholder="tu@email.it" oninput="checkDelConfirm()" autocomplete="off">
+    <div class="aerr" id="e-del" style="margin-bottom:12px"></div>
+    <div class="del-btn-row">
+      <button class="del-cancel" onclick="closeDelModal()">Annulla</button>
+      <button class="del-confirm-btn" id="del-confirm-btn" onclick="doDeleteAccount()" disabled>Elimina definitivamente</button>
+    </div>
   </div>
 </div>
 
@@ -1748,7 +1788,14 @@ async function _handleAuth(event,session){
 // ════════════════════════════════════════════════
 function openAuth(tab='login'){document.getElementById('auth').classList.add('on');sTab(tab==='login'?'li':'re');setTimeout(()=>document.getElementById(tab==='login'?'i-em':'i-nm')?.focus(),150)}
 function closeAuth(){document.getElementById('auth').classList.remove('on')}
-function sTab(t){['li','re'].forEach(x=>{document.getElementById(`t-${x}`).classList.toggle('on',x===t);document.getElementById(`f-${x}`).classList.toggle('hidden',x!==t)})}
+function sTab(t){
+  ['li','re','pw'].forEach(x=>{
+    const tb=document.getElementById(`t-${x}`),fm=document.getElementById(`f-${x}`);
+    if(tb)tb.classList.toggle('on',x===t);
+    if(fm)fm.classList.toggle('hidden',x!==t);
+  });
+  ['e-li','e-re','e-pw','o-re','o-pw'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on')});
+}
 
 async function doLogin(){
   const b=document.getElementById('b-li'),e=document.getElementById('e-li');
@@ -1771,6 +1818,55 @@ async function doReg(){
   if(error){e.textContent=error.message.includes('already')?'Email già registrata.':'Errore. Riprova.';e.classList.add('on')}
   else{ok.textContent='✓ Account Free creato! Controlla la tua email per confermare.';ok.classList.add('on')}
   b.disabled=false;b.textContent='Crea Account →';
+}
+
+// ── Recupero password ────────────────────────────────────────────────────────
+async function doResetPassword(){
+  const b=document.getElementById('b-pw'),e=document.getElementById('e-pw'),ok=document.getElementById('o-pw');
+  const email=document.getElementById('i-pw-email').value.trim();
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){e.textContent='Inserisci un\'email valida.';e.classList.add('on');return}
+  b.disabled=true;b.textContent='Invio in corso...';e.classList.remove('on');ok.classList.remove('on');
+  try{
+    const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname+'?type=recovery'});
+    if(error){e.textContent='Errore: '+error.message;e.classList.add('on')}
+    else{ok.textContent='✓ Email inviata! Controlla la casella (incluso spam). Il link scade in 1 ora.';ok.classList.add('on');document.getElementById('i-pw-email').value=''}
+  }catch(err){e.textContent='Errore di rete. Riprova.';e.classList.add('on')}
+  b.disabled=false;b.textContent='Invia link di recupero →';
+}
+
+// ── Eliminazione account (GDPR art.17) ───────────────────────────────────────
+function openDelModal(){
+  document.getElementById('del-email-confirm').value='';
+  document.getElementById('del-confirm-btn').disabled=true;
+  document.getElementById('del-confirm-btn').classList.remove('active');
+  document.getElementById('e-del').classList.remove('on');
+  document.getElementById('del-modal').classList.add('on');
+  setTimeout(()=>document.getElementById('del-email-confirm')?.focus(),150);
+}
+function closeDelModal(){document.getElementById('del-modal').classList.remove('on')}
+function checkDelConfirm(){
+  const input=document.getElementById('del-email-confirm').value.trim().toLowerCase();
+  const btn=document.getElementById('del-confirm-btn');
+  const match=user?.email?.toLowerCase()===input;
+  btn.disabled=!match;btn.classList.toggle('active',match);
+}
+async function doDeleteAccount(){
+  const btn=document.getElementById('del-confirm-btn'),e=document.getElementById('e-del');
+  if(!user){e.textContent='Sessione non valida. Rieffettua il login.';e.classList.add('on');return}
+  btn.disabled=true;btn.textContent='Eliminazione...';e.classList.remove('on');
+  try{
+    const session=await sb.auth.getSession();
+    const token=session?.data?.session?.access_token;
+    if(!token)throw new Error('Token di sessione mancante.');
+    const res=await fetch(SB_URL+'/functions/v1/delete-account',{method:'POST',headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json','apikey':SB_KEY}});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data?.error||'Errore del server ('+res.status+')');
+    closeDelModal();toast('Account eliminato. Ci dispiace vederti andare.','ok');
+    setTimeout(async()=>{await doLogout()},1800);
+  }catch(err){
+    e.textContent='Errore: '+(err.message||'Riprova.');e.classList.add('on');
+    btn.disabled=false;btn.textContent='Elimina definitivamente';checkDelConfirm();
+  }
 }
 
 // ════════════════════════════════════════════════
@@ -2417,8 +2513,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   initTheme();calc();
   document.getElementById('i-pw')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
   document.getElementById('i-rpw')?.addEventListener('keydown',e=>{if(e.key==='Enter')doReg()});
+  document.getElementById('i-pw-email')?.addEventListener('keydown',e=>{if(e.key==='Enter')doResetPassword()});
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){closeAuth();closePW();closeAdminPanel();closeAcct();closeProjectsList();closeBrandModal();closeTeamModal()}
+    if(e.key==='Escape'){closeAuth();closePW();closeAdminPanel();closeAcct();closeProjectsList();closeBrandModal();closeTeamModal();closeDelModal()}
     if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();if(user)saveProject()}
   });
   document.getElementById('auth').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuth()});
@@ -2428,6 +2525,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('proj-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeProjectsList()});
   document.getElementById('brand-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeBrandModal()});
   document.getElementById('team-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeTeamModal()});
+  document.getElementById('del-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeDelModal()});
 });
 </script>
 </body>
