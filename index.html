@@ -1569,6 +1569,10 @@ function cbInit(){
 // ─────────────────────────────────────────────────────────────────────────────
 
 
+// ════════════════════════════════════════════════
+// USAGE LIMIT
+// ════════════════════════════════════════════════
+const LIM=50;
 const td=()=>new Date().toISOString().split('T')[0];
 function gCnt(){try{if(localStorage.getItem('ip_d')!==td()){localStorage.setItem('ip_d',td());localStorage.setItem('ip_c','0');return 0}const raw=parseInt(localStorage.getItem('ip_c'),10);return(Number.isFinite(raw)&&raw>=0)?raw:0}catch(e){return 0}}
 function iCnt(){try{const c=gCnt()+1;localStorage.setItem('ip_c',String(c));return c}catch(e){return 0}}
