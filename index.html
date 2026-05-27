@@ -608,9 +608,164 @@ body:has(#proj-modal.on) #chat-widget{opacity:0;pointer-events:none;transform:tr
 .nav .nbrand-logo.on{display:block}
 .nav .nbrand-text{transition:opacity .2s}
 
+/* ═══ COOKIE CONSENT BANNER ═══
+   z-index 7999: sotto tutti i modali (auth 9000, pw 8000+, acct 8200, proj 8300...)
+   ma sopra il contenuto della pagina — non interferisce con la navigazione modale */
+#cookie-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:7999;
+  background:rgba(5,10,20,.97);
+  border-top:1px solid var(--border2);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.22,.61,.36,1);
+  font-family:'Outfit','Segoe UI',Arial,sans-serif;
+}
+#cookie-banner.cb-visible{transform:translateY(0)}
+[data-theme="light"] #cookie-banner{background:rgba(240,244,248,.98);border-top-color:var(--border)}
+/* Evita che il banner copra la chat quando è visibile */
+body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
+/* Riga principale */
+.cb-main{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 28px;flex-wrap:wrap}
+@media(max-width:700px){.cb-main{padding:12px 14px;gap:10px}}
+.cb-text{flex:1;min-width:200px}
+.cb-title{font-size:.82rem;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.cb-title-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);flex-shrink:0}
+.cb-desc{font-size:.75rem;color:var(--tx2);line-height:1.5}
+.cb-desc a{color:var(--teal);text-decoration:none;font-weight:500}.cb-desc a:hover{text-decoration:underline}
+.cb-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.cb-btn-details{background:none;border:1px solid var(--border2);color:var(--tx3);padding:7px 14px;border-radius:var(--r);font-size:.72rem;font-weight:500;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
+.cb-btn-details:hover{color:var(--tx);border-color:var(--border2)}
+.cb-btn-accept{background:var(--teal);border:none;color:#050a14;padding:8px 20px;border-radius:var(--r);font-size:.76rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:.15s;white-space:nowrap}
+.cb-btn-accept:hover{background:var(--teal-h)}
+/* Pannello dettagli espandibile */
+.cb-detail{display:none;border-top:1px solid var(--border);padding:16px 28px 20px}
+.cb-detail.cb-open{display:block}
+@media(max-width:700px){.cb-detail{padding:12px 14px 16px}}
+.cb-detail-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--teal);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.cb-cookies-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px;margin-bottom:14px}
+.cb-cookie-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:11px 13px}
+[data-theme="light"] .cb-cookie-item{background:var(--bg4)}
+.cb-cookie-name{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;color:var(--teal);margin-bottom:3px}
+.cb-cookie-desc{font-size:.73rem;color:var(--tx2);line-height:1.5;margin-bottom:5px}
+.cb-cookie-meta{font-family:'JetBrains Mono',monospace;font-size:.55rem;color:var(--tx3)}
+.cb-badge-tech{display:inline-block;padding:1px 7px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:.52rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(0,212,164,.1);color:var(--teal);border:1px solid rgba(0,212,164,.2);margin-bottom:4px}
+.cb-legal-note{font-size:.72rem;color:var(--tx3);line-height:1.6;border-top:1px solid var(--border);padding-top:10px;margin-top:4px}
+.cb-legal-note a{color:var(--teal);text-decoration:none}.cb-legal-note a:hover{text-decoration:underline}
+.cb-detail-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.cb-btn-only-tech{background:none;border:1px solid var(--border2);color:var(--tx2);padding:8px 16px;border-radius:var(--r);font-size:.74rem;font-weight:500;cursor:pointer;font-family:inherit;transition:.15s}
+.cb-btn-only-tech:hover{border-color:var(--teal);color:var(--teal)}
+
 </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COOKIE CONSENT BANNER — GDPR / Garante Privacy / art.122 D.Lgs.196/2003
+     Viene mostrato SOLO al primo accesso (ip_consent_ts non presente).
+     Gestisce due livelli: "Solo tecnici" e "Accetta tutto".
+     In questa piattaforma tutti i cookie sono tecnici/necessari, quindi
+     entrambe le azioni producono lo stesso effetto legale — la distinzione
+     è esposta comunque per trasparenza e per futuro inserimento analytics.
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="cookie-banner" role="dialog" aria-modal="false" aria-label="Informativa cookie e preferenze privacy" aria-describedby="cb-desc-text">
+
+  <!-- ── Riga compatta (sempre visibile) ─────────────────────────── -->
+  <div class="cb-main">
+    <div class="cb-text">
+      <div class="cb-title">
+        <span class="cb-title-dot" aria-hidden="true"></span>
+        Usiamo cookie tecnici
+      </div>
+      <p class="cb-desc" id="cb-desc-text">
+        InvestPro usa solo cookie <strong>strettamente necessari</strong> al funzionamento (sessione, contatore analisi, preferenza tema).
+        Nessun tracciamento pubblicitario.
+        <a href="cookie-policy.html" target="_blank" rel="noopener noreferrer">Cookie Policy</a> &middot;
+        <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+      </p>
+    </div>
+    <div class="cb-actions">
+      <button class="cb-btn-details" id="cb-details-btn" onclick="cbToggleDetails()" aria-expanded="false" aria-controls="cb-detail-panel">
+        Dettagli ▾
+      </button>
+      <button class="cb-btn-accept" id="cb-accept-btn" onclick="cbAcceptAll()">
+        Ho capito
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Pannello dettagli (espandibile) ─────────────────────────── -->
+  <div class="cb-detail" id="cb-detail-panel" aria-hidden="true">
+    <div class="cb-detail-title">// cookie e archiviazione locale utilizzati</div>
+
+    <div class="cb-cookies-grid">
+
+      <div class="cb-cookie-item">
+        <div class="cb-badge-tech">Tecnico · Necessario</div>
+        <div class="cb-cookie-name">ip_d &amp; ip_c</div>
+        <div class="cb-cookie-desc">Memorizza la data corrente e il contatore delle analisi giornaliere per applicare il limite del piano Free (50 analisi/giorno). Si azzera ogni giorno a mezzanotte.</div>
+        <div class="cb-cookie-meta">Tipo: localStorage · Durata: reset giornaliero · Terze parti: nessuna</div>
+      </div>
+
+      <div class="cb-cookie-item">
+        <div class="cb-badge-tech">Tecnico · Necessario</div>
+        <div class="cb-cookie-name">ip_theme</div>
+        <div class="cb-cookie-desc">Salva la preferenza di tema (chiaro/scuro) dell'utente per mantenerla tra le sessioni senza richiedere di reimpostarla a ogni visita.</div>
+        <div class="cb-cookie-meta">Tipo: localStorage · Durata: persistente · Terze parti: nessuna</div>
+      </div>
+
+      <div class="cb-cookie-item">
+        <div class="cb-badge-tech">Tecnico · Necessario</div>
+        <div class="cb-cookie-name">ip_consent_ts</div>
+        <div class="cb-cookie-desc">Memorizza la data e l'azione di consenso (timestamp ISO) espressa su questo banner. Usato per non riproporre il banner e per documentare il consenso.</div>
+        <div class="cb-cookie-meta">Tipo: localStorage · Durata: 12 mesi · Terze parti: nessuna</div>
+      </div>
+
+      <div class="cb-cookie-item">
+        <div class="cb-badge-tech">Tecnico · Autenticazione</div>
+        <div class="cb-cookie-name">sb-* (Supabase Auth)</div>
+        <div class="cb-cookie-desc">Token JWT di sessione e refresh token necessari per mantenere l'utente autenticato. Generati da Supabase Auth al momento del login, rimossi al logout.</div>
+        <div class="cb-cookie-meta">Tipo: localStorage · Durata: 1h (access) / revocabile · Gestore: Supabase Inc.</div>
+      </div>
+
+      <div class="cb-cookie-item">
+        <div class="cb-badge-tech">Tecnico · Pagamenti</div>
+        <div class="cb-cookie-name">ip_stripe_intent</div>
+        <div class="cb-cookie-desc">Marcatore temporaneo impostato prima del redirect verso Stripe. Rilevato al ritorno per gestire correttamente lo stato post-checkout. Rimosso immediatamente dopo l'uso.</div>
+        <div class="cb-cookie-meta">Tipo: localStorage · Durata: max 15 min · Terze parti: nessuna</div>
+      </div>
+
+      <div class="cb-cookie-item">
+        <div class="cb-badge-tech">Esterno · Pagamenti</div>
+        <div class="cb-cookie-name">Cookie Stripe</div>
+        <div class="cb-cookie-desc">Quando vieni reindirizzato alla pagina di checkout Stripe, quest'ultima installa cookie tecnici per sicurezza e antifrode. Non accessibili da InvestPro.</div>
+        <div class="cb-cookie-meta">Tipo: cookie di sessione · Gestore: Stripe Inc. · <a href="https://stripe.com/it/privacy" target="_blank" rel="noopener noreferrer">Informativa Stripe</a></div>
+      </div>
+
+    </div>
+
+    <div class="cb-legal-note">
+      Poiché InvestPro utilizza esclusivamente cookie e localStorage <strong>tecnici e necessari</strong>,
+      non è richiesto il consenso preventivo ai sensi dell'art. 122 D.Lgs. 196/2003 e delle Linee guida del Garante Privacy (2021).
+      Premendo "Ho capito" o continuando a usare il sito dichiari di aver preso visione dell'informativa.
+      Puoi gestire o eliminare i dati dal tuo browser in qualsiasi momento.
+      <a href="cookie-policy.html" target="_blank" rel="noopener noreferrer">Leggi la Cookie Policy completa →</a>
+    </div>
+
+    <div class="cb-detail-actions">
+      <!-- "Solo tecnici" e "Accetta tutto" hanno lo stesso effetto legale in questa
+           piattaforma perché non esistono cookie di profilazione. La distinzione è
+           esposta per trasparenza e per compatibilità con eventuale futuro analytics. -->
+      <button class="cb-btn-only-tech" onclick="cbAcceptTechOnly()">
+        Solo tecnici (stessa cosa)
+      </button>
+      <button class="cb-btn-accept" onclick="cbAcceptAll()">
+        Ho capito — chiudi
+      </button>
+    </div>
+  </div>
+
+</div><!-- /#cookie-banner -->
+
 <div id="toasts"></div>
 
 <!-- ═══ NAV ═══ -->
@@ -1313,9 +1468,107 @@ if(typeof supabase!=='undefined'&&supabase.createClient){try{sb=supabase.createC
 if(!sb){document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{if(typeof toast==='function')toast('⚠️ Modalità offline: il calcolatore funziona, autenticazione non disponibile.','warn')},800)})}
 
 // ════════════════════════════════════════════════
-// USAGE LIMIT
+// COOKIE CONSENT ENGINE
+// Privacy ref: art.122 D.Lgs.196/2003, Linee guida Garante 2021
+// Chiave localStorage: ip_consent_ts (timestamp ISO8601 dell'azione)
+// Chiave localStorage: ip_consent_choice ('all' | 'tech')
+// Il banner appare SOLO se:
+//   1. ip_consent_ts non esiste, oppure
+//   2. il timestamp è più vecchio di 12 mesi (rinnovo annuale)
 // ════════════════════════════════════════════════
-const LIM=50;
+const CB_KEY_TS   = 'ip_consent_ts';
+const CB_KEY_CHOICE = 'ip_consent_choice';
+const CB_TTL_MS   = 365 * 24 * 60 * 60 * 1000; // 12 mesi in ms
+
+// Restituisce true se il consenso è valido (presente e non scaduto)
+function cbIsConsented(){
+  try{
+    const ts = localStorage.getItem(CB_KEY_TS);
+    if(!ts) return false;
+    const age = Date.now() - new Date(ts).getTime();
+    return age < CB_TTL_MS && age >= 0;
+  }catch(e){ return false }
+}
+
+// Registra il consenso in localStorage
+function cbSave(choice){
+  try{
+    localStorage.setItem(CB_KEY_TS, new Date().toISOString());
+    localStorage.setItem(CB_KEY_CHOICE, choice);
+  }catch(e){}
+}
+
+// Chiude il banner con animazione
+function cbClose(){
+  const el = document.getElementById('cookie-banner');
+  if(!el) return;
+  el.classList.remove('cb-visible');
+  // Rimuove aria-modal e tabindex dal banner dopo la chiusura
+  setTimeout(()=>{ el.setAttribute('aria-hidden','true') }, 380);
+}
+
+// Apre/chiude il pannello dettagli
+function cbToggleDetails(){
+  const panel = document.getElementById('cb-detail-panel');
+  const btn   = document.getElementById('cb-details-btn');
+  if(!panel || !btn) return;
+  const isOpen = panel.classList.toggle('cb-open');
+  panel.setAttribute('aria-hidden', String(!isOpen));
+  btn.setAttribute('aria-expanded', String(isOpen));
+  btn.textContent = isOpen ? 'Chiudi ▴' : 'Dettagli ▾';
+}
+
+// Handler: accetta tutto (equivalente a solo tecnici in questa piattaforma)
+function cbAcceptAll(){
+  cbSave('all');
+  cbClose();
+}
+
+// Handler: solo tecnici (stessa azione, scelta diversa registrata per audit)
+function cbAcceptTechOnly(){
+  cbSave('tech');
+  cbClose();
+}
+
+// Inizializza il banner: controlla se mostrarlo
+function cbInit(){
+  if(cbIsConsented()) return; // consenso ancora valido — non mostrare
+  const el = document.getElementById('cookie-banner');
+  if(!el) return;
+  el.removeAttribute('aria-hidden');
+  // Piccolo delay per permettere al DOM di stabilizzarsi prima dell'animazione
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{ el.classList.add('cb-visible'); });
+  });
+  // Segnale implicito: se l'utente interagisce con la pagina (scroll o click
+  // su elementi non-banner), consideriamo che abbia preso visione.
+  // NON chiudiamo automaticamente — solo registriamo "tech" come scelta implicita
+  // se e quando l'utente fa un'azione significativa dopo 8 secondi.
+  // Linee guida Garante: il scroll da solo non è consenso valido,
+  // ma "continuando a navigare" può essere accettato come informativa presa visione.
+  // Implementiamo: scroll dopo 5s di visita → consenso implicito "tech".
+  let _cbScrollTimer = null;
+  const _cbImplicitHandler = ()=>{
+    if(cbIsConsented()){ window.removeEventListener('scroll', _cbImplicitHandler); return; }
+    clearTimeout(_cbScrollTimer);
+    _cbScrollTimer = setTimeout(()=>{
+      if(!cbIsConsented()){ cbAcceptTechOnly(); }
+      window.removeEventListener('scroll', _cbImplicitHandler);
+    }, 5000); // 5s di scroll continuo = segnale implicito
+  };
+  window.addEventListener('scroll', _cbImplicitHandler, { passive: true });
+}
+
+// ── GUARD su gCnt/iCnt ──────────────────────────────────────────────────────
+// Le funzioni che scrivono su localStorage vengono già usate prima del consenso
+// (gCnt legge, iCnt scrive ip_c). La lettura (gCnt) è OK anche senza consenso
+// perché non imposta nulla. La scrittura (iCnt) è lecita per cookie tecnici
+// necessari anche senza consenso preventivo (art.122 co.1 esenzione).
+// Tuttavia documentiamo nel codice che queste scritture avvengono consapevolmente.
+// → Non blocchiamo iCnt: il contatore analisi è strettamente necessario al servizio.
+// ─────────────────────────────────────────────────────────────────────────────
+
+
 const td=()=>new Date().toISOString().split('T')[0];
 function gCnt(){try{if(localStorage.getItem('ip_d')!==td()){localStorage.setItem('ip_d',td());localStorage.setItem('ip_c','0');return 0}const raw=parseInt(localStorage.getItem('ip_c'),10);return(Number.isFinite(raw)&&raw>=0)?raw:0}catch(e){return 0}}
 function iCnt(){try{const c=gCnt()+1;localStorage.setItem('ip_c',String(c));return c}catch(e){return 0}}
@@ -2155,6 +2408,8 @@ function initTheme(){let saved='dark';try{saved=localStorage.getItem('ip_theme')
 // INIT
 // ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',()=>{
+  // Cookie consent: va inizializzato PRIMA di qualsiasi altra UI
+  cbInit();
   initTheme();calc();
   document.getElementById('i-pw')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
   document.getElementById('i-rpw')?.addEventListener('keydown',e=>{if(e.key==='Enter')doReg()});
