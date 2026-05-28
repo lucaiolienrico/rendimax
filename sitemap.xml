@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  sitemap.xml — InvestPro
+  https://lucaiolienrico.github.io/Invest/
+  AppNetto S.r.l. — Ultimo aggiornamento: 2026-05-28
+  Spec: https://www.sitemaps.org/protocol.html
+  Validator: https://www.xml-sitemaps.com/validate-xml-sitemap.html
+-->
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+    http://www.sitemaps.org/schemas/sitemap/0.9
+    http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- ═══ PAGINA PRINCIPALE ═══════════════════════════════════════
+       Landing + calcolatore pubblico. Alta priorità, aggiornata
+       frequentemente (nuove feature, fix fiscali, UI updates).
+       ═══════════════════════════════════════════════════════════ -->
+  <url>
+    <loc>https://lucaiolienrico.github.io/Invest/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- ═══ PAGINE LEGALI ════════════════════════════════════════════
+       Aggiornate raramente (solo a variazioni normative o del servizio).
+       Priorità media — utili per Google E-E-A-T e per la fiducia utente.
+       ═══════════════════════════════════════════════════════════ -->
+  <url>
+    <loc>https://lucaiolienrico.github.io/Invest/privacy-policy.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://lucaiolienrico.github.io/Invest/cookie-policy.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://lucaiolienrico.github.io/Invest/termini-e-condizioni.html</loc>
+    <lastmod>2026-05-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!--
+    ESCLUSE dalla sitemap (coincidono con Disallow in robots.txt):
+    - /Invest/app.html       → SPA autenticata, nessun contenuto pubblico
+    - /Invest/404.html       → redirect puro, nessun valore SEO
+    - /Invest/assets/*       → file statici non indicizzabili
+  -->
+
+</urlset>
