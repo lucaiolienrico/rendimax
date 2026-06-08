@@ -3399,17 +3399,22 @@ async function sendInvite(){
     emailEl.value='';
     toast('✓ Invito registrato per '+email,'ok');
     loadTeamInvites();
-    // Notifica via email (best-effort, non bloccante)
+    // Notifica via email (non bloccante per l'invito, ma il fallimento NON è silente)
     try{
       const{data:{session}}=await sb.auth.getSession();
       if(session?.access_token){
-        await fetch(SB_URL+'/functions/v1/send-invite',{
+        const r=await fetch(SB_URL+'/functions/v1/send-invite',{
           method:'POST',
           headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':SB_KEY},
           body:JSON.stringify({invited_email:email,workspace_name:_workspace.name||'Workspace',role,inviter_name:profile?.display_name||user.email||'Proprietario'})
         });
+        if(!r.ok){
+          let detail='';try{const j=await r.json();detail=j.error||'';}catch(e){}
+          console.warn('[invite] notifica email fallita:',r.status,detail);
+          toast('⚠ Invito salvato, ma email non inviata'+(detail?' ('+detail+')':'. Il collaboratore può accettare dalla dashboard.'),'err');
+        }
       }
-    }catch(emailErr){console.warn('[invite] notifica email non inviata:',emailErr.message)}
+    }catch(emailErr){console.warn('[invite] notifica email non inviata:',emailErr.message);toast('⚠ Invito salvato, ma notifica email non inviata. Il collaboratore può accettare dalla dashboard.','err');}
   }catch(e){errEl.textContent='Errore di rete.';errEl.classList.add('on')}
   btn.disabled=false;btn.textContent='Invita';
 }
