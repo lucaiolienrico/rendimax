@@ -1824,14 +1824,8 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
         <img id="logo-preview-img" style="max-height:72px;max-width:180px;border-radius:6px;border:1px solid var(--bg3);padding:4px;background:var(--bg1);object-fit:contain" alt="Anteprima logo">
         <button onclick="removeBrandLogo()" style="display:block;margin-top:4px;font-size:11px;color:var(--red);background:none;border:none;cursor:pointer;padding:0">× Rimuovi logo</button>
       </div>
-      <label for="logo-file-input" style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg2);border:1px dashed var(--bg3);border-radius:8px;cursor:pointer;font-size:13px;color:var(--tx2);transition:border-color .2s" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='var(--bg3)'">
-        📁 Carica immagine <span style="font-size:11px;color:var(--tx3)">(PNG, JPG, SVG — max 512KB)</span>
-      </label>
-      <input type="file" id="logo-file-input" accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml" style="display:none" onchange="handleLogoUpload(event)">
-      <p id="logo-upload-status" style="margin:4px 0 0;font-size:12px;color:var(--tx3)"></p>
-      <details style="margin-top:8px"><summary style="font-size:11px;color:var(--tx3);cursor:pointer">Oppure incolla URL immagine pubblica</summary>
-        <input class="afi" type="url" id="br-logo" placeholder="https://esempio.com/logo.png" oninput="previewLogoFromUrl(this.value);updateBrandPreview()" style="margin-top:6px">
-      </details>
+      <input class="afi" type="url" id="br-logo" placeholder="https://esempio.com/logo.png" oninput="previewLogoFromUrl(this.value);updateBrandPreview()">
+      <p style="margin:4px 0 0;font-size:11px;color:var(--tx3)">Incolla l'URL pubblico di un'immagine (PNG, JPG, SVG)</p>
     </div>
     <div class="color-row">
       <div class="color-field"><label class="afl">Colore Primario</label><input type="color" id="br-color1" value="#00d4a4"></div>
@@ -3237,28 +3231,9 @@ function doExport(){
 // ════════════════════════════════════════════════
 // FASE 1: REPORT PDF BRANDIZZATO
 // ════════════════════════════════════════════════
-// Logo Upload — Supabase Storage
-async function handleLogoUpload(event){
-  const file=event.target.files[0];if(!file)return;
-  const status=document.getElementById('logo-upload-status');
-  if(file.size>524288){status.textContent='✗ File troppo grande. Max 512KB.';status.style.color='var(--red)';event.target.value='';return}
-  const localUrl=URL.createObjectURL(file);showLogoPreview(localUrl);
-  status.textContent='Caricamento in corso…';status.style.color='var(--tx3)';
-  try{
-    const{data:{session}}=await sb.auth.getSession();if(!session)throw new Error('Sessione non trovata.');
-    const userId=session.user.id,ext=file.name.split('.').pop().toLowerCase(),path=userId+'/logo.'+ext;
-    const{error:upErr}=await sb.storage.from('brand-assets').upload(path,file,{upsert:true,contentType:file.type});
-    if(upErr)throw upErr;
-    const{data:{publicUrl}}=sb.storage.from('brand-assets').getPublicUrl(path);
-    document.getElementById('br-logo').value=publicUrl;
-    showLogoPreview(publicUrl);updateBrandPreview();
-    status.textContent='✓ Logo caricato.';status.style.color='var(--green)';
-    URL.revokeObjectURL(localUrl);
-  }catch(err){console.error('[logo upload]',err.message);status.textContent='✗ '+err.message;status.style.color='var(--red)'}
-}
 function showLogoPreview(url){if(!url)return;document.getElementById('logo-preview-img').src=url;document.getElementById('logo-preview-wrap').style.display='block'}
 function previewLogoFromUrl(url){if(url&&(url.startsWith('http://')||url.startsWith('https://')))showLogoPreview(url)}
-function removeBrandLogo(){document.getElementById('br-logo').value='';document.getElementById('logo-preview-img').src='';document.getElementById('logo-preview-wrap').style.display='none';document.getElementById('logo-upload-status').textContent='';document.getElementById('logo-file-input').value='';updateBrandPreview()}
+function removeBrandLogo(){document.getElementById('br-logo').value='';document.getElementById('logo-preview-img').src='';document.getElementById('logo-preview-wrap').style.display='none';updateBrandPreview()}
 function initLogoPreview(){const v=document.getElementById('br-logo');if(v&&v.value)showLogoPreview(v.value)}
 function openBrandModal(){if(!canPDF()){openPW('export');return}document.getElementById('brand-modal').classList.add('on');const wlSection=document.getElementById('wl-section');if(canTeam())wlSection.classList.remove('hidden');else wlSection.classList.add('hidden');loadBrandSettings().then(()=>initLogoPreview())}
 function closeBrandModal(){document.getElementById('brand-modal').classList.remove('on')}
