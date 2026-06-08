@@ -2220,6 +2220,18 @@ async function _handleAuth(event,session){
     return; // NON eseguire il resto del login flow
   }
 
+  // ── GUARD IDEMPOTENZA ──────────────────────────────────────────────────────
+  // supabase-js v2 ri-emette eventi (TOKEN_REFRESHED, USER_UPDATED e talvolta
+  // SIGNED_IN al ritorno di focus tab/app) per lo stesso utente già loggato.
+  // Senza questo guard l'intero flow UI verrebbe rieseguito — inclusi closeAuth()
+  // e closePW() — chiudendo modali aperti e causando reload/flicker non richiesti.
+  // In questi casi aggiorniamo solo la reference di sessione e usciamo.
+  if((event==='TOKEN_REFRESHED'||event==='USER_UPDATED'||event==='SIGNED_IN')
+     && user && session?.user && user.id===session.user.id){
+    user=session.user;
+    return;
+  }
+
   user=session?.user??null;
   if(user){
     sentrySetUser(user); // Sentry: contestualizza tutti gli errori con l'utente
