@@ -48,7 +48,7 @@
       "name": "Piano Free",
       "price": "0",
       "priceCurrency": "EUR",
-      "description": "50 analisi al giorno, calcolatore affitti brevi"
+      "description": "20 analisi al giorno, calcolatore affitti brevi"
     },
     {
       "@type": "Offer",
@@ -106,7 +106,7 @@
       "name": "Quanto costa Rendimax?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Rendimax offre un piano gratuito con 50 analisi al giorno e il calcolatore per affitti brevi. Il piano Pro costa 29,90 € al mese e include analisi illimitate, salvataggio progetti, export Excel e PDF e la modalità Flip."
+        "text": "Rendimax offre un piano gratuito con 20 analisi al giorno e il calcolatore per affitti brevi. Il piano Pro costa 29,90 € al mese e include analisi illimitate, salvataggio progetti, export Excel e PDF e la modalità Flip."
       }
     },
     {
@@ -948,6 +948,30 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
 .cb-btn-only-tech{background:none;border:1px solid var(--border2);color:var(--tx2);padding:8px 16px;border-radius:var(--r);font-size:.74rem;font-weight:500;cursor:pointer;font-family:inherit;transition:.15s}
 .cb-btn-only-tech:hover{border-color:var(--teal);color:var(--teal)}
 
+/* ═══ FLIP TEASER (Free) — anteprima cifrata per spingere l'upgrade ═══
+   Mostra il calcolo reale offuscato (blur CSS) con il solo segno +/- visibile.
+   L'utente sa SE l'operazione è profittevole, non QUANTO → FOMO controllata.
+   Non rimuove nulla: l'overlay è additivo, i risultati reali restano nel DOM
+   e tornano visibili per gli utenti Pro tramite hideFlipTeaser(). */
+.flip-preview-badge{font-size:.52rem;font-weight:700;background:linear-gradient(135deg,var(--amber),var(--gold));color:var(--bg);padding:2px 7px;border-radius:20px;letter-spacing:.04em;vertical-align:middle;margin-left:2px}
+#flip-teaser-overlay{animation:fadeUp .3s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.flip-blurred-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:16px 20px;margin-bottom:14px}
+.flip-blurred-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.flip-blurred-row:last-child{border-bottom:none}
+.flip-blurred-row.muted{opacity:.5}
+.flip-blurred-key{font-size:.78rem;color:var(--tx2)}
+.flip-blurred-val{font-size:.9rem;font-weight:700;filter:blur(4px);user-select:none;color:var(--tx);letter-spacing:.05em}
+.flip-blurred-val.sign-pos{color:var(--teal)}
+.flip-blurred-val.sign-neg{color:var(--red)}
+.flip-unlock-box{background:var(--bg2);border:1px solid var(--teal);border-radius:var(--rx);padding:24px 20px;text-align:center}
+.flip-unlock-icon{font-size:1.5rem;margin-bottom:8px}
+.flip-unlock-title{font-size:.96rem;font-weight:700;color:var(--tx);margin-bottom:6px}
+.flip-unlock-sub{font-size:.76rem;color:var(--tx2);line-height:1.55;margin-bottom:16px;max-width:300px;margin-left:auto;margin-right:auto}
+.flip-unlock-btn{background:var(--teal);color:var(--bg);border:none;border-radius:var(--r);padding:12px 24px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;width:100%;transition:.18s;letter-spacing:.03em}
+.flip-unlock-btn:hover{background:var(--teal-h)}
+.flip-unlock-hint{font-size:.62rem;color:var(--tx3);margin-top:8px;font-family:'JetBrains Mono',monospace}
+
 </style>
 </head>
 <body>
@@ -995,7 +1019,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
       <div class="cb-cookie-item">
         <div class="cb-badge-tech">Tecnico · Necessario</div>
         <div class="cb-cookie-name">ip_d &amp; ip_c</div>
-        <div class="cb-cookie-desc">Memorizza la data corrente e il contatore delle analisi giornaliere per applicare il limite del piano Free (50 analisi/giorno). Si azzera ogni giorno a mezzanotte.</div>
+        <div class="cb-cookie-desc">Memorizza la data corrente e il contatore delle analisi giornaliere per applicare il limite del piano Free (20 analisi/giorno). Si azzera ogni giorno a mezzanotte.</div>
         <div class="cb-cookie-meta">Tipo: localStorage · Durata: reset giornaliero · Terze parti: nessuna</div>
       </div>
 
@@ -1074,7 +1098,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
     <button class="nb nb-f" id="nav-reg" onclick="openAuth('reg')">Registrati</button>
     <!-- Visibili solo dopo login -->
     <span class="pill pill-free hidden" id="nav-badge">FREE</span>
-    <span class="pill-use hidden" id="nav-use">0/50</span>
+    <span class="pill-use hidden" id="nav-use">0/20</span>
     <input class="pinput hidden" id="proj-name" type="text" value="Nuova Analisi" placeholder="Nome analisi…">
     <input class="pinput hidden" id="save-note" type="text" placeholder="Nota versione…" style="width:120px;font-size:.7rem;color:var(--tx3)" title="Nota per lo storico (opzionale)">
     <button class="nb nb-o hidden" id="nav-export" onclick="doExport()">↗ Export</button>
@@ -1104,7 +1128,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
         <button class="h-btn-main" onclick="openAuth('reg')">Inizia gratis →</button>
         <button class="h-btn-out" onclick="openAuth('login')">Accedi</button>
       </div>
-      <div class="hlbl">// 50 analisi/giorno · nessuna carta richiesta</div>
+      <div class="hlbl">// 20 analisi/giorno · nessuna carta richiesta</div>
     </div>
     <!-- Colonna destra: mini dashboard preview -->
     <div class="hero-right">
@@ -1147,14 +1171,14 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
 <!-- Freccia verso il calcolatore -->
 <div class="hero-arrow-row" id="hero-arrow">
   <div class="harr">↓</div>
-  <div class="hero-arrow-lbl">// prova gratis — 50 analisi al giorno</div>
+  <div class="hero-arrow-lbl">// prova gratis — 20 analisi al giorno</div>
 </div>
 
-<!-- ═══ MODE TOGGLE (app only) ═══ -->
+<!-- ═══ MODE TOGGLE (sempre visibile — discovery del tab Flip anche sulla landing) ═══ -->
 <div style="max-width:1200px;margin:0 auto;padding:0 20px">
-  <div class="mode hidden" id="mode-bar">
+  <div class="mode" id="mode-bar">
     <button class="mp on" id="pill-rent" onclick="setMode('rent')">🏠 Messa a Reddito</button>
-    <button class="mp" id="pill-flip" onclick="clickFlip()">🔄 Flip <span id="flip-lock" style="font-size:.6rem;opacity:.6">🔒</span></button>
+    <button class="mp" id="pill-flip" onclick="clickFlip()">🔄 Flip <span id="flip-lock" class="flip-preview-badge">Anteprima</span></button>
   </div>
 </div>
 
@@ -1164,7 +1188,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
   <div class="fbar">
     <div class="fdots"><i class="fd1"></i><i class="fd2"></i><i class="fd3"></i></div>
     <div class="furl">rendimax · analisi live</div>
-    <div class="fpill" id="frame-pill">0/50</div>
+    <div class="fpill" id="frame-pill">0/20</div>
   </div>
   <div class="fbody">
     <div class="finputs">
@@ -1199,7 +1223,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
 
     <!-- RESULTS -->
     <div class="fresults" id="results">
-      <div class="lock" id="lock-overlay"><div style="font-size:1.8rem">🔒</div><div class="lock-h">Limite raggiunto</div><div class="lock-p">50 analisi esaurite oggi. Registrati per continuare domani, o passa a Pro.</div><button class="lock-btn" onclick="openAuth('reg')">Registrati Gratis</button><button class="lock-skip" onclick="openPW('limit')">oppure Pro →</button></div>
+      <div class="lock" id="lock-overlay"><div style="font-size:1.8rem">🔒</div><div class="lock-h">Limite raggiunto</div><div class="lock-p">20 analisi esaurite oggi. Registrati per continuare domani, o passa a Pro.</div><button class="lock-btn" onclick="openAuth('reg')">Registrati Gratis</button><button class="lock-skip" onclick="openPW('limit')">oppure Pro →</button></div>
 
       <div class="krow"><div class="kc"><div class="kl">Investimento</div><div class="kv" id="k-inv">€ 0</div></div><div class="kc"><div class="kl">ROI Annuo</div><div class="kv" id="k-roi">0%</div></div><div class="kc"><div class="kl" id="k-cfl">Cashflow/Mese</div><div class="kv" id="k-cf">€ 0</div></div><div class="kc"><div class="kl">Break-even</div><div class="kv" id="k-be">—</div></div></div>
 
@@ -1244,6 +1268,35 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
 
       <!-- Flip results -->
       <div class="flip-res" id="flip-res">
+
+        <!-- ═══ FLIP TEASER OVERLAY — visibile solo per utenti Free ═══
+             Attivato da showFlipTeaser(); nascosto per Pro da hideFlipTeaser().
+             I valori reali sotto (.sec) restano nel DOM ma vengono nascosti
+             via display:none quando il teaser è attivo. -->
+        <div id="flip-teaser-overlay" style="display:none">
+          <div class="flip-blurred-wrap">
+            <div class="flip-blurred-row">
+              <span class="flip-blurred-key">Profitto netto stimato</span>
+              <span class="flip-blurred-val" id="flip-teaser-sign">+ € ██.███</span>
+            </div>
+            <div class="flip-blurred-row muted">
+              <span class="flip-blurred-key">ROI operazione</span>
+              <span class="flip-blurred-val">██,█ %</span>
+            </div>
+            <div class="flip-blurred-row muted">
+              <span class="flip-blurred-key">Plusvalenza lorda</span>
+              <span class="flip-blurred-val">+ € ██.███</span>
+            </div>
+          </div>
+          <div class="flip-unlock-box">
+            <div class="flip-unlock-icon">🔓</div>
+            <div class="flip-unlock-title">Il calcolo è pronto</div>
+            <div class="flip-unlock-sub">Il profitto reale è nascosto. Passa a Pro per sbloccarlo, salvare l'analisi e confrontare più scenari.</div>
+            <button class="flip-unlock-btn" onclick="openPW('flip')">Sblocca il profitto reale →</button>
+            <div class="flip-unlock-hint">Da €29,90/mese · Disdici quando vuoi</div>
+          </div>
+        </div>
+
         <div class="sec"><div class="sh"><span class="st">📈 Analisi Flip</span></div><div class="sb">
           <div class="rr"><span class="rk">Vendita</span><span class="rv" id="f-sell">€ 0</span></div>
           <div class="rr"><span class="rk">Costi acq.</span><span class="rv neg" id="f-acq">€ 0</span></div>
@@ -1364,7 +1417,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
         <div class="pcp">Free</div>
         <div class="pca"><span class="cur">€</span>0</div>
         <div class="pcper">per sempre</div>
-        <ul class="pcf"><li>50 analisi/giorno</li><li>Messa a Reddito</li><li>4 regimi fiscali</li><li>Scenari</li></ul>
+        <ul class="pcf"><li>20 analisi/giorno</li><li>Messa a Reddito</li><li>4 regimi fiscali</li><li>Scenari</li></ul>
         <button class="pcb pcb-o" onclick="openAuth('reg')">Inizia Gratis</button>
       </div>
       <!-- PRO -->
@@ -1425,9 +1478,9 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
 
       <div class="foot-col">
         <div class="foot-col-title">Legale</div>
-        <a href="privacy-policy.html" target="_blank">Privacy Policy</a>
-        <a href="termini-e-condizioni.html" target="_blank">Termini e Condizioni</a>
-        <a href="cookie-policy.html" target="_blank">Cookie Policy</a>
+        <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        <a href="termini-e-condizioni.html" target="_blank" rel="noopener noreferrer">Termini e Condizioni</a>
+        <a href="cookie-policy.html" target="_blank" rel="noopener noreferrer">Cookie Policy</a>
         <a href="#" onclick="document.getElementById('chat-panel').classList.toggle('open');return false">Contattaci</a>
       </div>
 
@@ -1444,9 +1497,9 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
     <div class="foot-bottom">
       <span>© 2026 <span class="foot-brand">Rendimax S.r.l.</span> — Tutti i diritti riservati</span>
       <div class="foot-legal">
-        <a href="privacy-policy.html" target="_blank">Privacy</a>
-        <a href="termini-e-condizioni.html" target="_blank">T&amp;C</a>
-        <a href="cookie-policy.html" target="_blank">Cookie</a>
+        <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy</a>
+        <a href="termini-e-condizioni.html" target="_blank" rel="noopener noreferrer">T&amp;C</a>
+        <a href="cookie-policy.html" target="_blank" rel="noopener noreferrer">Cookie</a>
       </div>
     </div>
   </footer>
@@ -1492,7 +1545,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
       <div style="background:rgba(0,212,164,.07);border:1px solid rgba(0,212,164,.2);border-radius:8px;padding:10px 12px">
         <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">// Piano di partenza</div>
         <div style="font-size:.82rem;color:var(--tx2);font-weight:400;line-height:1.5">
-          Tutti gli account iniziano con il piano <strong style="color:var(--tx)">Free</strong> (50 analisi/giorno).<br>
+          Tutti gli account iniziano con il piano <strong style="color:var(--tx)">Free</strong> (20 analisi/giorno).<br>
           Puoi passare a <strong style="color:var(--teal)">Pro</strong> in qualsiasi momento dopo il login.
         </div>
       </div>
@@ -2175,7 +2228,7 @@ function cbInit(){
 // ════════════════════════════════════════════════
 // USAGE LIMIT
 // ════════════════════════════════════════════════
-const LIM=50;
+const LIM=20;
 const td=()=>new Date().toISOString().split('T')[0];
 function gCnt(){try{if(localStorage.getItem('ip_d')!==td()){localStorage.setItem('ip_d',td());localStorage.setItem('ip_c','0');return 0}const raw=parseInt(localStorage.getItem('ip_c'),10);return(Number.isFinite(raw)&&raw>=0)?raw:0}catch(e){return 0}}
 function iCnt(){try{const c=gCnt()+1;localStorage.setItem('ip_c',String(c));return c}catch(e){return 0}}
@@ -2185,6 +2238,9 @@ function uPill(){const c=gCnt();document.querySelectorAll('#frame-pill,#nav-use'
 // STATO GLOBALE + RBAC (Fix C-1: dichiarazioni unificate)
 // ════════════════════════════════════════════════
 let user=null, isPro=false, isProPlus=false, isAgency=false, isSuperAdmin=false, profile=null, mode='rent', limShown=false;
+// sb (client Supabase) dichiarato a livello globale: assegnato in DOMContentLoaded
+// dopo il caricamento del CDN. Evita la dipendenza da non-strict mode / window.sb.
+let sb=null;
 let _pendingAuth=null, _authProcessing=false, _logoutDone=false;
 let _brandCache=null;
 let _workspace=null, _wsMembers=[], _wsInvites=[], _pendingInvites=[];
@@ -2240,8 +2296,6 @@ async function _handleAuth(event,session){
     catch(profileErr){console.error('Errore caricamento profilo:',profileErr);await new Promise(r=>setTimeout(r,500));const{data:retry}=await sb.from('profiles').select('*').eq('id',user.id).single();p=retry}
     if(_pendingAuth)return;
 
-    profile=p;
-
     // ── SYNC PLAN DA STRIPE ─────────────────────────────────────────────────
     // Chiama la edge function sync-plan per sincronizzare il piano con Stripe.
     // Non blocca il login: se fallisce, usa il piano già in DB.
@@ -2253,7 +2307,6 @@ async function _handleAuth(event,session){
           // Il piano è stato aggiornato: ricarica il profilo aggiornato
           const{data:updatedProfile}=await sb.from('profiles').select('*').eq('id',user.id).single();
           if(updatedProfile) p=updatedProfile;
-          console.log('[sync-plan] piano aggiornato:', syncRes.data.plan, syncRes.data.status);
         }
       }catch(syncErr){
         // Non bloccante: logga e continua con il piano in DB
@@ -2269,7 +2322,6 @@ async function _handleAuth(event,session){
         try{
           await sb.from('profiles').update({plan:'free', subscription_status:'expired', updated_at:new Date().toISOString()}).eq('id',user.id);
           p = {...p, plan:'free', subscription_status:'expired'};
-          console.log('[grace-period] scaduto, retrocesso a free');
         }catch(e){console.warn('[grace-period] update fallito:',e.message)}
       }
     }
@@ -2307,7 +2359,13 @@ async function _handleAuth(event,session){
     const upBtn=document.getElementById('nav-up');
     if(hasFullAccess())upBtn?.classList.add('hidden');else upBtn?.classList.remove('hidden');
     const flipLock=document.getElementById('flip-lock');
-    if(hasFullAccess())flipLock?.classList.add('hidden');else flipLock?.classList.remove('hidden');
+    if(hasFullAccess()){
+      flipLock?.classList.add('hidden');
+      hideFlipTeaser();                    // Pro: ripristina i risultati reali del flip
+    }else{
+      flipLock?.classList.remove('hidden');
+      if(mode==='flip')showFlipTeaser();   // Free già nel tab flip: riallinea l'overlay
+    }
 
     const badge=document.getElementById('nav-badge');
     if(badge){
@@ -2899,7 +2957,10 @@ function resetUIToLanding(){
   document.getElementById('landing-extra').classList.remove('hidden');
   document.getElementById('hero-strip')?.classList.remove('hidden');
   document.getElementById('hero-arrow')?.classList.remove('hidden');
-  document.getElementById('mode-bar').classList.add('hidden');
+  // mode-bar resta sempre visibile (discovery Flip anche sulla landing)
+  // document.getElementById('mode-bar').classList.add('hidden'); — rimosso intenzionalmente
+  // Reset al tab rent e teaser coerente
+  if(mode==='flip'){setMode('rent');}
   document.getElementById('nav-login').classList.remove('hidden');
   document.getElementById('nav-reg').classList.remove('hidden');
   ['nav-badge','nav-use','proj-name','nav-export','nav-load','nav-save','nav-admin-panel','nav-acct','nav-up','nav-out','nav-pdf','nav-brand','save-note','nav-team'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
@@ -2992,8 +3053,31 @@ async function checkout(period){
 // ════════════════════════════════════════════════
 // MODE TOGGLE
 // ════════════════════════════════════════════════
-function clickFlip(){if(!canFlip()){openPW('flip');return}setMode('flip')}
-function setMode(m){mode=m;document.getElementById('pill-rent').classList.toggle('on',m==='rent');document.getElementById('pill-flip').classList.toggle('on',m==='flip');document.getElementById('sec-rent').style.display=m==='rent'?'':'none';document.getElementById('sec-flip').classList.toggle('on',m==='flip');document.getElementById('rent-res').classList.toggle('off',m!=='rent');document.getElementById('flip-res').classList.toggle('on',m==='flip');document.getElementById('k-cfl').textContent=m==='rent'?'CF/Mese':'Profit/Mese';calc()}
+function clickFlip(){
+  // [FLIP TEASER] Free: non blocca più — entra nel tab e mostra l'anteprima cifrata.
+  // Pro/Pro+/Agency/SuperAdmin: comportamento invariato (accesso pieno).
+  if(!canFlip()){
+    setMode('flip');
+    showFlipTeaser();
+    return;
+  }
+  hideFlipTeaser();
+  setMode('flip');
+}
+
+// [FLIP TEASER] Mostra l'overlay cifrato e nasconde i risultati reali del flip.
+function showFlipTeaser(){
+  const ov=document.getElementById('flip-teaser-overlay');
+  if(ov)ov.style.display='block';
+  document.querySelectorAll('#flip-res > .sec').forEach(el=>el.style.display='none');
+}
+// [FLIP TEASER] Nasconde l'overlay e ripristina i risultati reali (utenti Pro).
+function hideFlipTeaser(){
+  const ov=document.getElementById('flip-teaser-overlay');
+  if(ov)ov.style.display='none';
+  document.querySelectorAll('#flip-res > .sec').forEach(el=>el.style.display='');
+}
+function setMode(m){mode=m;document.getElementById('pill-rent').classList.toggle('on',m==='rent');document.getElementById('pill-flip').classList.toggle('on',m==='flip');document.getElementById('sec-rent').style.display=m==='rent'?'':'none';document.getElementById('sec-flip').classList.toggle('on',m==='flip');document.getElementById('rent-res').classList.toggle('off',m!=='rent');document.getElementById('flip-res').classList.toggle('on',m==='flip');document.getElementById('k-cfl').textContent=m==='rent'?'CF/Mese':'Profit/Mese';if(m==='rent')hideFlipTeaser();calc()}
 
 // ════════════════════════════════════════════════
 // CALCULATOR
@@ -3042,7 +3126,10 @@ function calc(){
   document.getElementById('mort-pay').value=Math.round(fromCents(mpC)).toLocaleString('it-IT');
   document.getElementById('equity-req').value=Math.round(fromCents(equityC)).toLocaleString('it-IT');
 
-  if(mode==='flip'&&canFlip()){calcFlip(equityC,mpC,priceC);return}
+  // [FLIP TEASER] Il calcolo gira sempre in modalità flip. Per gli utenti Free
+  // calcFlip() produce solo il segno offuscato nell'overlay (vedi sotto), senza
+  // esporre i valori reali nel DOM. Per i Pro il render è completo come prima.
+  if(mode==='flip'){calcFlip(equityC,mpC,priceC);return}
 
   // ── Rental Inputs (FIX P1: clamped) ──
   const adr=n('adr'),occ=n('occ',0,100),taxR=n('tax-rate',0,100),otaP=n('ota',0,100);
@@ -3099,6 +3186,30 @@ function calcFlip(equityC,mpC,priceC){
   const taxableC=Math.max(0,sellC-priceC-renoC-closingC-agCC);
   const taxesC=Math.round(taxableC*(ftax/100)),netC=econC-taxesC;
   const roi=equityC>0?(netC/equityC)*100:0,mPC=months>0?Math.round(netC/months):0;
+
+  // [FLIP TEASER] Utenti Free: NON esporre i valori reali nel DOM.
+  // Aggiorna solo il segno (+/−) offuscato nell'overlay e termina qui.
+  // I KPI condivisi (k-inv/k-roi/k-cf/k-be) e i campi flip restano intatti,
+  // così non trapelano numeri reali. L'overlay è già attivo da showFlipTeaser().
+  if(!canFlip()){
+    showFlipTeaser();
+    const pos=netC>=0;
+    const signEl=document.getElementById('flip-teaser-sign');
+    if(signEl){
+      signEl.textContent=(pos?'+ ':'− ')+'€ ██.███';
+      signEl.className='flip-blurred-val '+(pos?'sign-pos':'sign-neg');
+    }
+    // KPI condivisi: "Investimento" deriva solo da input visibili (prezzo/LTV/reno) → ok.
+    // ROI / Profit / Break-even rivelerebbero il risultato → mascherati per Free.
+    sv('k-inv',eur(fromCents(equityC)));
+    sv('k-roi','🔒');
+    const cfElF=document.getElementById('k-cf');if(cfElF){cfElF.textContent='🔒';cfElF.className='kv'}
+    sv('k-be','🔒');
+    return;
+  }
+
+  // ── Render completo (Pro/Pro+/Agency/SuperAdmin) ──
+  hideFlipTeaser();
   sv('k-inv',eur(fromCents(equityC)));sv('k-roi',pct(roi));const cfEl=document.getElementById('k-cf');cfEl.textContent=eur(fromCents(mPC));cfEl.className='kv '+(mPC>=0?'pos':'neg');sv('k-be',months+'m');
   sv('f-sell',eur(fromCents(sellC)));sv('f-acq',eur(fromCents(priceC+renoC+closingC)));sv('f-ag',eur(fromCents(agCC)));sv('f-hold',eur(fromCents(holdCC)));sv('f-gross',eur(fromCents(econC)));sv('f-tax',eur(fromCents(taxesC)));
   const bv=document.getElementById('br-fl'),bd=document.getElementById('big-fl');bv.textContent=eur(fromCents(netC));bv.className='bv '+(netC>=0?'':'neg');bd.className='big '+(netC<0?'neg':'');sv('br-fls',`ROI ${pct(roi)} · ${months} mesi`);
@@ -3340,14 +3451,13 @@ async function loadUserWorkspace(){
 
     // 3. Nessun workspace: auto-provisioning per utenti Agency/super_admin
     if(!canTeam())return;
-    console.log('[workspace] nessun workspace trovato, avvio provisioning...');
     const{data:prov,error:provErr}=await sb.rpc('provision_agency_workspace');
     if(provErr){console.error('[workspace] provisioning RPC:',provErr.message);return}
     if(prov?.ok && prov.workspace_id){
       const{data:newWs,error:newErr}=await sb.from('workspaces')
         .select('id,name,max_members,owner_id').eq('id',prov.workspace_id).single();
       if(newErr)console.error('[workspace] reload after provision:',newErr.message);
-      if(newWs){_workspace=newWs;console.log('[workspace] provisioning OK →',newWs.name)}
+      if(newWs){_workspace=newWs}
     } else {
       console.warn('[workspace] provisioning risposta negativa:',prov?.error);
     }
@@ -3512,7 +3622,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   // ── Inizializzazione Supabase ──────────────────────────────────────────────
   // DOMContentLoaded si attiva DOPO che tutti i <script defer> hanno eseguito
   // (spec HTML §8.1.4.3). Supabase è quindi già disponibile qui.
-  let sb=null;
+  // Assegna alla variabile globale sb (dichiarata sopra) — niente shadowing.
   if(typeof supabase!=='undefined'&&supabase.createClient){
     try{sb=supabase.createClient(SB_URL,SB_KEY)}
     catch(e){console.error('[init] Supabase fallito:',e)}
