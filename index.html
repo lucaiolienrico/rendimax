@@ -10,15 +10,15 @@
 <meta name="keywords" content="analisi investimento immobiliare, calcolo ROI affitto breve, cedolare secca, cashflow immobiliare, airbnb roi calculator, STR analytics, mutuo calcolatore">
 <meta name="author" content="Rendimax S.r.l.">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<link rel="canonical" href="https://www.rendimax.it/">
+<link rel="canonical" href="https://rendimax.app/">
 
 <!-- ═══ OPEN GRAPH (Facebook, LinkedIn, WhatsApp, Telegram) ═══ -->
 <meta property="og:type"        content="website">
 <meta property="og:site_name"   content="Rendimax">
 <meta property="og:title"       content="Rendimax — Analisi Finanziaria Immobiliare">
 <meta property="og:description" content="Calcola ROI, cashflow netto e break-even su affitti brevi e investimenti immobiliari. Cedolare secca, OTA, mutuo, scenari ottimistici/pessimistici. Gratis.">
-<meta property="og:url"         content="https://www.rendimax.it/">
-<meta property="og:image"       content="https://www.rendimax.it/assets/og-image.png">
+<meta property="og:url"         content="https://rendimax.app/">
+<meta property="og:image"       content="https://rendimax.app/assets/og-image.png">
 <meta property="og:image:alt"   content="Rendimax — Dashboard analisi investimento immobiliare">
 <meta property="og:image:width"  content="1200">
 <meta property="og:image:height" content="630">
@@ -28,7 +28,7 @@
 <meta name="twitter:card"        content="summary_large_image">
 <meta name="twitter:title"       content="Rendimax — Analisi Finanziaria Immobiliare">
 <meta name="twitter:description" content="Calcola ROI, cashflow e break-even su affitti brevi in pochi secondi. Cedolare secca, OTA, mutuo e scenari inclusi.">
-<meta name="twitter:image"       content="https://www.rendimax.it/assets/og-image.png">
+<meta name="twitter:image"       content="https://rendimax.app/assets/og-image.png">
 <meta name="twitter:image:alt"   content="Rendimax dashboard">
 
 <!-- ═══ JSON-LD STRUCTURED DATA (Google Rich Results) ═══ -->
@@ -37,7 +37,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Rendimax",
-  "url": "https://www.rendimax.it/",
+  "url": "https://rendimax.app/",
   "description": "Piattaforma SaaS di analisi finanziaria immobiliare per investitori, host Airbnb e agenti immobiliari. Calcola ROI, cashflow netto, cedolare secca e break-even.",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "All",
@@ -62,7 +62,7 @@
   "publisher": {
     "@type": "Organization",
     "name": "Rendimax S.r.l.",
-    "email": "support@rendimax.it",
+    "email": "support@rendimax.app",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Via Roma 14",
@@ -81,7 +81,7 @@
   "@type": "WebSite",
   "name": "Rendimax",
   "alternateName": "Rendimax — Analisi Finanziaria Immobiliare",
-  "url": "https://www.rendimax.it/",
+  "url": "https://rendimax.app/",
   "inLanguage": "it-IT",
   "publisher": { "@type": "Organization", "name": "Rendimax S.r.l." }
 }
@@ -1489,7 +1489,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
         <a href="#hero" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">Calcolatore</a>
         <a href="#" onclick="openPW();return false">Piano Pro</a>
         <a href="#" onclick="openAuth('reg');return false">Registrati Gratis</a>
-        <a href="mailto:support@rendimax.it">support@rendimax.it</a>
+        <a href="mailto:support@rendimax.app">support@rendimax.app</a>
       </div>
 
     </div>
@@ -1739,7 +1739,7 @@ body:has(#cookie-banner.cb-visible) #chat-widget{bottom:calc(24px + 56px)}
       in formato strutturato, di uso comune e leggibile da dispositivo automatico (art.20).
       I dati di pagamento (carte, fatture) sono gestiti da Stripe Inc. e non accessibili da Rendimax —
       contatta <a href="https://stripe.com/it/privacy" target="_blank" rel="noopener noreferrer">Stripe</a> per richiederli.
-      Per ulteriori richieste: <a href="mailto:privacy@rendimax.it">privacy@rendimax.it</a>
+      Per ulteriori richieste: <a href="mailto:privacy@rendimax.app">privacy@rendimax.app</a>
     </div>
 
     <button class="adbtn" onclick="closeGdprModal()" style="margin-top:16px">Chiudi</button>
@@ -2766,7 +2766,7 @@ async function _collectGdprData(){
     _meta: {
       exported_at:    new Date().toISOString(),
       gdpr_article:   'Art.20 GDPR — Diritto alla portabilità dei dati',
-      data_controller:'Rendimax S.r.l. — privacy@rendimax.it',
+      data_controller:'Rendimax S.r.l. — privacy@rendimax.app',
       format_version: '1.0',
     }
   };
@@ -2837,7 +2837,7 @@ function _gdprToTxt(d){
   rows.push(sep());
   rows.push('NOTA: i dati di pagamento (carte, fatture) sono gestiti');
   rows.push('interamente da Stripe Inc. Contatta stripe.com per richiederli.');
-  rows.push('Per ulteriori richieste: privacy@rendimax.it');
+  rows.push('Per ulteriori richieste: privacy@rendimax.app');
   return rows.join('\n');
 }
 
@@ -2944,8 +2944,8 @@ async function sendChatMsg(){
   const name=nameEl.value.trim(),message=msgEl.value.trim();
   if(!name||!message){toast('Inserisci nome e messaggio.','err');return}
   const btn=document.getElementById('chat-send'),orig=btn.textContent;btn.disabled=true;btn.textContent='Invio...';
-  try{const res=await fetch(SB_URL+'/functions/v1/send-contact',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({name,message})});if(!res.ok){window.open('mailto:support@rendimax.it?subject='+encodeURIComponent('[Rendimax] '+name)+'&body='+encodeURIComponent(message),'_blank');toast('Email aperta.','ok');btn.disabled=false;btn.textContent=orig;return}document.getElementById('chat-sent').style.display='block';nameEl.style.display='none';msgEl.style.display='none';btn.style.display='none';toast('✓ Messaggio inviato!','ok')}
-  catch(err){window.open('mailto:support@rendimax.it?subject='+encodeURIComponent('[Rendimax] '+name)+'&body='+encodeURIComponent(message),'_blank');btn.disabled=false;btn.textContent=orig}
+  try{const res=await fetch(SB_URL+'/functions/v1/send-contact',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},body:JSON.stringify({name,message})});if(!res.ok){window.open('mailto:support@rendimax.app?subject='+encodeURIComponent('[Rendimax] '+name)+'&body='+encodeURIComponent(message),'_blank');toast('Email aperta.','ok');btn.disabled=false;btn.textContent=orig;return}document.getElementById('chat-sent').style.display='block';nameEl.style.display='none';msgEl.style.display='none';btn.style.display='none';toast('✓ Messaggio inviato!','ok')}
+  catch(err){window.open('mailto:support@rendimax.app?subject='+encodeURIComponent('[Rendimax] '+name)+'&body='+encodeURIComponent(message),'_blank');btn.disabled=false;btn.textContent=orig}
 }
 
 // ════════════════════════════════════════════════
