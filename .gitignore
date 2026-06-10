@@ -1,10 +1,23 @@
-# Mai committare chiavi reali
+# ── Segreti — MAI committare ──
 .env
 .env.*
+*.local
+config.js
 assets/js/config.js
 
+# ── Supabase locale ──
+.supabase/
+supabase/.branches/
+supabase/.temp/
+
+# ── Build / deps ──
+node_modules/
+dist/
+.vercel/
+
+# ── OS / editor ──
 .DS_Store
 Thumbs.db
 *.log
-node_modules/
-.supabase/
+.idea/
+.vscode/

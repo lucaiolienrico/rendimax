@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Termini e Condizioni — Rendimax</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="dark"]{
+  --bg:#050a14;--bg2:#0a1628;--bg3:#0f1d35;--bg4:#162540;
+  --border:#1a2e4a;--border2:#2a4060;
+  --tx:#f0f5ff;--tx2:#b0c4de;--tx3:#5a7a9a;
+  --teal:#00d4a4;--teal-h:#00b88e;--tg:rgba(0,212,164,.12);
+  --gold:#d4a940;--r:8px;--rl:14px;--rx:20px;
+}
+[data-theme="light"]{
+  --bg:#f0f4f8;--bg2:#ffffff;--bg3:#e8eef5;--bg4:#dde5ef;
+  --border:#c8d5e5;--border2:#a8bdd0;
+  --tx:#0d1f35;--tx2:#2e4a6a;--tx3:#5a7a9a;
+  --teal:#007a5e;--teal-h:#006048;--tg:rgba(0,122,94,.10);
+  --gold:#8a6800;--r:8px;--rl:14px;--rx:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Outfit','Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.65}
+.nav{position:sticky;top:0;z-index:100;background:rgba(5,10,20,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:60px;padding:0 28px;display:flex;align-items:center;justify-content:space-between}
+[data-theme="light"] .nav{background:rgba(240,244,248,.92)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.ndot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:blink 2.4s ease infinite;display:inline-block}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.nav-logo{font-weight:800;font-size:1.05rem;color:var(--tx);letter-spacing:-.02em}
+.nav-logo span{color:var(--teal)}
+.nav-back{background:transparent;border:1px solid var(--border2);color:var(--tx2);padding:7px 16px;border-radius:var(--r);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.nav-back:hover{border-color:var(--teal);color:var(--teal)}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--tx3);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:.15s;margin-left:8px}
+.theme-btn:hover{border-color:var(--teal);color:var(--teal)}
+.page{max-width:780px;margin:0 auto;padding:48px 28px 80px}
+.page-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+.page-title{font-size:2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
+.page-sub{color:var(--tx3);font-size:.84rem;font-family:'JetBrains Mono',monospace;margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section{margin-bottom:36px}
+h2{font-size:1.05rem;font-weight:700;color:var(--teal);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+h2::before{content:'';width:3px;height:16px;background:var(--teal);border-radius:2px;flex-shrink:0}
+p{color:var(--tx2);font-size:.88rem;line-height:1.7;margin-bottom:10px}
+ul{padding-left:20px;margin-bottom:10px}
+ul li{color:var(--tx2);font-size:.88rem;line-height:1.7;margin-bottom:4px}
+ul li::marker{color:var(--teal)}
+.info-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:var(--r);padding:16px 20px;margin-bottom:10px}
+.info-box p{margin:0;font-size:.84rem}
+.warn-box{background:rgba(212,169,64,.07);border:1px solid rgba(212,169,64,.25);border-left:3px solid var(--gold);border-radius:var(--r);padding:16px 20px;margin-bottom:10px}
+.warn-box p{margin:0;font-size:.84rem;color:var(--tx2)}
+.tag{display:inline-block;background:var(--tg);color:var(--teal);border:1px solid rgba(0,212,164,.2);border-radius:4px;padding:1px 8px;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;margin-right:4px}
+table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:.84rem}
+th{background:var(--bg3);color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:10px 14px;color:var(--tx2);border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+.footer-note{margin-top:48px;padding-top:24px;border-top:1px solid var(--border);color:var(--tx3);font-family:'JetBrains Mono',monospace;font-size:.62rem;text-align:center;line-height:1.8}
+.footer-note a{color:var(--teal);text-decoration:none}
+.footer-note a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <span class="ndot"></span>
+    <span class="nav-logo">Rendi<span>max</span></span>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a href="index.html" class="nav-back">← Torna all'app</a>
+    <button class="theme-btn" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='light'?'dark':'light'" title="Cambia tema">🌙</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-tag">Legale</div>
+  <h1 class="page-title">Termini e Condizioni</h1>
+  <div class="page-sub">Ultimo aggiornamento: 9 giugno 2026 &nbsp;·&nbsp; Rendimax S.r.l. &nbsp;·&nbsp; Versione 1.1</div>
+
+  <div class="section">
+    <h2>1. Parti del contratto</h2>
+    <div class="info-box">
+      <p><strong>Fornitore:</strong> Rendimax S.r.l., Via Roma 14, 70121 Bari (BA), P.IVA IT12345678901<br>
+      <strong>Utente:</strong> qualsiasi persona fisica o giuridica che accede o utilizza la piattaforma Rendimax.</p>
+    </div>
+    <p>L'utilizzo della piattaforma Rendimax implica l'accettazione integrale dei presenti Termini e Condizioni. Se non accetti questi termini, ti invitiamo a non utilizzare il servizio.</p>
+  </div>
+
+  <div class="section">
+    <h2>2. Descrizione del servizio</h2>
+    <p>Rendimax è una piattaforma SaaS (Software as a Service) di analisi finanziaria immobiliare che consente di:</p>
+    <ul>
+      <li>Calcolare ROI, cashflow netto, ammortamento e leverage su investimenti immobiliari</li>
+      <li>Simulare scenari di affitto breve (short-term rental) con parametri ADR e occupazione</li>
+      <li>Analizzare operazioni di trading immobiliare (Flip)</li>
+      <li>Salvare, caricare ed esportare analisi in formato Excel e PDF (piani a pagamento)</li>
+    </ul>
+    <div class="warn-box">
+      <p><strong>⚠ Avvertenza importante:</strong> I calcoli prodotti da Rendimax hanno esclusivo scopo informativo e non costituiscono consulenza finanziaria, fiscale o di investimento. Rendimax S.r.l. non è un intermediario finanziario autorizzato. Le decisioni di investimento rimangono di esclusiva responsabilità dell'utente.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3. Piani e prezzi</h2>
+    <table>
+      <thead><tr><th>Piano</th><th>Caratteristiche</th><th>Prezzo</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag">Free</span></td>
+          <td>20 analisi/giorno, calcolatore rent, accesso base</td>
+          <td>€0 — gratuito</td>
+        </tr>
+        <tr>
+          <td><span class="tag">Pro Mensile</span></td>
+          <td>Calcoli illimitati, modalità Flip, salvataggio progetti, export Excel, supporto prioritario</td>
+          <td>€29,90/mese</td>
+        </tr>
+        <tr>
+          <td><span class="tag">Pro Annuale</span></td>
+          <td>Tutte le funzionalità Pro, risparmio del 45%</td>
+          <td>€199/anno</td>
+        </tr>
+        <tr>
+          <td><span class="tag">Pro+</span></td>
+          <td>Tutte le funzionalità Pro, report PDF brandizzato, storico analisi completo</td>
+          <td>€59/mese</td>
+        </tr>
+        <tr>
+          <td><span class="tag">Agency</span></td>
+          <td>Tutte le funzionalità Pro+, 5 utenti inclusi, dashboard condivisa, white-label parziale</td>
+          <td>€149/mese</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>I prezzi sono IVA inclusa. Rendimax S.r.l. si riserva il diritto di modificare i prezzi con preavviso di almeno 30 giorni agli utenti con abbonamento attivo.</p>
+  </div>
+
+  <div class="section">
+    <h2>4. Pagamenti e abbonamenti</h2>
+    <p>I pagamenti sono gestiti da <strong>Stripe Inc.</strong>, operatore di pagamento certificato PCI DSS Level 1. Rendimax S.r.l. non memorizza dati di carte di credito o strumenti di pagamento.</p>
+    <ul>
+      <li>I piani a pagamento si rinnovano automaticamente alla scadenza (mensile o annuale)</li>
+      <li>La cancellazione può essere effettuata in qualsiasi momento dall'area personale</li>
+      <li>Il recesso non dà diritto al rimborso del periodo già pagato, salvo diverso accordo</li>
+      <li>In caso di mancato pagamento, il piano tornerà automaticamente a Free</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>5. Registrazione e account</h2>
+    <p>Per utilizzare le funzionalità che richiedono un account, l'utente deve:</p>
+    <ul>
+      <li>Fornire un indirizzo email valido e una password sicura</li>
+      <li>Avere almeno 18 anni di età</li>
+      <li>Non creare account multipli per aggirare i limiti del piano Free</li>
+      <li>Mantenere riservate le credenziali di accesso</li>
+    </ul>
+    <p>Rendimax S.r.l. si riserva il diritto di sospendere o eliminare account che violino i presenti termini, senza preavviso in caso di utilizzo fraudolento.</p>
+  </div>
+
+  <div class="section">
+    <h2>6. Proprietà intellettuale</h2>
+    <p>Tutti i contenuti della piattaforma Rendimax — inclusi codice sorgente, algoritmi, interfaccia grafica, testi, loghi e marchi — sono di proprietà esclusiva di Rendimax S.r.l. e sono protetti dalla normativa italiana ed europea sul diritto d'autore e sulla proprietà intellettuale.</p>
+    <p>È vietato riprodurre, distribuire, modificare o creare opere derivate senza esplicita autorizzazione scritta di Rendimax S.r.l.</p>
+    <p>I dati inseriti dall'utente (parametri delle analisi, progetti salvati) rimangono di proprietà dell'utente. Rendimax S.r.l. li tratta esclusivamente per erogare il servizio.</p>
+  </div>
+
+  <div class="section">
+    <h2>7. Limitazione di responsabilità</h2>
+    <p>Nei limiti consentiti dalla legge applicabile:</p>
+    <ul>
+      <li>Rendimax è fornito "così com'è" (<em>as-is</em>), senza garanzie di accuratezza o idoneità a scopi specifici</li>
+      <li>Rendimax S.r.l. non è responsabile per perdite finanziarie derivanti dall'utilizzo dei calcoli prodotti dalla piattaforma</li>
+      <li>La responsabilità complessiva di Rendimax S.r.l. è limitata al corrispettivo pagato dall'utente negli ultimi 3 mesi</li>
+      <li>Rendimax S.r.l. non garantisce la disponibilità continua del servizio e si riserva il diritto di effettuare manutenzioni programmate</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>8. Recesso e diritto di ripensamento</h2>
+    <p>Ai sensi del D.Lgs. 206/2005 (Codice del Consumo), l'utente consumatore ha diritto di recedere dal contratto entro <strong>14 giorni</strong> dall'acquisto di un piano a pagamento, senza necessità di fornire motivazioni.</p>
+    <p>Per esercitare il diritto di recesso, invia una comunicazione a <a href="mailto:support@rendimax.app" style="color:var(--teal)">support@rendimax.app</a>. Il rimborso sarà effettuato entro 14 giorni tramite lo stesso mezzo di pagamento utilizzato.</p>
+  </div>
+
+  <div class="section">
+    <h2>9. Legge applicabile e foro competente</h2>
+    <p>I presenti Termini sono regolati dalla legge italiana. Per qualsiasi controversia relativa all'interpretazione o esecuzione del presente contratto, è competente il Foro di <strong>Bari</strong>, salvo diversa previsione imperativa di legge a tutela del consumatore.</p>
+  </div>
+
+  <div class="section">
+    <h2>10. Contatti</h2>
+    <div class="info-box">
+      <p>Per assistenza: <a href="mailto:support@rendimax.app" style="color:var(--teal)">support@rendimax.app</a><br>
+      Per questioni legali e privacy: <a href="mailto:privacy@rendimax.app" style="color:var(--teal)">privacy@rendimax.app</a><br>
+      Widget di contatto disponibile direttamente nell'app.</p>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <strong style="color:var(--teal)">Rendimax S.r.l.</strong> &nbsp;·&nbsp; P.IVA IT12345678901 &nbsp;·&nbsp; Via Roma 14, 70121 Bari (BA)<br>
+    <a href="privacy-policy.html">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="cookie-policy.html">Cookie Policy</a> &nbsp;·&nbsp;
+    <a href="index.html">Torna all'app</a>
+  </div>
+</div>
+</body>
+</html>

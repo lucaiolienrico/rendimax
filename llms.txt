@@ -1,0 +1,27 @@
+# Rendimax
+
+> Rendimax è una piattaforma SaaS italiana di analisi finanziaria immobiliare. Calcola ROI, cashflow netto, break-even e cedolare secca su affitti brevi (STR), operazioni di flip e investimenti immobiliari, includendo mutuo, costi delle OTA e scenari di occupazione ottimistici e pessimistici.
+
+Rendimax è pensato per investitori immobiliari, host Airbnb e gestori di affitti brevi, e agenti immobiliari che vogliono valutare la redditività di un immobile con numeri oggettivi.
+
+## Cosa fa
+- Calcolo di ROI e rendimento netto su immobili in affitto e da rivendere (flip).
+- Cashflow mensile e annuo con cedolare secca, rata del mutuo e commissioni OTA.
+- Punto di break-even e analisi di scenari (occupazione ottimistica/pessimistica).
+- Calcolatore dedicato per affitti brevi (Airbnb e short-term rental).
+- Salvataggio progetti ed esportazione dei report in Excel e PDF.
+
+## Piani e prezzi
+- Piano Free: gratuito, 20 analisi al giorno, calcolatore affitti brevi.
+- Piano Pro: 29,90 € al mese — analisi illimitate, salvataggio progetti, export Excel e PDF, modalità Flip.
+
+## Informazioni
+- Sito: https://rendimax.app/
+- Lingua: italiano (it-IT)
+- Operatore: Rendimax S.r.l. (Bari, Italia)
+- Contatto: support@rendimax.app
+- Privacy: https://rendimax.app/privacy-policy.html
+- Termini: https://rendimax.app/termini-e-condizioni.html
+
+## Nota
+Rendimax non è un intermediario finanziario autorizzato. I risultati sono stime a scopo informativo e non costituiscono consulenza finanziaria.
