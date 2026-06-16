@@ -1,4 +1,4 @@
-# Rendimax — Analisi Finanziaria Immobiliare
+# RenditaLab — Analisi Finanziaria Immobiliare
 
 > ROI, cashflow netto e break-even su affitti brevi (STR), flip e investimenti immobiliari. In tempo reale.
 
