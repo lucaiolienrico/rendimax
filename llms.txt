@@ -1,0 +1,14 @@
+# RenditaLab
+
+> Piattaforma SaaS italiana di analisi finanziaria immobiliare. Calcola ROI, cashflow netto, break-even e cedolare secca su affitti brevi (STR), operazioni di flip e investimenti immobiliari — inclusi mutuo, costi OTA e scenari di occupazione.
+
+## Sito
+- [Home](https://renditalab.it/): simulatore investimenti, calcolatore affitti brevi, modalità Flip, export Excel/PDF.
+
+## Piani
+- Free: 20 analisi/giorno, calcolatore affitti brevi.
+- Pro: 29,90 €/mese — analisi illimitate, salvataggio progetti, export Excel e PDF, modalità Flip.
+
+## Contatti
+- Supporto: support@renditalab.it
+- Privacy: privacy@renditalab.it
